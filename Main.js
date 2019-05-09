@@ -174,7 +174,7 @@ broadcastHandler = () => {
           name: "menu",
           color: "white"
         }}/>}
-      centerComponent={{ text: 'Hotspots', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
+      centerComponent={{ text: 'Societee', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
       rightComponent={<Image
     style={{width: 32, height: 32, borderRadius:32/2, bottom: 5, right:-2, margin: 5}}
     source={{uri: firebase.auth().currentUser.photoURL + "?height=600"}}/>}/>

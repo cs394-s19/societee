@@ -2,12 +2,12 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 
 var config = {
-  apiKey: "AIzaSyA9-yk6n965ESvvgiN3YDIBjO9zqP7qo1o",
-  authDomain: "hacksc-44d94.firebaseapp.com",
-  databaseURL: "https://hacksc-44d94.firebaseio.com",
-  projectId: "hacksc-44d94",
+  apiKey: "AIzaSyBcN4NF05AAMnglydPzgMTXSo2PMfx2HUI",
+  authDomain: "societee-app.firebaseapp.com",
+  databaseURL: "https://societee-app.firebaseio.com",
+  projectId: "societee-app",
   storageBucket: "",
-  messagingSenderId: "589213859485"
+  messagingSenderId: "617818294734"
 };
 
 firebase.initializeApp(config);
