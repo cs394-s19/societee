@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "hacksc-antient",
+    "name": "societee",
     "slug": "my-app",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -25,8 +25,8 @@
     "ios": {
       "supportsTablet": true
     },
-    "facebookScheme": "fb1033605246838480",
-    "facebookAppId": "1033605246838480",
-    "facebookDisplayName": "hackSC"
+    "facebookScheme": "fb327920027893945",
+    "facebookAppId": "327920027893945",
+    "facebookDisplayName": "societee"
   }
 }

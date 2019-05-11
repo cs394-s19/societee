@@ -33,7 +33,7 @@ loginWithFacebook = async () => {
     const firestore = firebase.firestore();
     this.setState({loggingin: true});
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
-      '1033605246838480',
+      '327920027893945',
       { permissions: ['public_profile'], behavior: 'native' }
     );
   
