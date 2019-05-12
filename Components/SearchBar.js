@@ -26,7 +26,7 @@ function SearchBar(props) {
       }}
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
-        key: "AIzaSyCjrNwqOpAgdCY91yRDHQROWdTVe4MeQ2s",
+        key: "apikey",
         language: "en" // language of the results
         // types: "(cities)" // default: 'geocode'
       }}
