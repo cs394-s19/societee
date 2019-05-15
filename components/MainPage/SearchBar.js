@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import GoogleAPI from '../../config/GoogleAPI';
+import { GoogleAPI } from '../../config/GoogleAPI';
 
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
