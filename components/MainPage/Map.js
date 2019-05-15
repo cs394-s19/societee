@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
+import { Button} from 'react-native-elements';
+
 
 const Map = () => {
   return (
-    <MapView showsUserLocation style={styles.map} />
+      <MapView showsUserLocation style={styles.map}/>
   );
 }
 
@@ -12,6 +14,11 @@ const styles = StyleSheet.create({
   map: {
     zIndex: -1,
     ...StyleSheet.absoluteFillObject,
+  },
+  button : {
+    position: 'absolute',
+    bottom: 0,
+    right: 0
   }
 });
 
