@@ -1,46 +1,29 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, SocialIcon} from 'react-native-elements';
-import firebase from './Firebase';
-
-
+import { SocialIcon} from 'react-native-elements';
+import firebase from '../../config/Firebase';
 
 export default class Login extends Component {
 
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       loggingin: false
     }
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        
-        <SocialIcon
-        style={{width: '80%'}}
-  button
-  type='facebook'
- loading={this.state.loggingin} disabled={this.state.loggingin} onPress={this.loginWithFacebook} title="Log in with Facebook"/>
-      </View>
-    );
-  }
-
-
-loginWithFacebook = async () => {
-
+  loginWithFacebook = async () => {
     const firestore = firebase.firestore();
     this.setState({loggingin: true});
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
       '327920027893945',
       { permissions: ['public_profile'], behavior: 'native' }
     );
-  
+
     if (type === 'success') {
       // Build Firebase credential with the Facebook access token.
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      //console.log(credential)
+      //console.log(credential);
       // Sign in with credential from the Facebook user.
       firebase.auth().signInAndRetrieveDataWithCredential(credential).then( (userCredential) => {
         //console.log(userCredential);
@@ -54,6 +37,18 @@ loginWithFacebook = async () => {
     } else {
       this.setState({loggingin: false});
     }
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <SocialIcon style={{width: '80%'}}
+                    button
+                    type='facebook'
+                    loading={this.state.loggingin} disabled={this.state.loggingin} onPress={this.loginWithFacebook} title="Log in with Facebook"
+        />
+      </View>
+    );
   }
 }
 

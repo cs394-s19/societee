@@ -1,67 +1,64 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Alert, Image, TouchableOpacity, ScrollView } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import { Button, Text, withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import firebase from './Firebase';
+import firebase from '../../config/Firebase';
 import { Header } from 'react-native-elements';
-import Friends from './Components/Friends'
+import Friends from '../Friends';
 import { Location } from 'expo';
 import SideMenu from 'react-native-side-menu';
 
 export default class Main extends React.Component {
 
-
-
-
-
   constructor(props) {
     super(props);
-    this._getCoords = this._getCoords.bind(this);
-    this._openMenu = this._openMenu.bind(this);
-
-
-
     this.state = {
         position: null,
         mapPressed: false,
         openMenu: false,
-        isBroadcasting: false,
         firebaseLoad: false
-    };
+    }
+    this._getCoords = this._getCoords.bind(this);
+    this._openMenu = this._openMenu.bind(this);
   }
 
-
-
-
   componentDidMount() {
-
     this._getCoords();
-
     const userFirestoreRef =  firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid || this.props.navigation.getParam('uid'));
-
     Location.watchPositionAsync({
       accuracy: Location.Accuracy.Balanced,
       timeInterval: 60000,
       distanceInterval: 50
     }, (location) => {
-    userFirestoreRef.update({
+      userFirestoreRef.update({
         currentLocation: {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           timestamp: location.timestamp
         }
-      })   });
-
-      this.attachFirebaseListener();
-
+      });
+    });
+    this.attachFirebaseListener();
   }
 
-
-
+  _getCoords = () => {
+    navigator.geolocation.getCurrentPosition(
+    (position) => {
+        var initialPosition = JSON.stringify(position.coords);
+        this.setState({position: initialPosition});
+        let tempCoords = {
+            latitude: Number(position.coords.latitude),
+            longitude: Number(position.coords.longitude),
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01
+        }
+        this._map.animateToRegion(tempCoords, 1000);
+      }, function (error) { alert(error) },
+    );
+  }
 
   attachFirebaseListener = () => {
-
     const userFirestoreRef =  firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid || this.props.navigation.getParam('uid'));
     userFirestoreRef.onSnapshot((doc) => {
       this.getFriendsList(doc);
@@ -73,48 +70,29 @@ export default class Main extends React.Component {
     this.setState({
       status: doc.data().status
     })
-
   }
 
   getFriendsList = (doc) => {
-
-      //console.log(doc.data())
-      doc.data().friends.forEach(friendUID => {
-        firebase.firestore().collection("users").doc(friendUID)
-          .onSnapshot((doc) => {
-            if(doc.data().status.broadcasting == true){
-            let friends = {...this.state.friends};
-            friends[friendUID] = doc.data();
-            this.setState({friends: friends})
-          } else if (this.state.friends && friendUID in this.state.friends){
-            let friends = {...this.state.friends};
-            delete friends[friendUID]
-            this.setState({friends: friends})
-          }
-          })
+    //console.log(doc.data())
+    doc.data().friends.forEach(friendUID => {
+      firebase.firestore().collection("users").doc(friendUID)
+        .onSnapshot((doc) => {
+          if(doc.data().status.broadcasting == true){
+          let friends = {...this.state.friends};
+          friends[friendUID] = doc.data();
+          this.setState({friends: friends})
+        } else if (this.state.friends && friendUID in this.state.friends){
+          let friends = {...this.state.friends};
+          delete friends[friendUID]
+          this.setState({friends: friends})
+        }
       })
+    })
   }
-
 
   firebaseLogout = () => {
-    firebase.auth().signOut()
+    firebase.auth().signOut();
   }
-
-  _getCoords = () => {
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            var initialPosition = JSON.stringify(position.coords);
-            this.setState({position: initialPosition});
-            let tempCoords = {
-                latitude: Number(position.coords.latitude),
-                longitude: Number(position.coords.longitude),
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01
-            }
-            this._map.animateToRegion(tempCoords, 1000);
-          }, function (error) { alert(error) },
-    );
-  };
 
   _noFriends = () => {
      Alert.alert(
@@ -127,30 +105,6 @@ export default class Main extends React.Component {
        { cancelable: false }
      )
    }
-
-
-broadcastHandler = () => {
-  const userFirestoreRef =  firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid || this.props.navigation.getParam('uid'));
-  if(this.state.status.broadcasting){
-    userFirestoreRef.update({
-        status: {
-          broadcasting: false,
-          status: 'fdfef u',
-        }
-      })
-  } else {
-
-    userFirestoreRef.update({
-        status: {
-          broadcasting: true,
-          status: 'hi I',
-        }
-      })
-
-  }
-}
-
-
 
    _openMenu = () => {
     this.setState({openMenu:true})
@@ -221,7 +175,6 @@ broadcastHandler = () => {
           activeOpacity= {1.0}
           onPress={()=>this.setState({mapPressed:false, openMenu: false})}
           style={{textAlignVertical: "center", justifyContent: 'space-around', flexDirection: "row", width: '100%', height: '10%',backgroundColor:'white',position:'absolute',bottom:0,zIndex:3}}>
-          {/*pulling facebook profiles*/}
 
           <View style={{margin: 15}}>
             <Button
@@ -236,32 +189,7 @@ broadcastHandler = () => {
                 left: 0,
               }}/>
           </View>
-
           <Text style={{margin: 23,flex:1, color: 'black', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 16, textAlign:'center'}}>{firebase.auth().currentUser.displayName}</Text>
-          {/*<Button
-            onPress={this.firebaseLogout}
-            title="Sign Out"/>*/}
-
-          <View style={{margin: 15}}>
-            <Button
-              size={5}
-              onPress={this.broadcastHandler}
-              loading = {this.state.firebaseLoad}
-              icon = {this.state.status && this.state.status.broadcasting ?
-                {name: "portable-wifi-off",
-                color: "white",
-                zIndex:2,
-                bottom: 0,
-                left: 0,} :
-                {name: "wifi-tethering",
-                color: "white",
-                zIndex:2,
-                bottom: 0,
-                left: 0,
-              }}
-              />
-          </View>
-
           </TouchableOpacity>
         </View>
       </SideMenu>
