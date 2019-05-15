@@ -35,20 +35,30 @@ const SearchBar = () => {
         textInputContainer: {
           backgroundColor: "rgba(0,0,0,0)",
           borderTopWidth: 0,
-          borderBottomWidth: 0
+          borderBottomWidth: 0,
+          margin: 15,
+          marginTop: 40
         },
         textInput: {
           marginLeft: 0,
           marginRight: 0,
-          height: 80,
+          height: 50,
           color: "#5d5d5d",
-          fontSize: 16
+          fontSize: 16,
+          shadowOffset:{height: 2,  },
+          shadowColor: 'black',
+          shadowOpacity: .4,
         },
         predefinedPlacesDescription: {
           color: "#1faadb"
         },
         listView: {
-          marginTop: 50
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          zIndex: -1,
+          backgroundColor: 'white',
+          paddingTop: 115
         }
       }}
       currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
