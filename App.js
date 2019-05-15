@@ -1,8 +1,8 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
-import Loading from './components/Loading';
-import Login from './components/LoginPage/Login';
-import Main from './components/MainPage/Main';
+import Loading from './Components/Loading';
+import Login from './Components/LoginPage/Login';
+import Main from './Components/MainPage/Main';
 
 const App = createAppContainer(createSwitchNavigator({
   Loading: Loading,

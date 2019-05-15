@@ -8,6 +8,7 @@ import { Header } from 'react-native-elements';
 import Friends from '../Friends';
 import { Location } from 'expo';
 import SideMenu from 'react-native-side-menu';
+import MarkerView from './MarkerView'
 
 export default class Main extends React.Component {
 
@@ -190,6 +191,7 @@ export default class Main extends React.Component {
               }}/>
           </View>
           <Text style={{margin: 23,flex:1, color: 'black', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 16, textAlign:'center'}}>{firebase.auth().currentUser.displayName}</Text>
+          <MarkerView></MarkerView>
           </TouchableOpacity>
         </View>
       </SideMenu>
