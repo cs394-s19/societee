@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import GoogleAPI from '../../config/GoogleAPI';
 
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
@@ -11,7 +12,7 @@ import {
 } from "react-native";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 
-function SearchBar(props) {
+const SearchBar = () => {
   return (
     <GooglePlacesAutocomplete
       placeholder="Enter Location"
@@ -26,7 +27,7 @@ function SearchBar(props) {
       }}
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
-        key: "apikey",
+        key: GoogleAPI,
         language: "en" // language of the results
         // types: "(cities)" // default: 'geocode'
       }}
