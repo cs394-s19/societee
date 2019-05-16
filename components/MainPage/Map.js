@@ -1,22 +1,33 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import React from "react";
+import { StyleSheet } from "react-native";
+import MapView from "react-native-maps";
+import { Marker, AnimatedRegion } from "react-native-maps";
 
-const Map = () => {
+function Map(props) {
   return (
-    <MapView showsUserLocation style={styles.map} />
+    <MapView showsUserLocation style={styles.map}>
+      {props.markers.map(marker => {
+        return (
+          <Marker
+            coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude
+            }}
+          />
+        );
+      })}
+    </MapView>
   );
 }
 
 const styles = StyleSheet.create({
   map: {
     zIndex: -1,
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject
   }
 });
 
 export default Map;
-
 
 // import React, { Component } from 'react';
 // import { StyleSheet, View, Alert, Image, TouchableOpacity, ScrollView } from 'react-native';
