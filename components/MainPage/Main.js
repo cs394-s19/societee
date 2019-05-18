@@ -3,14 +3,23 @@ import { View, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
 import Map from './Map';
 import { Button } from 'react-native-elements'
+import MarkerView from './MarkerView'
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      position: null
+      position: null,
+      markerPressed: false
     }
     this._getCoords = this._getCoords.bind(this);
+    this._clickMarker = this._clickMarker.bind(this);
+  }
+
+  _clickMarker = () => {
+    this.setState({
+      markerPressed: true
+    })
   }
 
   _getCoords = () => {
@@ -45,6 +54,7 @@ class Main extends Component {
               bottom: 0,
               left: 0,
             }}/>
+            <MarkerView markerVisible={this.state.markerPressed}></MarkerView>
       </View>
     )
   }

@@ -50,6 +50,7 @@ export default class MarkerView extends Component {
                 chevron
               />
               </View>
+              <Text style={styles.quote}>"Great Place to spend some time with friends. Really relaxing and fun atmosphere."</Text>
 
               <TouchableHighlight
                 onPress={() => {
@@ -91,6 +92,12 @@ const styles = {
   },
   avatar: {
     marginTop: 20,
+    marginLeft: 30
+  },
+  quote: {
+    fontSize: 20,
+    marginBottom: 25,
+    textAlign: 'center',
   }
 
 }
