@@ -6,6 +6,7 @@ import { Button, Footer,Text, withTheme } from 'react-native-elements';
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+import MarkerView from "./MarkerView";
 
 const db = firebase.firestore();
 // const functions = require("firebase-functions");
@@ -18,11 +19,19 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: "R9OjMaCD6weGIewgZyfYmzwdabR2"
+      UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
+      markerPressed: false
     };
     this.handlePress = this.handlePress.bind(this);
+    this.showMarkerView = this.showMarkerView.bind(this);
   }
   componentDidMount() {}
+
+  showMarkerView = () => {
+    // console.log("YEET")
+    this.setState({markerPressed: !this.state.markerPressed});
+    // console.log(!this.state.markerPressed)
+  }
 
   idToName = uid => {
     users
@@ -115,9 +124,11 @@ export default class Main extends React.Component {
     return (
       <View style={styles.container}>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button title='friends pins' onPress={this.fetchFriendsPins}/>
-        <Button title='my pins' onPress={this.queryPins(this.state.UID)}/>
+        <Button title='friends pins' onPress={() => this.fetchFriendsPins()}/>
+        <Button title='my pins' onPress={() => this.queryPins(this.state.UID)}/>
+        <Button title='show modal' onPress={() => this.showMarkerView()}/>
         <Map markers={this.state.markers} />
+        <MarkerView markerPressed={this.state.markerPressed} showMarkerView={this.showMarkerView}></MarkerView>
       </View>
     );
   }

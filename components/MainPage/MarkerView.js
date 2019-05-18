@@ -7,7 +7,7 @@ export default class MarkerView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markerVisible: false, //call from props later
+      markerVisible: props.markerPressed, //call from props later
       picture: "url"
     }
     this.setMarkerVisible = this.setMarkerVisible.bind(this)
@@ -16,6 +16,12 @@ export default class MarkerView extends Component {
   // This should probably get called in the parent Component when something gets clicked
   setMarkerVisible(visible) {
     this.setState({markerVisible: visible});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.markerPressed !== this.state.markerVisible) {
+      this.setState({markerVisible: !this.state.markerVisible})
+    }
   }
 
 
@@ -54,7 +60,7 @@ export default class MarkerView extends Component {
 
               <TouchableHighlight
                 onPress={() => {
-                  this.setMarkerVisible(!this.state.markerVisible);
+                  this.props.showMarkerView()
                 }}>
                 <Text>Hide Modal</Text>
               </TouchableHighlight>
@@ -62,12 +68,12 @@ export default class MarkerView extends Component {
           </View>
         </Modal>
 
-        <TouchableHighlight
+        {/* <TouchableHighlight
           onPress={() => {
             this.setMarkerVisible(true);
           }}>
           <Text>Show Modal</Text>
-        </TouchableHighlight>
+        </TouchableHighlight> */}
       </View>
     );
   }

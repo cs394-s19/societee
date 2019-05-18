@@ -12,6 +12,7 @@ const Login = ({ registerUser }) => {
   );
 }
 
+
 const styles = StyleSheet.create({
   continer: {
     flex: 1,
