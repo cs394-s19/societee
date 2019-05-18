@@ -116,8 +116,8 @@ export default class Main extends React.Component {
     return (
       <View style={styles.container}>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button onPress={this.fetchFriendsPins}/>
-        <Button onPress={this.queryPins(this.state.UID)}/>
+        <Button title='friends pins' onPress={this.fetchFriendsPins}/>
+        <Button title='my pins' onPress={this.queryPins(this.state.UID)}/>
         <Map markers={this.state.markers} />
       </View>
     );
