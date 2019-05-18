@@ -61,7 +61,7 @@ export default class SearchBar extends Component {
             top: 0,
             bottom: 20,
             zIndex: -1,
-            // backgroundColor: "white",
+            backgroundColor: "white",
             paddingTop: 115
           }
         }}
@@ -76,6 +76,7 @@ export default class SearchBar extends Component {
           // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
           fields: "formatted_address"
         }}
+        listViewDisplayed={false}
       />
     );
   }
