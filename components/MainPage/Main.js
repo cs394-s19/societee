@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
-import { Button, Footer,Text, withTheme } from 'react-native-elements';
+import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 
@@ -19,11 +19,37 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
+      friendIDs: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2"
     };
     this.handlePress = this.handlePress.bind(this);
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.fetchFriendIDS();
+    var newMarkers = this.state.markers;
+    pins.onSnapshot(
+      docSnapshot => {
+        let changes = docSnapshot.docChanges();
+        changes.forEach(change => {
+          const docOwner = change.doc.data().owner;
+          if (
+            docOwner === this.state.UID ||
+            this.state.friendIDs.includes(docOwner)
+          ) {
+            var newMarker = change.doc.data();
+            newMarker.id = change.doc.id;
+            newMarkers.push(newMarker);
+            this.setState({ markers: newMarkers });
+          }
+
+          // console.log(`New state is now ${this.state.markers}`)
+        });
+      },
+      err => {
+        console.log(`Encountered error: ${err}`);
+      }
+    );
+  }
 
   idToName = uid => {
     users
@@ -57,6 +83,26 @@ export default class Main extends React.Component {
       });
   };
 
+  fetchFriendIDS = () => {
+    var myFriends = [];
+    users
+      .doc(this.state.UID)
+      .get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log("No user found!");
+        } else {
+          console.log("User's friends:", doc.data().following);
+          myFriends = doc.data().following;
+        }
+      })
+      .then(() => {
+        this.setState({ friendIDs: myFriends });
+      })
+      .catch(err => {
+        console.log("Error getting document", err);
+      });
+  };
   fetchFriendsPins = () => {
     var myFriends = [];
     users
@@ -116,8 +162,11 @@ export default class Main extends React.Component {
     return (
       <View style={styles.container}>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button title='friends pins' onPress={this.fetchFriendsPins}/>
-        <Button title='my pins' onPress={this.queryPins(this.state.UID)}/>
+        <Button title="friends pins" onPress={() => this.fetchFriendsPins()} />
+        <Button
+          title="my pins"
+          onPress={() => this.queryPins(this.state.UID)}
+        />
         <Map markers={this.state.markers} />
       </View>
     );
