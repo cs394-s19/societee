@@ -71,7 +71,6 @@ export default class MarkerView extends Component {
       </View>
     );
   }
-
 }
 
 const styles = {
