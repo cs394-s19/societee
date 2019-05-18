@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
+import { Button, Footer,Text, withTheme } from 'react-native-elements';
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 
@@ -115,6 +116,8 @@ export default class Main extends React.Component {
     return (
       <View style={styles.container}>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
+        <Button onPress={this.fetchFriendsPins}/>
+        <Button onPress={this.queryPins(this.state.UID)}/>
         <Map markers={this.state.markers} />
       </View>
     );
