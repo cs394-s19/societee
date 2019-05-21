@@ -6,7 +6,9 @@ import { Button, Footer,Text, withTheme } from 'react-native-elements';
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+
 import MarkerView from "./MarkerView";
+import MarkerEdit from "./MarkerEdit";
 
 const db = firebase.firestore();
 // const functions = require("firebase-functions");
@@ -20,7 +22,8 @@ export default class Main extends React.Component {
     this.state = {
       markers: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
-      markerPressed: false
+      markerPressed: false,
+      markerEdit: true,
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
@@ -120,9 +123,17 @@ export default class Main extends React.Component {
       markers: [...this.state.markers, { latitude: newLat, longitude: newLong }]
     });
   }
+
+  toggleMarkerEdit = () => {
+    this.setState({markerEdit: !this.state.markerEdit})
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <MarkerEdit 
+          visible={this.state.markerEdit}
+          closeMarkerEdit={() => this.toggleMarkerEdit()}/>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
         <Button title='friends pins' onPress={() => this.fetchFriendsPins()}/>
         <Button title='my pins' onPress={() => this.queryPins(this.state.UID)}/>

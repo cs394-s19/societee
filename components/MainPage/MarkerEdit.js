@@ -7,7 +7,6 @@ export default class MarkerEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markerEdit: true, //call from props later
     }
   }
 
@@ -16,11 +15,15 @@ export default class MarkerEdit extends Component {
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.markerEdit}
+          visible={this.props.visible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
-          }}>
-          <View>MARKEREDIT PANEL</View>
+          }}> 
+          <TouchableHighlight
+            style={{marginTop: 50}}
+            onPress={this.props.closeMarkerEdit}>
+            <Text>CLOSE ME</Text>
+          </TouchableHighlight>
         </Modal>
     );
   }
