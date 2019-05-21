@@ -7,6 +7,7 @@ import firebase from "../../config/Firebase";
 import "firebase/firestore";
 
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+// import rnfirebase from "react-native-firebase";
 
 const db = firebase.firestore();
 // const functions = require("firebase-functions");
@@ -138,6 +139,25 @@ export default class Main extends React.Component {
     pins.doc("YEET").delete();
   };
 
+  addToFavorites = () => {
+    const pinID = "UILWqr6qcHxp4Z9vron7";
+    users.doc(this.state.UID).update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(pinID)
+    });
+  };
+
+  editPin = editedPin => {
+    var editedPin = {
+      description: "Desc",
+      note: "WOW",
+      timestamp: Date.now()
+    };
+
+    const pinID = "JBRCwAavBvVYUYnKAbnh";
+
+    pins.doc(pinID).update(editedPin);
+  };
+
   handlePress(details) {
     const newLat = details.geometry.location.lat;
     const newLong = details.geometry.location.lng;
@@ -166,6 +186,11 @@ export default class Main extends React.Component {
         <Button
           title="my pins"
           onPress={() => this.queryPins(this.state.UID)}
+        />
+        <Button title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
+        <Button
+          title="Add to favorites"
+          onPress={() => this.addToFavorites()}
         />
         <Map markers={this.state.markers} />
       </View>
