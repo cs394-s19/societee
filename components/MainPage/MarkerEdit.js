@@ -7,12 +7,11 @@ export default class MarkerEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pin: this.props.currEditedPin,
     }
   }
 
   updateNote = (text) => {
-    var currPin = this.state.pin;
+    var currPin = this.props.currEditedPin;
     currPin.note = text
     this.setState({pin: currPin})
   }
@@ -33,14 +32,17 @@ export default class MarkerEdit extends Component {
           }}
           > 
           <View>
-            <TouchableHighlight>
-              <TextInput
-                style={styles.textInput}
-                defaultValue="Write a note"
-                clearTextOnFocus= {true}
-                onChangeText={(text) => this.updateNote(text)}
-                onSubmitEditing={()=>this.onSubmitNote()}/>
-            </TouchableHighlight>
+            <TextInput
+              style={styles.textInput}
+              defaultValue="Write a note"
+              clearTextOnFocus= {true}
+              onChangeText={(text) => this.updateNote(text)}
+              onSubmitEditing={()=>this.onSubmitNote(this.props.currEditedPin)}/>
+            <View>
+              <Text>
+                Address: {this.props.currEditedPin.addr}
+              </Text>
+            </View>
             <TouchableHighlight
               style={{marginTop: 50}}
               onPress={this.props.closeMarkerEdit}>
