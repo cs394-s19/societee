@@ -126,6 +126,11 @@ export default class Main extends React.Component {
       timestamp: Date.now()
     };
 
+    // this.addPin(newPin);
+
+    // this.setState({
+    //   markers: [...this.state.markers, { latitude: newLat, longitude: newLong }]
+    // });
     this.setState({
       currEditedPin: newPin,
       markerEdit: true,
