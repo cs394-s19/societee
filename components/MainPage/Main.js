@@ -23,7 +23,16 @@ export default class Main extends React.Component {
       markers: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
       markerPressed: false,
-      markerEdit: true,
+      markerEdit: false,
+      currEditedPin: {
+        latitude: 0,
+        longitude: 0,
+        addr: 0,
+        note: "No note field yet",
+        description: "none",
+        owner: "R9OjMaCD6weGIewgZyfYmzwdabR2",
+        timestamp: Date.now()
+      },
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
@@ -117,9 +126,9 @@ export default class Main extends React.Component {
       timestamp: Date.now()
     };
 
-    this.addPin(newPin);
-
     this.setState({
+      currEditedPin: newPin,
+      markerEdit: true,
       markers: [...this.state.markers, { latitude: newLat, longitude: newLong }]
     });
   }
@@ -133,7 +142,9 @@ export default class Main extends React.Component {
       <View style={styles.container}>
         <MarkerEdit 
           visible={this.state.markerEdit}
-          closeMarkerEdit={() => this.toggleMarkerEdit()}/>
+          closeMarkerEdit={() => this.toggleMarkerEdit()}
+          currEditedPin={this.state.currEditedPin}
+          addPin={()=>this.addPin()}/>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
         <Button title='friends pins' onPress={() => this.fetchFriendsPins()}/>
         <Button title='my pins' onPress={() => this.queryPins(this.state.UID)}/>

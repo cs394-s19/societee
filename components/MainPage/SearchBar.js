@@ -26,7 +26,6 @@ export default class SearchBar extends Component {
         fetchDetails={true}
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
-
           this.props.handlePress(details);
         }}
         query={{
