@@ -40,9 +40,7 @@ export default class Main extends React.Component {
   componentDidMount() {}
 
   showMarkerView = () => {
-    // console.log("YEET")
     this.setState({markerPressed: !this.state.markerPressed});
-    // console.log(!this.state.markerPressed)
   }
 
   idToName = uid => {

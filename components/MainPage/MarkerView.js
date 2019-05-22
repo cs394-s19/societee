@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Modal, Text, TouchableHighlight, View, Alert, Image} from 'react-native';
-import { Button, withTheme, Avatar, ListItem } from 'react-native-elements';
+import {withTheme, Avatar, ListItem } from 'react-native-elements';
+import {Button, Icon} from 'native-base';
+
 
 export default class MarkerView extends Component {
 
@@ -57,13 +59,12 @@ export default class MarkerView extends Component {
               />
               </View>
               <Text style={styles.quote}>"Great Place to spend some time with friends. Really relaxing and fun atmosphere."</Text>
-
-              <TouchableHighlight
+              <Button large transparent primary style={styles.close} 
                 onPress={() => {
                   this.props.showMarkerView()
                 }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
+                <Icon name="close" style={{fontSize: 60}}/>
+              </Button>
             </View>
           </View>
         </Modal>
@@ -101,8 +102,13 @@ const styles = {
   },
   quote: {
     fontSize: 20,
-    marginBottom: 25,
+    marginTop: 15,
     textAlign: 'center',
+  },
+  close: {
+    position: 'absolute',
+    top: -20,
+    right: 10,
   }
 
 }
