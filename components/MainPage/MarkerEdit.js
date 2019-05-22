@@ -7,6 +7,7 @@ export default class MarkerEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pin: this.props.currEditedPin,
     }
   }
 
@@ -50,7 +51,7 @@ export default class MarkerEdit extends Component {
               defaultValue="Write a note"
               clearTextOnFocus= {true}
               onChangeText={(text) => this.updateNote(text)}
-              onSubmitEditing={()=>this.onSubmitNote(this.props.currEditedPin)}/>
+              onSubmitEditing={()=>this.onSubmitNote(this.state.pin)}/>
             <View>
               <Text>
                 Address: {currPin.addr}
