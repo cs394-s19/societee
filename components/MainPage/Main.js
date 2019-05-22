@@ -30,7 +30,7 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
+      UID: props.user,
       markerPressed: false,
       markerEdit: false,
       currEditedPin: {
@@ -39,7 +39,7 @@ export default class Main extends React.Component {
         addr: 0,
         note: "No note field yet",
         description: "none",
-        owner: "R9OjMaCD6weGIewgZyfYmzwdabR2",
+        owner: props.user,
         timestamp: Date.now()
       },
       friendIDs: []

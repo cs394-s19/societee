@@ -7,18 +7,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: 'Francis'
-      // user: null
+      user: null
     }
+
+    this.updateUser = this.updateUser.bind(this)
+  }
+
+  updateUser(uid){
+    this.setState({user:uid});
   }
 
   render() {
     return (
       <View style={styles.container}>
         { this.state.user === null ?
-          <Login />
+          <Login updateUser={this.updateUser}/>
           :
-          <Main /> }
+          <Main user={this.state.user}/> }
       </View>
     );
   }
