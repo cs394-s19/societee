@@ -23,7 +23,7 @@ export default class Main extends React.Component {
       markers: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
       markerPressed: false,
-      markerEdit: true,
+      markerEdit: false,
       currEditedPin: {
         latitude: 0,
         longitude: 0,

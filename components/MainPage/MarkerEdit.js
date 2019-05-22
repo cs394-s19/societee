@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Modal, Text, TextInput, TouchableOpacity, View, Alert, Image} from 'react-native';
-import { Button, withTheme, Avatar, ListItem } from 'react-native-elements';
+import {Button, Icon} from 'native-base';
 
 export default class MarkerEdit extends Component {
 
@@ -22,6 +22,7 @@ export default class MarkerEdit extends Component {
   }
 
   render() {
+    var currPin = this.props.currEditedPin
     return (
         <Modal
           animationType="slide"
@@ -33,6 +34,9 @@ export default class MarkerEdit extends Component {
           > 
           <View>
             <View style={styles.imageContainer}>
+              <Button large transparent primary style={styles.close} onPress={() => {this.props.closeMarkerEdit()}}>
+                  <Icon name="close" style={{fontSize: 60}}/>
+              </Button>
               <Text style={{marginTop: 150, marginLeft: 150}}>No Photo Selected</Text>
               <TouchableOpacity style={styles.addPhotoButton}>
                 <Text>Add a Photo</Text>
@@ -49,14 +53,12 @@ export default class MarkerEdit extends Component {
               onSubmitEditing={()=>this.onSubmitNote(this.props.currEditedPin)}/>
             <View>
               <Text>
-                Address: {this.props.currEditedPin.addr}
+                Address: {currPin.addr}
+                UID: {currPin.owner}
+                Date: {currPin.timestamp}
               </Text>
             </View>
-            <TouchableOpacity
-              style={{marginTop: 50}}
-              onPress={this.props.closeMarkerEdit}>
-              <Text>CLOSE ME</Text>
-            </TouchableOpacity>
+            
           </View>
         </Modal>
     );
@@ -92,5 +94,10 @@ const styles = {
   },
   infoContainer: {
 
+  },
+  close: {
+    position: 'absolute',
+    top: 20,
+    left: 10,
   }
 }
