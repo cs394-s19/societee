@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Login from './components/LoginPage/Login';
-import Main from './components/MainPage/Main';
+import Main from './components/Main';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,19 +28,6 @@ class App extends React.Component {
     );
   }
 }
-
-// const App = () => {
-//   const [user, setUser] = useState(null);
-
-//   return (
-//     <View style={styles.container}>
-//       { user === null ?
-//         <Login registerUser={() => { setUser }} />
-//         :
-//         <Main /> }
-//     </View>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {

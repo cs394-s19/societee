@@ -39,7 +39,7 @@ export default class MarkerView extends Component {
           }}>
           <View style={{marginTop: 22}}>
             <View style={{marginTop: 35, textAlign: "center"}}>
-              <Text style={styles.title}>Millenium Park</Text>
+              <Text style={styles.title}>{this.props.markerPressedDetail.description}</Text>
               <View style={styles.imageContainer}>
                 <Image
                   style={styles.image}
@@ -53,12 +53,12 @@ export default class MarkerView extends Component {
                   source: {},
                   showEditButton: true,
                 }}
-                title={'John Doe'}
+                title={this.props.markerPressedDetail.owner}
                 subtitle={'April 30, 2019'}
                 chevron
               />
               </View>
-              <Text style={styles.quote}>"Great Place to spend some time with friends. Really relaxing and fun atmosphere."</Text>
+              <Text style={styles.quote}>"{this.props.markerPressedDetail.note}"</Text>
               <Button large transparent primary style={styles.close} 
                 onPress={() => {
                   this.props.showMarkerView()

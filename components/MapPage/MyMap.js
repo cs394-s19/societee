@@ -5,11 +5,6 @@ import Map from "./Map";
 import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
-import { Container, Header, Content, Tab, Tabs, TabHeading } from "native-base";
-import EntypoIcon from "react-native-vector-icons/Entypo";
-import Octicon from "react-native-vector-icons/Octicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FriendDisplay from "../ProfilePage/FriendDisplay";
 
 import AddPin from "../Buttons/AddPin";
 
@@ -25,13 +20,19 @@ const db = firebase.firestore();
 var users = db.collection("users");
 var pins = db.collection("pins");
 
-export default class Main extends React.Component {
+export default class MyMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       markers: [],
       UID: props.user,
       markerPressed: false,
+      markerPressedDetail: {
+        addr: '',
+        description: '',
+        note: '',
+        owner: '',
+      },
       markerEdit: false,
       currEditedPin: {
         latitude: 0,
@@ -46,6 +47,7 @@ export default class Main extends React.Component {
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
+    this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
   }
   componentDidMount() {
     this.fetchFriendIDS();
@@ -72,6 +74,17 @@ export default class Main extends React.Component {
         console.log(`Encountered error: ${err}`);
       }
     );
+  }
+
+  setMarkerPressedDetail(marker) {
+    this.setState({
+      markerPressedDetail: {
+        addr: marker.addr,
+        description: marker.description,
+        note: marker.note,
+        owner: marker.owner,
+      }
+    })
   }
 
   showMarkerView = () => {
@@ -163,7 +176,7 @@ export default class Main extends React.Component {
 
   deletePin = () => {
     //Need PIN ID
-    pins.doc("YEET").delete();
+    pins.doc("D").delete();
   };
 
   addToFavorites = () => {
@@ -218,67 +231,36 @@ export default class Main extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Tabs tabBarPosition="bottom">
-          <Tab
-            heading={
-              <TabHeading>
-                <EntypoIcon name="location" size={30} />
-              </TabHeading>
-            }
-          >
-            <MarkerEdit
-              visible={this.state.markerEdit}
-              closeMarkerEdit={() => this.toggleMarkerEdit()}
-              currEditedPin={this.state.currEditedPin}
-              addPin={pin => this.addPin(pin)}
-            />
-            <SearchBar handlePress={this.handlePress} style={styles.bar} />
-            <Button
-              title="friends pins"
-              onPress={() => this.fetchFriendsPins()}
-            />
-            <Button
-              title="my pins"
-              onPress={() => this.queryPins(this.state.UID)}
-            />
-            <Button
-              title="Edit pin"
-              onPress={() => this.editPin({ hey: "lol" })}
-            />
-            <Button
-              title="Add to favorites"
-              onPress={() => this.addToFavorites()}
-            />
-            <Button title="show modal" onPress={() => this.showMarkerView()} />
-            <Map markers={this.state.markers} />
+        <MarkerEdit
+          visible={this.state.markerEdit}
+          closeMarkerEdit={() => this.toggleMarkerEdit()}
+          currEditedPin={this.state.currEditedPin}
+          addPin={pin => this.addPin(pin)}
+        />
+        <SearchBar handlePress={this.handlePress} style={styles.bar} />
+        <Button
+          title="friends pins"
+          onPress={() => this.fetchFriendsPins()}
+        />
+        <Button
+          title="my pins"
+          onPress={() => this.queryPins(this.state.UID)}
+        />
+        <Button
+          title="Edit pin"
+          onPress={() => this.editPin({ hey: "lol" })}
+        />
+        <Button
+          title="Add to favorites"
+          onPress={() => this.addToFavorites()}
+        />
+        <Button title="show modal" onPress={() => this.showMarkerView()} />
+        <Map markers={this.state.markers} setMarkerPressedDetail={this.setMarkerPressedDetail} showMarkerView={this.showMarkerView}/>
             <MarkerView
               markerPressed={this.state.markerPressed}
               showMarkerView={this.showMarkerView}
+              markerPressedDetail={this.state.markerPressedDetail}
             />
-          </Tab>
-          <Tab
-            heading={
-              <TabHeading>
-                <Octicon name="diff-added" size={30} />
-              </TabHeading>
-            }
-          >
-            <View style={styles.container}>
-              <Text style={{ textAlign: "center" }}>Add pins tab</Text>
-            </View>
-          </Tab>
-          <Tab
-            heading={
-              <TabHeading>
-                <FontAwesome name="users" size={30} />
-              </TabHeading>
-            }
-          >
-            <View style={styles.container}>
-              <FriendDisplay />
-            </View>
-          </Tab>
-        </Tabs>
       </View>
     );
   }
