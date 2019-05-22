@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { Marker, AnimatedRegion } from "react-native-maps";
+import { Image } from "react-native";
 
 function Map(props) {
   return (

@@ -5,6 +5,13 @@ import Map from "./Map";
 import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
+import { Container, Header, Content, Tab, Tabs, TabHeading } from "native-base";
+import EntypoIcon from "react-native-vector-icons/Entypo";
+import Octicon from "react-native-vector-icons/Octicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FriendDisplay from "../ProfilePage/FriendDisplay";
+
+import AddPin from "../Buttons/AddPin";
 
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 // import rnfirebase from "react-native-firebase";
@@ -104,6 +111,7 @@ export default class Main extends React.Component {
         console.log("Error getting document", err);
       });
   };
+
   fetchFriendsPins = () => {
     var myFriends = [];
     users
@@ -166,7 +174,7 @@ export default class Main extends React.Component {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
       addr: details.formatted_address,
-      note: "No note field yet",
+      note: "",
       description: details.name,
       owner: this.state.UID,
       timestamp: Date.now()
@@ -181,18 +189,57 @@ export default class Main extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button title="friends pins" onPress={() => this.fetchFriendsPins()} />
-        <Button
-          title="my pins"
-          onPress={() => this.queryPins(this.state.UID)}
-        />
-        <Button title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
-        <Button
-          title="Add to favorites"
-          onPress={() => this.addToFavorites()}
-        />
-        <Map markers={this.state.markers} />
+        <Tabs tabBarPosition="bottom">
+          <Tab
+            heading={
+              <TabHeading>
+                <EntypoIcon name="location" size={30} />
+              </TabHeading>
+            }
+          >
+            <SearchBar handlePress={this.handlePress} style={styles.bar} />
+
+            <Button
+              title="friends pins"
+              onPress={() => this.fetchFriendsPins()}
+            />
+            <Button
+              title="my pins"
+              onPress={() => this.queryPins(this.state.UID)}
+            />
+            <Button
+              title="Edit pin"
+              onPress={() => this.editPin({ hey: "lol" })}
+            />
+            <Button
+              title="Add to favorites"
+              onPress={() => this.addToFavorites()}
+            />
+            <Map markers={this.state.markers} />
+          </Tab>
+          <Tab
+            heading={
+              <TabHeading>
+                <Octicon name="diff-added" size={30} />
+              </TabHeading>
+            }
+          >
+            <View style={styles.container}>
+              <Text style={{ textAlign: "center" }}>Add pins tab</Text>
+            </View>
+          </Tab>
+          <Tab
+            heading={
+              <TabHeading>
+                <FontAwesome name="users" size={30} />
+              </TabHeading>
+            }
+          >
+            <View style={styles.container}>
+              <FriendDisplay />
+            </View>
+          </Tab>
+        </Tabs>
       </View>
     );
   }
