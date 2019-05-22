@@ -24,7 +24,7 @@ export default class Main extends React.Component {
               </TabHeading>
             }
           >
-            <MyMap />
+            <MyMap user={this.props.user}/>
           </Tab>
 
           <Tab
