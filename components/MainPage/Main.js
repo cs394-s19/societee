@@ -32,6 +32,12 @@ export default class Main extends React.Component {
       markers: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
       markerPressed: false,
+      markerPressedDetail: {
+        addr: '',
+        description: '',
+        note: '',
+        owner: '',
+      },
       markerEdit: false,
       currEditedPin: {
         latitude: 0,
@@ -46,6 +52,7 @@ export default class Main extends React.Component {
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
+    this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
   }
   componentDidMount() {
     this.fetchFriendIDS();
@@ -72,6 +79,17 @@ export default class Main extends React.Component {
         console.log(`Encountered error: ${err}`);
       }
     );
+  }
+
+  setMarkerPressedDetail(marker) {
+    this.setState({
+      markerPressedDetail: {
+        addr: marker.addr,
+        description: marker.description,
+        note: marker.note,
+        owner: marker.owner,
+      }
+    })
   }
 
   showMarkerView = () => {
@@ -250,10 +268,11 @@ export default class Main extends React.Component {
               onPress={() => this.addToFavorites()}
             />
             <Button title="show modal" onPress={() => this.showMarkerView()} />
-            <Map markers={this.state.markers} />
+            <Map markers={this.state.markers} setMarkerPressedDetail={this.setMarkerPressedDetail} showMarkerView={this.showMarkerView}/>
             <MarkerView
               markerPressed={this.state.markerPressed}
               showMarkerView={this.showMarkerView}
+              markerPressedDetail={this.state.markerPressedDetail}
             />
           </Tab>
           <Tab
