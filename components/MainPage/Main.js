@@ -23,7 +23,7 @@ export default class Main extends React.Component {
       markers: [],
       UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
       markerPressed: false,
-      markerEdit: false,
+      markerEdit: true,
       currEditedPin: {
         latitude: 0,
         longitude: 0,
@@ -149,7 +149,7 @@ export default class Main extends React.Component {
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
           currEditedPin={this.state.currEditedPin}
-          addPin={()=>this.addPin()}/>
+          addPin={(pin)=>this.addPin(pin)}/>
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
         <Button title='friends pins' onPress={() => this.fetchFriendsPins()}/>
         <Button title='my pins' onPress={() => this.queryPins(this.state.UID)}/>
