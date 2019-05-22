@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { Marker, AnimatedRegion } from "react-native-maps";
-import { Button} from 'react-native-elements';
+import { Button } from "react-native-elements";
 
 function Map(props) {
   return (
@@ -25,10 +25,10 @@ function Map(props) {
 const styles = StyleSheet.create({
   map: {
     zIndex: -1,
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject
   },
-  button : {
-    position: 'absolute',
+  button: {
+    position: "absolute",
     bottom: 0,
     right: 0
   }
