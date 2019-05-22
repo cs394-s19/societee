@@ -48,6 +48,7 @@ export default class MyMap extends React.Component {
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
+    this.idToName = this.idToName.bind(this);
   }
   componentDidMount() {
     this.fetchFriendIDS();
@@ -260,6 +261,7 @@ export default class MyMap extends React.Component {
               markerPressed={this.state.markerPressed}
               showMarkerView={this.showMarkerView}
               markerPressedDetail={this.state.markerPressedDetail}
+              idToName={this.idToName}
             />
       </View>
     );

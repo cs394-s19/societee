@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import {Modal, Text, TouchableHighlight, View, Alert, Image} from 'react-native';
 import {withTheme, Avatar, ListItem } from 'react-native-elements';
 import {Button, Icon} from 'native-base';
+import firebase from "../../config/Firebase";
 
+const db = firebase.firestore();
+// const functions = require("firebase-functions");
+
+var users = db.collection("users");
 
 export default class MarkerView extends Component {
 
@@ -10,9 +15,11 @@ export default class MarkerView extends Component {
     super(props);
     this.state = {
       markerVisible: props.markerPressed, //call from props later
-      picture: "url"
+      picture: "url",
+      name: '?'
     }
     this.setMarkerVisible = this.setMarkerVisible.bind(this)
+    this.getName = this.getName.bind(this)
   }
 
   // This should probably get called in the parent Component when something gets clicked
@@ -26,6 +33,13 @@ export default class MarkerView extends Component {
     }
   }
 
+  getName = uid => {
+    users
+      .doc(uid)
+      .get()
+      .then(doc => {this.setState({name: doc.data().name})})
+  }
+  
 
   render() {
     return (
@@ -53,7 +67,7 @@ export default class MarkerView extends Component {
                   source: {},
                   showEditButton: true,
                 }}
-                title={this.props.markerPressedDetail.owner}
+                title={this.props.markerPressedDetail.owner ? () => {this.getName(this.props.markerPressedDetail.owner); return <Text>{this.state.name}</Text>} : "Unknown User"}
                 subtitle={'April 30, 2019'}
                 chevron
               />
