@@ -44,13 +44,15 @@ export default class MyMap extends React.Component {
         timestamp: Date.now()
       },
       friendIDs: [],
-      selectedIDs: []
+      selectedIDs: [],
+      mapping: []
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.idToName = this.idToName.bind(this);
   }
+
   componentWillMount() {
     this.fetchFriendIDS();
     var newMarkers = this.state.markers;
@@ -88,7 +90,22 @@ export default class MyMap extends React.Component {
       }
     });
   }
-
+  idToName2 = uid => {
+    var idName = {};
+    return users
+      .doc(uid)
+      .get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log("INVALID USER");
+        } else {
+          return (idName = { uid: uid, name: doc.data().name });
+        }
+      })
+      .catch(err => {
+        console.log("Error getting user's name", err);
+      });
+  };
   showMarkerView = () => {
     this.setState({ markerPressed: !this.state.markerPressed });
   };
@@ -127,6 +144,7 @@ export default class MyMap extends React.Component {
 
   fetchFriendIDS = () => {
     var myFriends = [];
+    var friendNames = [];
     users
       .doc(this.state.UID)
       .get()
@@ -134,13 +152,20 @@ export default class MyMap extends React.Component {
         if (!doc.exists) {
           console.log("No user found!");
         } else {
-          console.log("User's friends:", doc.data().following);
           myFriends = doc.data().following;
         }
       })
       .then(() => {
-        console.log(myFriends);
         this.setState({ friendIDs: myFriends });
+        myFriends.forEach(friend => {
+          this.idToName2(friend).then(idname => {
+            console.log("**", idname);
+            friendNames.push(idname);
+
+            this.setState({ mapping: friendNames });
+            console.log(this.state.mapping);
+          });
+        });
       })
       .catch(err => {
         console.log("Error getting document", err);
@@ -188,7 +213,9 @@ export default class MyMap extends React.Component {
       favorites: firebase.firestore.FieldValue.arrayUnion(pinID)
     });
   };
-
+  setfriendmapping = friendmapping => {
+    this.setState({ mapping: friendmapping });
+  };
   editPin = editedPin => {
     var editedPin = {
       description: "Desc",
@@ -235,15 +262,20 @@ export default class MyMap extends React.Component {
     var mapMarkers = this.state.markers.filter(marker => {
       return this.state.selectedIDs.includes(marker.owner);
     });
+    //needs a  label:value, label is name, value is id
+    var dic = {};
+    for (var i = 0; i < this.state.mapping.length; i++) {
+      dic[this.state.mapping[i].uid] = this.state.mapping[i].name;
+    }
     return (
       <View style={styles.container}>
         <CustomMultiPicker
-          options={this.state.friendIDs}
+          options={dic}
           search={true} // should show search bar?
           multiple={true} //
           placeholder={"Search"}
           placeholderTextColor={"#757575"}
-          returnValue={"label"} // label or value
+          returnValue={"value"} // label or value
           callback={res => {
             console.log(res);
 
