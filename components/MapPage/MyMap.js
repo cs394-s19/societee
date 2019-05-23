@@ -5,7 +5,7 @@ import Map from "./Map";
 import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
-
+import CustomMultiPicker from "react-native-multiple-select-list";
 import AddPin from "../Buttons/AddPin";
 
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
@@ -25,13 +25,13 @@ export default class MyMap extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: props.user,
+      UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
       markerPressed: false,
       markerPressedDetail: {
-        addr: '',
-        description: '',
-        note: '',
-        owner: '',
+        addr: "",
+        description: "",
+        note: "",
+        owner: ""
       },
       markerEdit: false,
       currEditedPin: {
@@ -43,14 +43,15 @@ export default class MyMap extends React.Component {
         owner: props.user,
         timestamp: Date.now()
       },
-      friendIDs: []
+      friendIDs: [],
+      selectedIDs: []
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.idToName = this.idToName.bind(this);
   }
-  componentDidMount() {
+  componentWillMount() {
     this.fetchFriendIDS();
     var newMarkers = this.state.markers;
     pins.onSnapshot(
@@ -83,9 +84,9 @@ export default class MyMap extends React.Component {
         addr: marker.addr,
         description: marker.description,
         note: marker.note,
-        owner: marker.owner,
+        owner: marker.owner
       }
-    })
+    });
   }
 
   showMarkerView = () => {
@@ -138,6 +139,7 @@ export default class MyMap extends React.Component {
         }
       })
       .then(() => {
+        console.log(myFriends);
         this.setState({ friendIDs: myFriends });
       })
       .catch(err => {
@@ -230,8 +232,37 @@ export default class MyMap extends React.Component {
   };
 
   render() {
+    var mapMarkers = this.state.markers.filter(marker => {
+      return this.state.selectedIDs.includes(marker.owner);
+    });
     return (
       <View style={styles.container}>
+        <CustomMultiPicker
+          options={this.state.friendIDs}
+          search={true} // should show search bar?
+          multiple={true} //
+          placeholder={"Search"}
+          placeholderTextColor={"#757575"}
+          returnValue={"label"} // label or value
+          callback={res => {
+            console.log(res);
+
+            var filtered = res.filter(function(el) {
+              return el != null;
+            });
+            this.setState({ selectedIDs: filtered });
+          }} // callback, array of selected items
+          rowBackgroundColor={"#eee"}
+          rowHeight={40}
+          rowRadius={5}
+          iconColor={"#00a2dd"}
+          iconSize={30}
+          selectedIconName={"ios-checkmark-circle-outline"}
+          unselectedIconName={"ios-radio-button-off-outline"}
+          scrollViewHeight={130}
+          // list of options which are selected by default
+        />
+
         <MarkerEdit
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
@@ -239,30 +270,28 @@ export default class MyMap extends React.Component {
           addPin={pin => this.addPin(pin)}
         />
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button
-          title="friends pins"
-          onPress={() => this.fetchFriendsPins()}
-        />
+        <Button title="friends pins" onPress={() => this.fetchFriendsPins()} />
         <Button
           title="my pins"
           onPress={() => this.queryPins(this.state.UID)}
         />
-        <Button
-          title="Edit pin"
-          onPress={() => this.editPin({ hey: "lol" })}
-        />
+        <Button title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
         <Button
           title="Add to favorites"
           onPress={() => this.addToFavorites()}
         />
         <Button title="show modal" onPress={() => this.showMarkerView()} />
-        <Map markers={this.state.markers} setMarkerPressedDetail={this.setMarkerPressedDetail} showMarkerView={this.showMarkerView}/>
-            <MarkerView
-              markerPressed={this.state.markerPressed}
-              showMarkerView={this.showMarkerView}
-              markerPressedDetail={this.state.markerPressedDetail}
-              idToName={this.idToName}
-            />
+        <Map
+          markers={mapMarkers}
+          setMarkerPressedDetail={this.setMarkerPressedDetail}
+          showMarkerView={this.showMarkerView}
+        />
+        <MarkerView
+          markerPressed={this.state.markerPressed}
+          showMarkerView={this.showMarkerView}
+          markerPressedDetail={this.state.markerPressedDetail}
+          idToName={this.idToName}
+        />
       </View>
     );
   }
