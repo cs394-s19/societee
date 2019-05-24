@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Login from './components/LoginPage/Login';
-import Main from './components/Main';
+import NavBar from './components/NavBar';
 
 class App extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class App extends React.Component {
         { this.state.user === null ?
           <Login updateUser={this.updateUser}/>
           :
-          <Main user={this.state.user}/> }
+          <NavBar user={this.state.user}/> }
       </View>
     );
   }

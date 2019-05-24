@@ -4,11 +4,11 @@ import { Container, Header, Content, Tab, Tabs, TabHeading } from "native-base";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import Octicon from "react-native-vector-icons/Octicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import MyMap from './MapPage/MyMap';
+import Main from './MainPage/Main';
 import FriendDisplay from "./ProfilePage/FriendDisplay";
 
 
-export default class Main extends React.Component {
+export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -24,7 +24,7 @@ export default class Main extends React.Component {
               </TabHeading>
             }
           >
-            <MyMap user={this.props.user}/>
+            <Main user={this.props.user}/>
           </Tab>
 
           <Tab

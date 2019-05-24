@@ -20,7 +20,7 @@ const db = firebase.firestore();
 var users = db.collection("users");
 var pins = db.collection("pins");
 
-export default class MyMap extends React.Component {
+export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
