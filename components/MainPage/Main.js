@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
 import { Button, Footer, Text, withTheme } from "react-native-elements";
@@ -302,17 +302,19 @@ export default class Main extends React.Component {
           addPin={pin => this.addPin(pin)}
         />
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        <Button title="friends pins" onPress={() => this.fetchFriendsPins()} />
-        <Button
+        
+        {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
+        <TouchableOpacity
           title="my pins"
           onPress={() => this.queryPins(this.state.UID)}
         />
-        <Button title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
-        <Button
+        <TouchableOpacity title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
+        <TouchableOpacity
           title="Add to favorites"
           onPress={() => this.addToFavorites()}
         />
-        <Button title="show modal" onPress={() => this.showMarkerView()} />
+        <TouchableOpacity title="show modal" onPress={() => this.showMarkerView()} /> */}
+
         <Map
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
@@ -330,6 +332,9 @@ export default class Main extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  adminButtons:{
+   
+  },
   container: {
     flex: 1,
     flexDirection: "column",
