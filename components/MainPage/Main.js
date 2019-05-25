@@ -291,8 +291,8 @@ export default class Main extends React.Component {
           rowRadius={5}
           iconColor={"#00a2dd"}
           iconSize={30}
-          selectedIconName={"ios-checkmark-circle-outline"}
-          unselectedIconName={"ios-radio-button-off-outline"}
+          selectedIconName={"ios-checkmark-circle"}
+          unselectedIconName={"ios-radio-button-off"}
           scrollViewHeight={130}
           // list of options which are selected by default
         />
@@ -304,7 +304,7 @@ export default class Main extends React.Component {
           addPin={pin => this.addPin(pin)}
         />
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
-        
+
         {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
         <TouchableOpacity
           title="my pins"
@@ -334,9 +334,7 @@ export default class Main extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  adminButtons:{
-   
-  },
+  adminButtons: {},
   container: {
     flex: 1,
     flexDirection: "column",
