@@ -25,7 +25,7 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: "R9OjMaCD6weGIewgZyfYmzwdabR2",
+      UID: props.user,
       markerPressed: false,
       markerPressedDetail: {
         addr: "",
@@ -44,7 +44,7 @@ export default class Main extends React.Component {
         timestamp: Date.now()
       },
       friendIDs: [],
-      selectedIDs: [],
+      selectedIDs: [props.user],
       mapping: []
     };
     this.handlePress = this.handlePress.bind(this);
@@ -271,7 +271,7 @@ export default class Main extends React.Component {
       <View style={styles.container}>
         <CustomMultiPicker
           options={dic}
-          search={true} // should show search bar?
+          search={false} // should show search bar?
           multiple={true} //
           placeholder={"Search"}
           placeholderTextColor={"#757575"}
@@ -282,6 +282,8 @@ export default class Main extends React.Component {
             var filtered = res.filter(function(el) {
               return el != null;
             });
+
+            filtered.push(this.props.user);
             this.setState({ selectedIDs: filtered });
           }} // callback, array of selected items
           rowBackgroundColor={"#eee"}
