@@ -269,7 +269,7 @@ export default class Main extends React.Component {
     }
     return (
       <View style={styles.container}>
-        {/* <CustomMultiPicker
+        <CustomMultiPicker
           options={dic}
           search={false} // should show search bar?
           multiple={true} //
@@ -295,7 +295,7 @@ export default class Main extends React.Component {
           unselectedIconName={"ios-radio-button-off-outline"}
           scrollViewHeight={130}
           // list of options which are selected by default
-        /> */}
+        />
 
         <MarkerEdit
           visible={this.state.markerEdit}
