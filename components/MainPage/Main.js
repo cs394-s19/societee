@@ -26,12 +26,14 @@ export default class Main extends React.Component {
       currEditedPin: {},
       friendIDs: [],
       selectedIDs: [props.user],
-      mapping: []
+      mapping: [],
+      favored: false
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.idToName = this.idToName.bind(this);
+    this.alreadFavored = this.alreadFavored.bind(this);
   }
 
   componentWillMount() {
@@ -188,12 +190,38 @@ export default class Main extends React.Component {
     pins.doc("D").delete();
   };
 
-  addToFavorites = () => {
-    const pinID = "UILWqr6qcHxp4Z9vron7";
-    users.doc(this.state.UID).update({
-      favorites: firebase.firestore.FieldValue.arrayUnion(pinID)
-    });
+  alreadFavored = pid => {
+    // console.log(pid + ": the pid you're looking for");
+    var favorites = [];
+    users
+      .doc(this.state.UID)
+      .get()
+      .then(doc => {
+        favorites = doc.data().favorites;
+        // console.log(favorites);
+      })
+      .then(() => {
+        if (favorites.includes(pid)) {
+          // console.log("favored!");
+          this.setState({ favored: true });
+        } else {
+          // console.log("not favored yet!");
+          this.setState({ favored: false });
+        }
+      })
+      .catch(err => {
+        console.log("Error getting favored info", err);
+      });
+  }
+
+  addToFavorites = pid => {
+    return;
   };
+
+  removeFromFavorites = pid => {
+    return;
+  }
+
   setfriendmapping = friendmapping => {
     this.setState({ mapping: friendmapping });
   };
@@ -294,12 +322,15 @@ export default class Main extends React.Component {
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}
+          alreadFavored={this.alreadFavored}
         />
         <MarkerView
           markerPressed={this.state.markerPressed}
-          showMarkerView={this.showMarkerView}
           markerPressedDetail={this.state.markerPressedDetail}
-          idToName={this.idToName}
+          showMarkerView={this.showMarkerView}
+          addToFavorites={this.addToFavorites}
+          removeFromFavorites={this.removeFromFavorites}
+          favored={this.state.favored}
         />
       </View>
     );

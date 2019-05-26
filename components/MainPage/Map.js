@@ -23,17 +23,18 @@ function Map(props) {
               longitude: marker.longitude
             }}
             onPress={() => {
+              props.alreadFavored(marker.id);
                 let pinDetail;
                 pins.doc(marker.id).get()
                 .then(response => pinDetail = response.data())
                 .then(() => {
                   props.setMarkerPressedDetail({
-                  addr: pinDetail.addr,
-                  description: pinDetail.description,
-                  note: pinDetail.note,
-                  owner: pinDetail.owner,
+                    pid: marker.id,
+                    addr: pinDetail.addr,
+                    description: pinDetail.description,
+                    note: pinDetail.note,
+                    owner: pinDetail.owner,
                   })
-                  console.log(pinDetail)
                 })
                 .then(props.showMarkerView())
               }

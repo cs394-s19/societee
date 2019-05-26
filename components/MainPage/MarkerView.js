@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {Modal, Text, TouchableHighlight, View, Alert, Image} from 'react-native';
 import {withTheme, Avatar, ListItem } from 'react-native-elements';
-import {Button, Icon} from 'native-base';
+import { Button, Icon } from 'native-base';
+import EntypoIcon from "react-native-vector-icons/Entypo";
 import firebase from "../../config/Firebase";
 
 const db = firebase.firestore();
@@ -39,7 +40,7 @@ export default class MarkerView extends Component {
       .get()
       .then(doc => {this.setState({name: doc.data().name})})
   }
-  
+
 
   render() {
     return (
@@ -73,6 +74,21 @@ export default class MarkerView extends Component {
               />
               </View>
               <Text style={styles.quote}>"{this.props.markerPressedDetail.note}"</Text>
+              { this.props.favored ?
+                <Button 
+                  large danger
+                  onPress={ () => this.props.removeFromFavorites(this.props.markerPressedDetail.pid) }
+                >
+                  <Icon name="ios-heart"/>
+                </Button>
+                :
+                <Button 
+                  large primary
+                  onPress={ () => this.props.addToFavorites(this.props.markerPressedDetail.pid) }
+                >
+                  <Icon name="ios-heart-empty"/>
+                </Button>
+              }
               <Button large transparent primary style={styles.close} 
                 onPress={() => {
                   this.props.showMarkerView()
