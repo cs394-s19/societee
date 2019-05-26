@@ -23,7 +23,8 @@ export default class FriendDisplay extends Component {
   }
 
   fetchFriendIDS2 = () => {
-    const UID = "R9OjMaCD6weGIewgZyfYmzwdabR2";
+    const UID = this.props.user;
+
     var myFriends = [];
     var friendNames = [];
     users
@@ -79,8 +80,12 @@ export default class FriendDisplay extends Component {
           title="fetch my friends"
           onPress={() => this.fetchFriendIDS2()}
         /> */}
-        {this.state.friends.map(friend => {
-          return <Text style={{ textAlign: "center" }}>{friend.name}</Text>;
+        {this.state.friends.map((friend, index) => {
+          return (
+            <Text key={index} style={{ textAlign: "center" }}>
+              {friend.name}
+            </Text>
+          );
         })}
       </View>
     );
