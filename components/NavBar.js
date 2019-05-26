@@ -1,13 +1,12 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
 import { Container, Header, Content, Tab, Tabs, TabHeading } from "native-base";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import Octicon from "react-native-vector-icons/Octicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Main from './MainPage/Main';
-import Explore from './ExplorePage/Explore';
+import Main from "./MainPage/Main";
+import Explore from "./ExplorePage/Explore";
 import FriendDisplay from "./ProfilePage/FriendDisplay";
-
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ export default class NavBar extends React.Component {
               </TabHeading>
             }
           >
-            <Explore user={this.props.user}/>
+            <Explore user={this.props.user} />
           </Tab>
 
           <Tab
@@ -35,7 +34,7 @@ export default class NavBar extends React.Component {
               </TabHeading>
             }
           >
-            <Main user={this.props.user}/>
+            <Main user={this.props.user} />
           </Tab>
 
           <Tab
@@ -49,7 +48,7 @@ export default class NavBar extends React.Component {
               <Text style={{ textAlign: "center" }}>Add pins tab</Text>
             </View>
           </Tab>
-    
+
           <Tab
             heading={
               <TabHeading>
@@ -58,7 +57,7 @@ export default class NavBar extends React.Component {
             }
           >
             <View style={styles.container}>
-              <FriendDisplay />
+              <FriendDisplay user={this.props.user} />
             </View>
           </Tab>
         </Tabs>
