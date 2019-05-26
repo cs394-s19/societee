@@ -1,4 +1,4 @@
-import React from './node_modules/react';
+import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import firebase from '../config/Firebase';
 

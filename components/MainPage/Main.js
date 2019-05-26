@@ -2,20 +2,14 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
-import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 import CustomMultiPicker from "react-native-multiple-select-list";
-import AddPin from "../Buttons/AddPin";
-
-import MapView, { Marker, AnimatedRegion } from "react-native-maps";
-// import rnfirebase from "react-native-firebase";
 
 import MarkerView from "./MarkerView";
 import MarkerEdit from "./MarkerEdit";
 
 const db = firebase.firestore();
-// const functions = require("firebase-functions");
 
 var users = db.collection("users");
 var pins = db.collection("pins");
@@ -27,22 +21,9 @@ export default class Main extends React.Component {
       markers: [],
       UID: props.user,
       markerPressed: false,
-      markerPressedDetail: {
-        addr: "",
-        description: "",
-        note: "",
-        owner: ""
-      },
+      markerPressedDetail: {},
       markerEdit: false,
-      currEditedPin: {
-        latitude: 0,
-        longitude: 0,
-        addr: 0,
-        note: "No note field yet",
-        description: "none",
-        owner: props.user,
-        timestamp: Date.now()
-      },
+      currEditedPin: {},
       friendIDs: [],
       selectedIDs: [props.user],
       mapping: []
@@ -229,9 +210,6 @@ export default class Main extends React.Component {
   };
 
   handlePress(details) {
-    const newLat = details.geometry.location.lat;
-    const newLong = details.geometry.location.lng;
-
     const newPin = {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
@@ -242,15 +220,10 @@ export default class Main extends React.Component {
       timestamp: Date.now()
     };
 
-    // this.addPin(newPin);
-
-    // this.setState({
-    //   markers: [...this.state.markers, { latitude: newLat, longitude: newLong }]
-    // });
     this.setState({
       currEditedPin: newPin,
       markerEdit: true,
-      markers: [...this.state.markers, { latitude: newLat, longitude: newLong }]
+      // markers: [...this.state.markers, { latitude: newLat, longitude: newLong }] // bug here?
     });
   }
 

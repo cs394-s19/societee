@@ -20,6 +20,16 @@ export default class NavBar extends React.Component {
           <Tab
             heading={
               <TabHeading>
+                <EntypoIcon name="globe" size={30} />
+              </TabHeading>
+            }
+          >
+            <Main user={this.props.user}/>
+          </Tab>
+
+          <Tab
+            heading={
+              <TabHeading>
                 <EntypoIcon name="location" size={30} />
               </TabHeading>
             }
