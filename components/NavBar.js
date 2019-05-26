@@ -5,6 +5,7 @@ import EntypoIcon from "react-native-vector-icons/Entypo";
 import Octicon from "react-native-vector-icons/Octicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Main from './MainPage/Main';
+import Explore from './ExplorePage/Explore';
 import FriendDisplay from "./ProfilePage/FriendDisplay";
 
 
@@ -24,7 +25,7 @@ export default class NavBar extends React.Component {
               </TabHeading>
             }
           >
-            <Main user={this.props.user}/>
+            <Explore user={this.props.user}/>
           </Tab>
 
           <Tab
