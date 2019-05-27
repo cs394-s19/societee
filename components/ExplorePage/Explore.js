@@ -23,7 +23,8 @@ export default class Main extends React.Component {
       friendIDs: [],
       selectedIDs: [],
       mapping: [],
-      favored: false
+      favored: false,
+      idToNames: {}
     };
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
@@ -42,7 +43,7 @@ export default class Main extends React.Component {
         changes.forEach(change => {
           const docOwner = change.doc.data().owner;
           if (
-            // docOwner === this.state.UID ||
+            docOwner === this.state.UID ||
             this.state.friendIDs.includes(docOwner)
           ) {
             var newMarker = change.doc.data();
@@ -50,8 +51,6 @@ export default class Main extends React.Component {
             newMarkers.push(newMarker);
             this.setState({ markers: newMarkers });
           }
-
-          // console.log(`New state is now ${this.state.markers}`)
         });
       },
       err => {
@@ -63,6 +62,7 @@ export default class Main extends React.Component {
   fetchFriendIDS = () => {
     var myFriends = [];
     var friendNames = [];
+    var idToNames = {};
     users
       .doc(this.state.UID)
       .get()
@@ -74,16 +74,14 @@ export default class Main extends React.Component {
         }
       })
       .then(() => {
-        this.setState({ 
-          friendIDs: myFriends,
-          selectedIDs: myFriends,
-        });
+        this.setState({ friendIDs: myFriends });
+
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
             // console.log("**", idname);
             friendNames.push(idname);
-
-            this.setState({ mapping: friendNames });
+            idToNames[idname.uid] = idname.name;
+            this.setState({ mapping: friendNames, idToNames: idToNames });
             // console.log(this.state.mapping);
           });
         });
@@ -117,7 +115,8 @@ export default class Main extends React.Component {
         addr: marker.addr,
         description: marker.description,
         note: marker.note,
-        owner: marker.owner
+        owner: marker.owner,
+        ownerName: marker.ownerName
       }
     });
   }
@@ -148,7 +147,7 @@ export default class Main extends React.Component {
       .catch(err => {
         console.log("Error getting favored info", err);
       });
-  }
+  };
 
   addToFavorites = pid => {
     users.doc(this.state.UID).update({
@@ -162,17 +161,16 @@ export default class Main extends React.Component {
       favorites: firebase.firestore.FieldValue.arrayRemove(pid)
     });
     this.setState({ favored: false });
-  }
+  };
 
   render() {
-    var mapMarkers = this.state.markers.filter(marker => {
-      return this.state.selectedIDs.includes(marker.owner);
-    });
+    var mapMarkers = this.state.markers;
+    // var mapMarkers = this.state.markers.filter(marker => {
+    //   return this.state.selectedIDs.includes(marker.owner);
+    // });
     //needs a  label:value, label is name, value is id
-    var dic = {};
-    for (var i = 0; i < this.state.mapping.length; i++) {
-      dic[this.state.mapping[i].uid] = this.state.mapping[i].name;
-    }
+    dic = this.state.idToNames;
+
     return (
       <View style={styles.container}>
         {/* <CustomMultiPicker
@@ -216,6 +214,9 @@ export default class Main extends React.Component {
         <TouchableOpacity title="show modal" onPress={() => this.showMarkerView()} /> */}
 
         <Map
+          idnames={this.state.idToNames}
+          explore={true}
+          colorID={true}
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}

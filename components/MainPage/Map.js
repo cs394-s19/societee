@@ -5,16 +5,15 @@ import { Marker, AnimatedRegion } from "react-native-maps";
 import { Button } from "react-native-elements";
 import firebase from "../../config/Firebase";
 
-const db = firebase.firestore();
-// const functions = require("firebase-functions");
-
-var users = db.collection("users");
-var pins = db.collection("pins");
-
 function Map(props) {
+  // console.log(props.colorID);
   return (
     <MapView showsUserLocation style={styles.map}>
       {props.markers.map((marker, index) => {
+        if (props.explore) {
+          var ownerName = props.idnames[marker.owner];
+          marker.ownerName = ownerName;
+        } else marker.ownerName = "This is my user not implemented";
         return (
           <Marker
             key={index}
@@ -24,21 +23,9 @@ function Map(props) {
             }}
             onPress={() => {
               props.alreadFavored(marker.id);
-                let pinDetail;
-                pins.doc(marker.id).get()
-                .then(response => pinDetail = response.data())
-                .then(() => {
-                  props.setMarkerPressedDetail({
-                    pid: marker.id,
-                    addr: pinDetail.addr,
-                    description: pinDetail.description,
-                    note: pinDetail.note,
-                    owner: pinDetail.owner,
-                  })
-                })
-                .then(props.showMarkerView())
-              }
-            }
+              props.setMarkerPressedDetail(marker);
+              props.showMarkerView();
+            }}
           />
         );
       })}

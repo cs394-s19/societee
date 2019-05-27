@@ -27,7 +27,8 @@ export default class Main extends React.Component {
       friendIDs: [],
       selectedIDs: [props.user],
       mapping: [],
-      favored: false
+      favored: false,
+      idToNames: {}
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
@@ -44,6 +45,7 @@ export default class Main extends React.Component {
         let changes = docSnapshot.docChanges();
         changes.forEach(change => {
           const docOwner = change.doc.data().owner;
+
           if (
             docOwner === this.state.UID ||
             this.state.friendIDs.includes(docOwner)
@@ -69,10 +71,12 @@ export default class Main extends React.Component {
         addr: marker.addr,
         description: marker.description,
         note: marker.note,
-        owner: marker.owner
+        owner: marker.owner,
+        ownerName: marker.ownerName
       }
     });
   }
+
   idToName2 = uid => {
     var idName = {};
     return users
@@ -121,13 +125,14 @@ export default class Main extends React.Component {
         });
       })
       .then(() => {
-        console.log(myPins);
+        // console.log(myPins);
       });
   };
 
   fetchFriendIDS = () => {
     var myFriends = [];
     var friendNames = [];
+    var idToNames = {};
     users
       .doc(this.state.UID)
       .get()
@@ -140,13 +145,14 @@ export default class Main extends React.Component {
       })
       .then(() => {
         this.setState({ friendIDs: myFriends });
+
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            console.log("**", idname);
+            // console.log("**", idname);
             friendNames.push(idname);
-
-            this.setState({ mapping: friendNames });
-            console.log(this.state.mapping);
+            idToNames[idname.uid] = idname.name;
+            this.setState({ mapping: friendNames, idToNames: idToNames });
+            // console.log(this.state.mapping);
           });
         });
       })
@@ -212,7 +218,7 @@ export default class Main extends React.Component {
       .catch(err => {
         console.log("Error getting favored info", err);
       });
-  }
+  };
 
   addToFavorites = pid => {
     return;
@@ -220,7 +226,7 @@ export default class Main extends React.Component {
 
   removeFromFavorites = pid => {
     return;
-  }
+  };
 
   setfriendmapping = friendmapping => {
     this.setState({ mapping: friendmapping });
@@ -250,7 +256,7 @@ export default class Main extends React.Component {
 
     this.setState({
       currEditedPin: newPin,
-      markerEdit: true,
+      markerEdit: true
       // markers: [...this.state.markers, { latitude: newLat, longitude: newLong }] // bug here?
     });
   }
@@ -263,11 +269,10 @@ export default class Main extends React.Component {
     var mapMarkers = this.state.markers.filter(marker => {
       return this.state.selectedIDs.includes(marker.owner);
     });
+
     //needs a  label:value, label is name, value is id
-    var dic = {};
-    for (var i = 0; i < this.state.mapping.length; i++) {
-      dic[this.state.mapping[i].uid] = this.state.mapping[i].name;
-    }
+    var dic = this.state.idToNames;
+
     return (
       <View style={styles.container}>
         <CustomMultiPicker
@@ -278,7 +283,7 @@ export default class Main extends React.Component {
           placeholderTextColor={"#757575"}
           returnValue={"value"} // label or value
           callback={res => {
-            console.log(res);
+            // console.log(res);
 
             var filtered = res.filter(function(el) {
               return el != null;
@@ -323,6 +328,7 @@ export default class Main extends React.Component {
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}
           alreadFavored={this.alreadFavored}
+          idnames={this.state.idToNames}
         />
         <MarkerView
           markerPressed={this.state.markerPressed}
