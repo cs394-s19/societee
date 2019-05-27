@@ -27,13 +27,15 @@ export default class Main extends React.Component {
       friendIDs: [],
       selectedIDs: [props.user],
       mapping: [],
-      favored: false
+      favored: false,
+      photo: ""
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.idToName = this.idToName.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
+    this.setphoto = this.setphoto.bind(this);
   }
 
   componentWillMount() {
@@ -62,7 +64,9 @@ export default class Main extends React.Component {
       }
     );
   }
-
+  setphoto(photo) {
+    this.setState({ photo: photo });
+  }
   setMarkerPressedDetail(marker) {
     this.setState({
       markerPressedDetail: {
@@ -212,7 +216,7 @@ export default class Main extends React.Component {
       .catch(err => {
         console.log("Error getting favored info", err);
       });
-  }
+  };
 
   addToFavorites = pid => {
     return;
@@ -220,7 +224,7 @@ export default class Main extends React.Component {
 
   removeFromFavorites = pid => {
     return;
-  }
+  };
 
   setfriendmapping = friendmapping => {
     this.setState({ mapping: friendmapping });
@@ -250,7 +254,7 @@ export default class Main extends React.Component {
 
     this.setState({
       currEditedPin: newPin,
-      markerEdit: true,
+      markerEdit: true
       // markers: [...this.state.markers, { latitude: newLat, longitude: newLong }] // bug here?
     });
   }
@@ -303,8 +307,13 @@ export default class Main extends React.Component {
           closeMarkerEdit={() => this.toggleMarkerEdit()}
           currEditedPin={this.state.currEditedPin}
           addPin={pin => this.addPin(pin)}
+          photo={this.state.photo}
         />
-        <SearchBar handlePress={this.handlePress} style={styles.bar} />
+        <SearchBar
+          handlePress={this.handlePress}
+          style={styles.bar}
+          setphoto={this.setphoto}
+        />
 
         {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
         <TouchableOpacity
@@ -331,6 +340,7 @@ export default class Main extends React.Component {
           addToFavorites={this.addToFavorites}
           removeFromFavorites={this.removeFromFavorites}
           favored={this.state.favored}
+          photo={this.state.photo}
         />
       </View>
     );
