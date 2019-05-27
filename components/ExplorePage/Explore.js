@@ -17,12 +17,10 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: props.user,
       markerPressed: false,
       markerPressedDetail: {},
       friendIDs: [],
       selectedIDs: [],
-      mapping: [],
       favored: false,
       idToNames: {}
     };
@@ -43,7 +41,7 @@ export default class Main extends React.Component {
         changes.forEach(change => {
           const docOwner = change.doc.data().owner;
           if (
-            docOwner === this.state.UID ||
+            docOwner === this.props.user ||
             this.state.friendIDs.includes(docOwner)
           ) {
             var newMarker = change.doc.data();
@@ -64,25 +62,23 @@ export default class Main extends React.Component {
     var friendNames = [];
     var idToNames = {};
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         if (!doc.exists) {
           console.log("No user found!");
         } else {
           myFriends = doc.data().following;
+          myFriends.push(this.props.user);
         }
       })
       .then(() => {
         this.setState({ friendIDs: myFriends });
-
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            // console.log("**", idname);
             friendNames.push(idname);
             idToNames[idname.uid] = idname.name;
-            this.setState({ mapping: friendNames, idToNames: idToNames });
-            // console.log(this.state.mapping);
+            this.setState({ idToNames: idToNames });
           });
         });
       })
@@ -129,7 +125,7 @@ export default class Main extends React.Component {
     // console.log(pid + ": the pid you're looking for");
     var favorites = [];
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         favorites = doc.data().favorites;
@@ -150,14 +146,14 @@ export default class Main extends React.Component {
   };
 
   addToFavorites = pid => {
-    users.doc(this.state.UID).update({
+    users.doc(this.props.user).update({
       favorites: firebase.firestore.FieldValue.arrayUnion(pid)
     });
     this.setState({ favored: true });
   };
 
   removeFromFavorites = pid => {
-    users.doc(this.state.UID).update({
+    users.doc(this.props.user).update({
       favorites: firebase.firestore.FieldValue.arrayRemove(pid)
     });
     this.setState({ favored: false });
@@ -168,6 +164,7 @@ export default class Main extends React.Component {
     // var mapMarkers = this.state.markers.filter(marker => {
     //   return this.state.selectedIDs.includes(marker.owner);
     // });
+
     //needs a  label:value, label is name, value is id
     dic = this.state.idToNames;
 
@@ -204,7 +201,7 @@ export default class Main extends React.Component {
         {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
         <TouchableOpacity
           title="my pins"
-          onPress={() => this.queryPins(this.state.UID)}
+          onPress={() => this.queryPins(this.props.user)}
         />
         <TouchableOpacity title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
         <TouchableOpacity

@@ -10,10 +10,8 @@ function Map(props) {
   return (
     <MapView showsUserLocation style={styles.map}>
       {props.markers.map((marker, index) => {
-        if (props.explore) {
-          var ownerName = props.idnames[marker.owner];
-          marker.ownerName = ownerName;
-        } else marker.ownerName = "This is my user not implemented";
+        var ownerName = props.idnames[marker.owner];
+        marker.ownerName = ownerName;
         return (
           <Marker
             key={index}

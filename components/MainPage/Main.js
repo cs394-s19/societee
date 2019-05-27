@@ -19,44 +19,35 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: props.user,
       markerPressed: false,
       markerPressedDetail: {},
       markerEdit: false,
       currEditedPin: {},
-      friendIDs: [],
-      selectedIDs: [props.user],
-      mapping: [],
       favored: false,
       idToNames: {}
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
-    this.idToName = this.idToName.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
   }
 
   componentWillMount() {
-    this.fetchFriendIDS();
+    this.fetchFriendIDS(); // Used to get {uid: uid, name: name} of each friend
+
     var newMarkers = this.state.markers;
     pins.onSnapshot(
+      // fetches only current USERS pins
       docSnapshot => {
         let changes = docSnapshot.docChanges();
         changes.forEach(change => {
           const docOwner = change.doc.data().owner;
-
-          if (
-            docOwner === this.state.UID ||
-            this.state.friendIDs.includes(docOwner)
-          ) {
+          if (docOwner === this.props.user) {
             var newMarker = change.doc.data();
             newMarker.id = change.doc.id;
             newMarkers.push(newMarker);
             this.setState({ markers: newMarkers });
           }
-
-          // console.log(`New state is now ${this.state.markers}`)
         });
       },
       err => {
@@ -93,66 +84,34 @@ export default class Main extends React.Component {
         console.log("Error getting user's name", err);
       });
   };
+
   showMarkerView = () => {
     this.setState({ markerPressed: !this.state.markerPressed });
   };
 
-  idToName = uid => {
-    users
-      .doc(uid)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("INVALID USER");
-        } else {
-          console.log(uid + "'s name is: " + doc.data().name);
-        }
-      })
-      .catch(err => {
-        console.log("Error getting user's name", err);
-      });
-  };
-
-  queryPins = uid => {
-    var myPins = [];
-    let myPinQuery = pins.where("owner", "==", uid);
-    // console.log(myPinQuery);
-    myPinQuery
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          myPins.push(doc.data());
-        });
-      })
-      .then(() => {
-        // console.log(myPins);
-      });
-  };
-
   fetchFriendIDS = () => {
+    // Creates ID to Name mappings
     var myFriends = [];
     var friendNames = [];
     var idToNames = {};
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         if (!doc.exists) {
           console.log("No user found!");
         } else {
           myFriends = doc.data().following;
+          myFriends.push(this.props.user);
         }
       })
       .then(() => {
         this.setState({ friendIDs: myFriends });
-
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            // console.log("**", idname);
             friendNames.push(idname);
             idToNames[idname.uid] = idname.name;
-            this.setState({ mapping: friendNames, idToNames: idToNames });
-            // console.log(this.state.mapping);
+            this.setState({ idToNames: idToNames });
           });
         });
       })
@@ -161,34 +120,8 @@ export default class Main extends React.Component {
       });
   };
 
-  fetchFriendsPins = () => {
-    var myFriends = [];
-    users
-      .doc(this.state.UID)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("No user found!");
-        } else {
-          console.log("User's friends:", doc.data().following);
-          myFriends = doc.data().following;
-        }
-      })
-      .then(() => {
-        for (var i = 0; i < myFriends.length; i++) {
-          this.idToName(myFriends[i]);
-          this.queryPins(myFriends[i]);
-        }
-      })
-      .catch(err => {
-        console.log("Error getting document", err);
-      });
-  };
-
   addPin = newPin => {
     var addedPin = pins.add(newPin);
-    // var newPin = pins.doc("YEET").set(newData);
-    // console.log(newPin);
   };
 
   deletePin = () => {
@@ -200,7 +133,7 @@ export default class Main extends React.Component {
     // console.log(pid + ": the pid you're looking for");
     var favorites = [];
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         favorites = doc.data().favorites;
@@ -228,9 +161,6 @@ export default class Main extends React.Component {
     return;
   };
 
-  setfriendmapping = friendmapping => {
-    this.setState({ mapping: friendmapping });
-  };
   editPin = editedPin => {
     var editedPin = {
       description: "Desc",
@@ -250,7 +180,7 @@ export default class Main extends React.Component {
       addr: details.formatted_address,
       note: "",
       description: details.name,
-      owner: this.state.UID,
+      owner: this.props.user,
       timestamp: Date.now()
     };
 
@@ -266,43 +196,13 @@ export default class Main extends React.Component {
   };
 
   render() {
-    var mapMarkers = this.state.markers.filter(marker => {
-      return this.state.selectedIDs.includes(marker.owner);
-    });
+    var mapMarkers = this.state.markers;
+    console.log(this.state.idToNames);
 
     //needs a  label:value, label is name, value is id
-    var dic = this.state.idToNames;
 
     return (
       <View style={styles.container}>
-        <CustomMultiPicker
-          options={dic}
-          search={false} // should show search bar?
-          multiple={true} //
-          placeholder={"Search"}
-          placeholderTextColor={"#757575"}
-          returnValue={"value"} // label or value
-          callback={res => {
-            // console.log(res);
-
-            var filtered = res.filter(function(el) {
-              return el != null;
-            });
-
-            filtered.push(this.props.user);
-            this.setState({ selectedIDs: filtered });
-          }} // callback, array of selected items
-          rowBackgroundColor={"#eee"}
-          rowHeight={40}
-          rowRadius={5}
-          iconColor={"#00a2dd"}
-          iconSize={30}
-          selectedIconName={"ios-checkmark-circle"}
-          unselectedIconName={"ios-radio-button-off"}
-          scrollViewHeight={130}
-          // list of options which are selected by default
-        />
-
         <MarkerEdit
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
@@ -311,18 +211,6 @@ export default class Main extends React.Component {
         />
         <SearchBar handlePress={this.handlePress} style={styles.bar} />
 
-        {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
-        <TouchableOpacity
-          title="my pins"
-          onPress={() => this.queryPins(this.state.UID)}
-        />
-        <TouchableOpacity title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
-        <TouchableOpacity
-          title="Add to favorites"
-          onPress={() => this.addToFavorites()}
-        />
-        <TouchableOpacity title="show modal" onPress={() => this.showMarkerView()} /> */}
-
         <Map
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
@@ -330,6 +218,7 @@ export default class Main extends React.Component {
           alreadFavored={this.alreadFavored}
           idnames={this.state.idToNames}
         />
+
         <MarkerView
           markerPressed={this.state.markerPressed}
           markerPressedDetail={this.state.markerPressedDetail}
