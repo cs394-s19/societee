@@ -26,7 +26,6 @@ export default class MarkerView extends Component {
       name: "?"
     };
     this.setMarkerVisible = this.setMarkerVisible.bind(this);
-    this.getName = this.getName.bind(this);
   }
 
   // This should probably get called in the parent Component when something gets clicked
@@ -39,15 +38,6 @@ export default class MarkerView extends Component {
       this.setState({ markerVisible: !this.state.markerVisible });
     }
   }
-
-  getName = uid => {
-    users
-      .doc(uid)
-      .get()
-      .then(doc => {
-        this.setState({ name: doc.data().name });
-      });
-  };
 
   render() {
     return (
