@@ -12,8 +12,8 @@ export default class MarkerEdit extends Component {
     }
   }
 
-  componentDidMount() {
-    this.updateNote("Write a note about this location")
+  componentWillReceiveProps(){
+    this.updateNote("Add a note about this location")
   }
 
   updateNote = (text) => {
@@ -51,7 +51,7 @@ export default class MarkerEdit extends Component {
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.locationName}>Mudd Library</Text>
-            <Text style={styles.address}>{this.state.pin.addr}</Text>
+            <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
 
             <TextInput
               style={ this.state.focused
