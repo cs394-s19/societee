@@ -295,7 +295,7 @@ export default class Main extends React.Component {
           <View style={{ flex: 0.5 }}>
             <CustomMultiPicker
               options={dic}
-              search={false} // should show search bar?
+              search={true} // should show search bar?
               multiple={true} //
               placeholder={"Search"}
               placeholderTextColor={"#757575"}
