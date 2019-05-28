@@ -40,7 +40,6 @@ export default class SearchBar extends Component {
             borderTopWidth: 0,
             borderBottomWidth: 0,
             margin: 15,
-            marginTop: 40
           },
           textInput: {
             marginLeft: 0,
@@ -61,7 +60,7 @@ export default class SearchBar extends Component {
             bottom: 20,
             zIndex: -1,
             backgroundColor: "white",
-            paddingTop: 115
+            paddingTop: 75
           }
         }}
         currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list

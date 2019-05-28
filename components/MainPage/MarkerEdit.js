@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Modal, Text, TextInput, TouchableOpacity, View, Alert, Image} from 'react-native';
-import {Button, Icon} from 'native-base';
+import {Button, Icon, Row} from 'native-base';
 
 export default class MarkerEdit extends Component {
 
@@ -8,7 +8,12 @@ export default class MarkerEdit extends Component {
     super(props);
     this.state = {
       pin: this.props.currEditedPin,
+      focused: false,
     }
+  }
+
+  componentDidMount() {
+    this.updateNote("Write a note about this location")
   }
 
   updateNote = (text) => {
@@ -23,7 +28,6 @@ export default class MarkerEdit extends Component {
   }
 
   render() {
-    var currPin = this.props.currEditedPin
     return (
         <Modal
           animationType="slide"
@@ -35,31 +39,33 @@ export default class MarkerEdit extends Component {
           > 
           <View>
             <View style={styles.imageContainer}>
+              <Image style={styles.locationImage} source={require('../../assets/images/mudd_temporary.jpg')} />
               <Button large transparent primary style={styles.close} onPress={() => {this.props.closeMarkerEdit()}}>
                   <Icon name="close" style={{fontSize: 60}}/>
               </Button>
               <Text style={{marginTop: 150, marginLeft: 150}}>No Photo Selected</Text>
               <TouchableOpacity style={styles.addPhotoButton}>
-                <Text>Add a Photo</Text>
+                <Text style={styles.addPhotoPlus}>+</Text><Icon name="image" type="FontAwesome" style={styles.addPhotoIcon}/>
               </TouchableOpacity>
             </View>
-            
           </View>
           <View style={styles.infoContainer}>
+            <Text style={styles.locationName}>Mudd Library</Text>
+            <Text style={styles.address}>{this.state.pin.addr}</Text>
+
             <TextInput
-              style={styles.textInput}
-              defaultValue="Write a note"
+              style={ this.state.focused
+                          ? styles.textInputBlack
+                          : styles.textInputGrey}
+              value={this.state.pin.note}
+              onFocus={()=> {
+                            this.setState({focused: true})
+                            this.updateNote("")
+                      }}
               clearTextOnFocus= {true}
               onChangeText={(text) => this.updateNote(text)}
               onSubmitEditing={()=>this.onSubmitNote(this.state.pin)}/>
-            <View>
-              <Text>
-                Address: {currPin.addr}
-                UID: {currPin.owner}
-                Date: {currPin.timestamp}
-              </Text>
-            </View>
-            
+
           </View>
         </Modal>
     );
@@ -71,34 +77,63 @@ const styles = {
   imageContainer: {
     width: "100%",
     height: 300,
-    overflow: "none",
+    overflow: "hidden",
+    backgroundColor: "white",
+  },
+  locationImage: {
+    width: "100%",
+    height: "100%"
+  },
+  addPhotoButton: {
+    width: 80,
+    height: 55,
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "lightgrey",
     backgroundColor: "white",
     shadowOffset: {  width: 0,  height: 2,  },
     shadowColor: 'black',
     shadowOpacity: .2,
-    shadowRadius: 5
+    shadowRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
   },
-  addPhotoButton: {
-    width: 200,
-    height: 40,
-    position: "absolute",
-    bottom: 15,
-    right: 15,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "lightgrey",
-    padding: 10,
-    paddingLeft: 60,
+  addPhotoIcon: {
+    fontSize: 30,
+    color: "grey"
   },
-  textInput: {
-    marginTop: 50,
+  addPhotoPlus: {
+    fontSize: 20,
+    color: "grey",
+    marginRight: 5,
+    fontWeight: "bold"
+  },
+  textInputGrey: {
+    color: "lightgrey"
+  },
+  textInputBlack: {
+    color: "black"
   },
   infoContainer: {
-
+    padding: 20,
   },
   close: {
     position: 'absolute',
     top: 20,
     left: 10,
-  }
+  },
+  locationName: {
+    fontSize: 24,
+    fontWeight: "bold"
+  },
+  address: {
+    fontSize: 18,
+    color: "grey",
+    marginBottom: 20,
+  },
+
 }

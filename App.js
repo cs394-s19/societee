@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Login from './components/LoginPage/Login';
 import NavBar from './components/NavBar';
+import MarkerEdit from './components/MainPage/MarkerEdit'
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class App extends React.Component {
       <View style={styles.container}>
         { this.state.user === null ?
           <Login updateUser={this.updateUser}/>
+          // <MarkerEdit currEditedPin={{addr: "2233 Tech Drive, Evanston IL 60201", note: "Write a note about your pinned location here", owner: "me", timestamp:"1/2/3"}}/>
           :
           <NavBar user={this.state.user}/> }
       </View>
