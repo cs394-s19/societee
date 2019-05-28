@@ -20,13 +20,13 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: props.user,
+      UID: this.props.user,
       markerPressed: false,
       markerPressedDetail: {},
       markerEdit: false,
       currEditedPin: {},
       friendIDs: [],
-      selectedIDs: [props.user],
+      selectedIDs: [this.props.user],
       mapping: [],
       favored: false,
       isModalVisible: false,
@@ -41,6 +41,7 @@ export default class Main extends React.Component {
   }
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
+    console.log("close", this.state.selectedIDs);
   };
   componentWillMount() {
     this.fetchFriendIDS();
@@ -301,8 +302,6 @@ export default class Main extends React.Component {
               placeholderTextColor={"#757575"}
               returnValue={"value"} // label or value
               callback={res => {
-                console.log(res);
-
                 var filtered = res.filter(function(el) {
                   return el != null;
                 });
@@ -318,6 +317,7 @@ export default class Main extends React.Component {
               selectedIconName={"ios-checkmark-circle"}
               unselectedIconName={"ios-radio-button-off"}
               scrollViewHeight={130}
+              selected={this.state.selectedIDs}
               // list of options which are selected by default
             />
             <Button title="Hide friends" onPress={this.toggleModal} />
