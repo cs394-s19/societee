@@ -11,6 +11,13 @@ import FriendDisplay from "./ProfilePage/FriendDisplay";
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      your_markers: [],     // detailed pins + pid
+      friend_markers: [],   // detailed pins + pid
+      favored_markers: [],  // array of pids
+      idToNames: {},        // uid => name
+      firendIDs: [],        // pids
+    }
   }
 
   render() {
