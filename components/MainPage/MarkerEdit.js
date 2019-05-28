@@ -14,6 +14,7 @@ export default class MarkerEdit extends Component {
 
   componentWillReceiveProps(){
     this.updateNote("Add a note about this location")
+    this.setState({focused: false})
   }
 
   updateNote = (text) => {
