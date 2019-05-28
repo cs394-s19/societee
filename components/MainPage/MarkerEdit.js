@@ -52,7 +52,6 @@ export default class MarkerEdit extends Component {
           <View style={styles.infoContainer}>
             <Text style={styles.locationName}>Mudd Library</Text>
             <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
-
             <TextInput
               style={ this.state.focused
                           ? styles.textInputBlack
@@ -112,14 +111,17 @@ const styles = {
     marginRight: 5,
     fontWeight: "bold"
   },
+  infoContainer: {
+    padding: 20
+  },
   textInputGrey: {
-    color: "lightgrey"
+    color: "lightgrey",
   },
   textInputBlack: {
-    color: "black"
+    color: "black",
   },
-  infoContainer: {
-    padding: 20,
+  profile: {
+    marginRight: 20,
   },
   close: {
     position: 'absolute',
