@@ -212,6 +212,7 @@ export default class Main extends React.Component {
         <MarkerEdit
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
+          markerPressedDetail={this.state.markerPressedDetail}
           currEditedPin={this.state.currEditedPin}
           addPin={pin => this.addPin(pin)}
           photo={this.state.photo}

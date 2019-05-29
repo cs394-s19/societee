@@ -49,7 +49,7 @@ export default class MarkerEdit extends Component {
         <View>
           <View style={styles.imageContainer}>
             <Image
-              style={{ width: 200, height: 200 }}
+              style={styles.locationImage}
               source={{
                 uri: this.props.photo
               }}
@@ -79,7 +79,7 @@ export default class MarkerEdit extends Component {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={styles.locationName}>Mudd Library</Text>
+          <Text style={styles.locationName}>{this.props.markerPressedDetail.description}</Text>
           <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
           <TextInput
             style={
