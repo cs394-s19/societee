@@ -19,18 +19,13 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [],
-      UID: this.props.user,
       markerPressed: false,
       markerPressedDetail: {},
       markerEdit: false,
       currEditedPin: {},
-      friendIDs: [],
-      selectedIDs: [this.props.user],
       favored: false,
       isModalVisible: false,
-      photo: "",
-      idToNames: {}
+      photo: ""
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
@@ -44,29 +39,6 @@ export default class Main extends React.Component {
     console.log("close", this.state.selectedIDs);
   };
 
-  componentWillMount() {
-    this.fetchFriendIDS(); // Used to get {uid: uid, name: name} of each friend
-
-    var newMarkers = this.state.markers;
-    pins.onSnapshot(
-      // fetches only current USERS pins
-      docSnapshot => {
-        let changes = docSnapshot.docChanges();
-        changes.forEach(change => {
-          const docOwner = change.doc.data().owner;
-          if (docOwner === this.props.user) {
-            var newMarker = change.doc.data();
-            newMarker.id = change.doc.id;
-            newMarkers.push(newMarker);
-          }
-        });
-        this.setState({ markers: newMarkers });
-      },
-      err => {
-        console.log(`Encountered error: ${err}`);
-      }
-    );
-  }
   setphoto(photo) {
     this.setState({ photo: photo });
   }
@@ -76,55 +48,8 @@ export default class Main extends React.Component {
     });
   }
 
-  idToName2 = uid => {
-    var idName = {};
-    return users
-      .doc(uid)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("INVALID USER");
-        } else {
-          return (idName = { uid: uid, name: doc.data().name });
-        }
-      })
-      .catch(err => {
-        console.log("Error getting user's name", err);
-      });
-  };
-
   showMarkerView = () => {
     this.setState({ markerPressed: !this.state.markerPressed });
-  };
-
-  fetchFriendIDS = () => {
-    // Creates ID to Name mappings
-    var myFriends = [];
-    var friendNames = [];
-    users
-      .doc(this.props.user)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("No user found!");
-        } else {
-          myFriends = doc.data().following;
-          myFriends.push(this.props.user);
-        }
-      })
-      .then(() => {
-        var idToNamesTemp = {};
-        myFriends.forEach(friend => {
-          this.idToName2(friend).then(idname => {
-            friendNames.push(idname);
-            idToNamesTemp[idname.uid] = idname.name;
-          });
-        });
-        this.setState({ friendIDs: myFriends, idToNames: idToNamesTemp });
-      })
-      .catch(err => {
-        console.log("Error getting document", err);
-      });
   };
 
   addPin = newPin => {
@@ -137,35 +62,23 @@ export default class Main extends React.Component {
   };
 
   alreadFavored = pid => {
-    // console.log(pid + ": the pid you're looking for");
-    var favorites = [];
-    users
-      .doc(this.props.user)
-      .get()
-      .then(doc => {
-        favorites = doc.data().favorites;
-        // console.log(favorites);
-      })
-      .then(() => {
-        if (favorites.includes(pid)) {
-          // console.log("favored!");
-          this.setState({ favored: true });
-        } else {
-          // console.log("not favored yet!");
-          this.setState({ favored: false });
-        }
-      })
-      .catch(err => {
-        console.log("Error getting favored info", err);
-      });
+    this.setState({
+      favored: this.props.FetchState.favored_markers.includes(pid)
+    });
   };
 
   addToFavorites = pid => {
-    return;
+    users.doc(this.props.user).update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(pid)
+    });
+    this.setState({ favored: true });
   };
 
   removeFromFavorites = pid => {
-    return;
+    users.doc(this.props.user).update({
+      favorites: firebase.firestore.FieldValue.arrayRemove(pid)
+    });
+    this.setState({ favored: false });
   };
 
   editPin = editedPin => {
@@ -203,7 +116,9 @@ export default class Main extends React.Component {
   };
 
   render() {
-    var mapMarkers = this.state.markers;
+    var fetchStates = this.props.FetchState;
+
+    var mapMarkers = fetchStates.your_markers;
 
     //needs a  label:value, label is name, value is id
 
@@ -229,7 +144,7 @@ export default class Main extends React.Component {
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}
           alreadFavored={this.alreadFavored}
-          idnames={this.state.idToNames}
+          idnames={fetchStates.idToNames}
         />
 
         <MarkerView

@@ -19,13 +19,6 @@ import FriendDisplay from "./ProfilePage/FriendDisplay";
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      your_markers: [],     // detailed pins + pid
-      friend_markers: [],   // detailed pins + pid
-      favored_markers: [],  // array of pids
-      idToNames: {},        // uid => name
-      firendIDs: [],        // pids
-    }
   }
 
   render() {
@@ -45,7 +38,7 @@ export default class NavBar extends React.Component {
             </TabHeading>
           }
         >
-          <Explore user={this.props.user} />
+          <Explore FetchState={this.props.FetchState} user={this.props.user} />
         </Tab>
 
         <Tab
@@ -59,7 +52,7 @@ export default class NavBar extends React.Component {
             </TabHeading>
           }
         >
-          <Main user={this.props.user} />
+          <Main FetchState={this.props.FetchState} user={this.props.user} />
         </Tab>
 
         <Tab
