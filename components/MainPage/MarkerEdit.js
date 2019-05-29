@@ -78,7 +78,6 @@ export default class MarkerEdit extends Component {
               onChangeText={(text) => this.updateNote(text)}
               onSubmitEditing={()=>this.onSubmitNote(this.state.pin)}/>
           </View>
-          
         </Modal>
     );
   }
