@@ -48,7 +48,7 @@ export default class MarkerEdit extends Component {
           <View>
             <View style={styles.imageContainer}>
               <Image
-                style={{ width: 200, height: 200 }}
+                style={styles.locationImage}
                 source={{
                   uri: this.props.photo
                 }}
@@ -63,7 +63,7 @@ export default class MarkerEdit extends Component {
             </View>
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.locationName}>Mudd Library</Text>
+            <Text style={styles.locationName}>{this.props.markerPressedDetail ? this.props.markerPressedDetail.description : "Unknown Location"}</Text>
             <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
             <TextInput
               style={ this.state.focused
@@ -77,12 +77,14 @@ export default class MarkerEdit extends Component {
               clearTextOnFocus= {true}
               onChangeText={(text) => this.updateNote(text)}
               onSubmitEditing={()=>this.onSubmitNote(this.state.pin)}/>
-
           </View>
+          
         </Modal>
     );
   }
 }
+
+
 
 const styles = {
   imageContainer: {
@@ -123,9 +125,6 @@ const styles = {
     marginRight: 5,
     fontWeight: "bold"
   },
-  infoContainer: {
-    padding: 20
-  },
   textInputGrey: {
     color: "lightgrey",
   },
@@ -135,7 +134,9 @@ const styles = {
   profile: {
     marginRight: 20,
   },
-  infoContainer: {},
+  infoContainer: {
+    padding: 20
+  },
   close: {
     position: "absolute",
     top: 20,

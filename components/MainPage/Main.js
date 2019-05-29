@@ -332,6 +332,7 @@ export default class Main extends React.Component {
           currEditedPin={this.state.currEditedPin}
           addPin={pin => this.addPin(pin)}
           photo={this.state.photo}
+          markerPressedDetail={this.state.markerPressedDetail}
         />
         <SearchBar
           handlePress={this.handlePress}
