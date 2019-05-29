@@ -1,41 +1,55 @@
-import React, {Component} from 'react';
-import { StyleSheet, View, Alert, Image, Text, TouchableOpacity } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import firebase from '../config/Firebase';
-import { Location } from 'expo';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Image,
+  Text,
+  TouchableOpacity
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import firebase from "../config/Firebase";
+import { Location } from "expo";
 
 export default class Friends extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       city: null
-    }
+    };
   }
 
   findFriend = () => {
-    this.setState({
-    });
-  }
+    this.setState({});
+  };
 
- render() {
-  Location.reverseGeocodeAsync(this.props.location).then((arr) => {
-    console.log(arr);
-    this.setState({city:`${arr[0].name}, ${arr[0].city}, ${arr[0].region}`})}).catch((e) => console.log(e));
+  render() {
+    Location.reverseGeocodeAsync(this.props.location)
+      .then(arr => {
+        console.log(arr);
+        this.setState({
+          city: `${arr[0].name}, ${arr[0].city}, ${arr[0].region}`
+        });
+      })
+      .catch(e => console.log(e));
     return (
-     <View>
-       <TouchableOpacity activeOpacity= {0.9}
-                         style={styles.button}
-                         onPress={this.findFriend}>
-          <Image style={{padding:10, width: 40, height: 40, borderRadius:20}}
-                 source={{uri: this.props.photoURL}}
+      <View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.button}
+          onPress={this.findFriend}
+        >
+          <Image
+            style={{ padding: 10, width: 40, height: 40, borderRadius: 20 }}
+            source={{ uri: this.props.photoURL }}
           />
           <View>
-          <Text style={styles.name}>{this.props.name}</Text>
-          <Text style = {styles.status}>{this.props.status}</Text>
-          <Text style = {styles.status}>{this.state.city}</Text>
+            <Text style={styles.name}>{this.props.name}</Text>
+            <Text style={styles.status}>{this.props.status}</Text>
+            <Text style={styles.status}>{this.state.city}</Text>
           </View>
-       </TouchableOpacity>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -43,29 +57,29 @@ export default class Friends extends React.Component {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'rgba(256,256,256,1.0)',
+    backgroundColor: "rgba(256,256,256,1.0)",
     paddingVertical: 10,
     paddingHorizontal: 10,
-    flexDirection: "row",
+    flexDirection: "row"
   },
-  name:{
+  name: {
     fontSize: 18,
-    textAlign:'left',
-    fontWeight: 'bold',
+    textAlign: "left",
+    fontWeight: "bold",
     paddingHorizontal: 10
   },
-  status:{
+  status: {
     fontSize: 15,
-    textAlign:'left',
-    fontWeight: '200',
-    color: 'gray',
+    textAlign: "left",
+    fontWeight: "200",
+    color: "gray",
     paddingHorizontal: 10
   },
 
   circle: {
     width: 45,
     height: 45,
-    borderRadius: 45/2,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderRadius: 45 / 2,
+    backgroundColor: "rgba(0,0,0,0.2)"
   }
 });

@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
 import Map from "../MainPage/Map";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
-import CustomMultiPicker from "react-native-multiple-select-list";
+import CustomMultiPicker from "./CustomMultiPicker";
+import Modal from "react-native-modal";
 
 import MarkerView from "../MainPage/MarkerView";
 
@@ -22,7 +23,8 @@ export default class Main extends React.Component {
       friendIDs: [],
       selectedIDs: [],
       favored: false,
-      idToNames: {}
+      idToNames: {},
+      isModalVisible: false
     };
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
@@ -112,6 +114,10 @@ export default class Main extends React.Component {
     this.setState({ markerPressed: !this.state.markerPressed });
   };
 
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+
   alreadFavored = pid => {
     // console.log(pid + ": the pid you're looking for");
     var favorites = [];
@@ -153,56 +159,60 @@ export default class Main extends React.Component {
   };
 
   render() {
-    var mapMarkers = this.state.markers;
-    // var mapMarkers = this.state.markers.filter(marker => {
-    //   return this.state.selectedIDs.includes(marker.owner);
-    // });
+    // var mapMarkers = this.state.markers;
+    var mapMarkers = this.state.markers.filter(marker => {
+      return this.state.selectedIDs.includes(marker.owner);
+    });
 
     //needs a  label:value, label is name, value is id
     dic = this.state.idToNames;
 
     return (
       <View style={styles.container}>
-        {/* <CustomMultiPicker
-          options={dic}
-          search={false} // should show search bar?
-          multiple={true} //
-          placeholder={"Search"}
-          placeholderTextColor={"#757575"}
-          returnValue={"value"} // label or value
-          callback={res => {
-            console.log(res);
+        <View
+          style={{
+            position: "absolute", //use absolute position to show button on top of the map
+            top: "50%", //for center align
+            alignSelf: "flex-end" //for align to right
+          }}
+        >
+          <Button
+            title="Show friends"
+            onPress={this.toggleModal}
+            color="#841584"
+          />
+        </View>
+        <Modal style={{ zIndex: 1 }} isVisible={this.state.isModalVisible}>
+          <View style={{ flex: 0.5 }}>
+            <CustomMultiPicker
+              options={dic}
+              search={true} // should show search bar?
+              multiple={true} //
+              placeholder={"Search"}
+              placeholderTextColor={"#757575"}
+              returnValue={"value"} // label or value
+              callback={res => {
+                var filtered = res.filter(function(el) {
+                  return el != null;
+                });
 
-            var filtered = res.filter(function(el) {
-              return el != null;
-            });
-
-            filtered.push(this.props.user);
-            this.setState({ selectedIDs: filtered });
-          }} // callback, array of selected items
-          rowBackgroundColor={"#eee"}
-          rowHeight={40}
-          rowRadius={5}
-          iconColor={"#00a2dd"}
-          iconSize={30}
-          selectedIconName={"ios-checkmark-circle"}
-          unselectedIconName={"ios-radio-button-off"}
-          scrollViewHeight={130}
-          // list of options which are selected by default
-        /> */}
-
-        {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
-        <TouchableOpacity
-          title="my pins"
-          onPress={() => this.queryPins(this.props.user)}
-        />
-        <TouchableOpacity title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
-        <TouchableOpacity
-          title="Add to favorites"
-          onPress={() => this.addToFavorites()}
-        />
-        <TouchableOpacity title="show modal" onPress={() => this.showMarkerView()} /> */}
-
+                filtered.push(this.props.user);
+                this.setState({ selectedIDs: filtered });
+              }} // callback, array of selected items
+              rowBackgroundColor={"#eee"}
+              rowHeight={40}
+              rowRadius={5}
+              iconColor={"#00a2dd"}
+              iconSize={30}
+              selectedIconName={"ios-checkmark-circle"}
+              unselectedIconName={"ios-radio-button-off"}
+              scrollViewHeight={130}
+              selected={this.state.selectedIDs}
+              // list of options which are selected by default
+            />
+            <Button title="Hide friends" onPress={this.toggleModal} />
+          </View>
+        </Modal>
         <Map
           idnames={this.state.idToNames}
           explore={true}

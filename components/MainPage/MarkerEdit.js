@@ -15,70 +15,85 @@ export default class MarkerEdit extends Component {
     super(props);
     this.state = {
       pin: this.props.currEditedPin,
-      focused: false,
-    }
+      focused: false
+    };
   }
 
-  componentWillReceiveProps(){
-    this.updateNote("Add a note about this location")
-    this.setState({focused: false})
+  componentWillReceiveProps() {
+    this.updateNote("Add a note about this location");
+    this.setState({ focused: false });
   }
 
-  updateNote = (text) => {
+  updateNote = text => {
     var currPin = this.props.currEditedPin;
     currPin.note = text;
     this.setState({ pin: currPin });
   };
 
   onSubmitNote = pin => {
+    if (!pin.note) pin.photoURL = this.props.photo;
     this.props.addPin(pin);
     this.props.closeMarkerEdit();
   };
 
   render() {
     return (
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.props.visible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}
-          > 
-          <View>
-            <View style={styles.imageContainer}>
-              <Image
-                style={{ width: 200, height: 200 }}
-                source={{
-                  uri: this.props.photo
-                }}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.props.visible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View>
+          <View style={styles.imageContainer}>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={{
+                uri: this.props.photo
+              }}
+            />
+            <Button
+              large
+              transparent
+              primary
+              style={styles.close}
+              onPress={() => {
+                this.props.closeMarkerEdit();
+              }}
+            >
+              <Icon name="close" style={{ fontSize: 60 }} />
+            </Button>
+            <Text style={{ marginTop: 150, marginLeft: 150 }}>
+              No Photo Selected
+            </Text>
+            <TouchableOpacity style={styles.addPhotoButton}>
+              <Text style={styles.addPhotoPlus}>+</Text>
+              <Icon
+                name="image"
+                type="FontAwesome"
+                style={styles.addPhotoIcon}
               />
-              <Button large transparent primary style={styles.close} onPress={() => {this.props.closeMarkerEdit()}}>
-                  <Icon name="close" style={{fontSize: 60}}/>
-              </Button>
-              <Text style={{marginTop: 150, marginLeft: 150}}>No Photo Selected</Text>
-              <TouchableOpacity style={styles.addPhotoButton}>
-                <Text style={styles.addPhotoPlus}>+</Text><Icon name="image" type="FontAwesome" style={styles.addPhotoIcon}/>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={styles.locationName}>Mudd Library</Text>
-            <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
-            <TextInput
-              style={ this.state.focused
-                          ? styles.textInputBlack
-                          : styles.textInputGrey}
-              value={this.state.pin.note}
-              onFocus={()=> {
-                            this.setState({focused: true})
-                            this.updateNote("")
-                      }}
-              clearTextOnFocus= {true}
-              onChangeText={(text) => this.updateNote(text)}
-              onSubmitEditing={()=>this.onSubmitNote(this.state.pin)}/>
-
-          </View>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.locationName}>Mudd Library</Text>
+          <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
+          <TextInput
+            style={
+              this.state.focused ? styles.textInputBlack : styles.textInputGrey
+            }
+            value={this.state.pin.note}
+            onFocus={() => {
+              this.setState({ focused: true });
+              this.updateNote("");
+            }}
+            clearTextOnFocus={true}
+            onChangeText={text => this.updateNote(text)}
+            onSubmitEditing={() => this.onSubmitNote(this.state.pin)}
+          />
         </View>
       </Modal>
     );
@@ -90,7 +105,7 @@ const styles = {
     width: "100%",
     height: 300,
     overflow: "hidden",
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   locationImage: {
     width: "100%",
@@ -106,9 +121,9 @@ const styles = {
     borderWidth: 1,
     borderColor: "lightgrey",
     backgroundColor: "white",
-    shadowOffset: {  width: 0,  height: 2,  },
-    shadowColor: 'black',
-    shadowOpacity: .2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "black",
+    shadowOpacity: 0.2,
     shadowRadius: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -128,19 +143,19 @@ const styles = {
     padding: 20
   },
   textInputGrey: {
-    color: "lightgrey",
+    color: "lightgrey"
   },
   textInputBlack: {
-    color: "black",
+    color: "black"
   },
   profile: {
-    marginRight: 20,
+    marginRight: 20
   },
   infoContainer: {},
   close: {
     position: "absolute",
     top: 20,
-    left: 10,
+    left: 10
   },
   locationName: {
     fontSize: 24,
@@ -149,7 +164,6 @@ const styles = {
   address: {
     fontSize: 18,
     color: "grey",
-    marginBottom: 20,
-  },
-
-}
+    marginBottom: 20
+  }
+};

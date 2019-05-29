@@ -27,7 +27,6 @@ export default class Main extends React.Component {
       currEditedPin: {},
       friendIDs: [],
       selectedIDs: [this.props.user],
-      mapping: [],
       favored: false,
       isModalVisible: false,
       photo: "",
