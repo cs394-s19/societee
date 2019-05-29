@@ -30,41 +30,38 @@ export default class Main extends React.Component {
       mapping: [],
       favored: false,
       isModalVisible: false,
-      photo: ""
+      photo: "",
+      idToNames: {}
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
-    this.idToName = this.idToName.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
     this.setphoto = this.setphoto.bind(this);
   }
-  
+
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
     console.log("close", this.state.selectedIDs);
   };
 
   componentWillMount() {
-    this.fetchFriendIDS();
+    this.fetchFriendIDS(); // Used to get {uid: uid, name: name} of each friend
+
     var newMarkers = this.state.markers;
     pins.onSnapshot(
+      // fetches only current USERS pins
       docSnapshot => {
         let changes = docSnapshot.docChanges();
         changes.forEach(change => {
           const docOwner = change.doc.data().owner;
-          if (
-            docOwner === this.state.UID ||
-            this.state.friendIDs.includes(docOwner)
-          ) {
+          if (docOwner === this.props.user) {
             var newMarker = change.doc.data();
             newMarker.id = change.doc.id;
             newMarkers.push(newMarker);
-            this.setState({ markers: newMarkers });
           }
-
-          // console.log(`New state is now ${this.state.markers}`)
         });
+        this.setState({ markers: newMarkers });
       },
       err => {
         console.log(`Encountered error: ${err}`);
@@ -76,14 +73,10 @@ export default class Main extends React.Component {
   }
   setMarkerPressedDetail(marker) {
     this.setState({
-      markerPressedDetail: {
-        addr: marker.addr,
-        description: marker.description,
-        note: marker.note,
-        owner: marker.owner
-      }
+      markerPressedDetail: marker
     });
   }
+
   idToName2 = uid => {
     var idName = {};
     return users
@@ -100,90 +93,35 @@ export default class Main extends React.Component {
         console.log("Error getting user's name", err);
       });
   };
+
   showMarkerView = () => {
     this.setState({ markerPressed: !this.state.markerPressed });
   };
 
-  idToName = uid => {
-    users
-      .doc(uid)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("INVALID USER");
-        } else {
-          console.log(uid + "'s name is: " + doc.data().name);
-        }
-      })
-      .catch(err => {
-        console.log("Error getting user's name", err);
-      });
-  };
-
-  queryPins = uid => {
-    var myPins = [];
-    let myPinQuery = pins.where("owner", "==", uid);
-    // console.log(myPinQuery);
-    myPinQuery
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          myPins.push(doc.data());
-        });
-      })
-      .then(() => {
-        console.log(myPins);
-      });
-  };
-
   fetchFriendIDS = () => {
+    // Creates ID to Name mappings
     var myFriends = [];
     var friendNames = [];
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         if (!doc.exists) {
           console.log("No user found!");
         } else {
           myFriends = doc.data().following;
+          myFriends.push(this.props.user);
         }
       })
       .then(() => {
-        this.setState({ friendIDs: myFriends });
+        var idToNamesTemp = {};
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            console.log("**", idname);
             friendNames.push(idname);
-
-            this.setState({ mapping: friendNames });
-            console.log(this.state.mapping);
+            idToNamesTemp[idname.uid] = idname.name;
           });
         });
-      })
-      .catch(err => {
-        console.log("Error getting document", err);
-      });
-  };
-
-  fetchFriendsPins = () => {
-    var myFriends = [];
-    users
-      .doc(this.state.UID)
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("No user found!");
-        } else {
-          console.log("User's friends:", doc.data().following);
-          myFriends = doc.data().following;
-        }
-      })
-      .then(() => {
-        for (var i = 0; i < myFriends.length; i++) {
-          this.idToName(myFriends[i]);
-          this.queryPins(myFriends[i]);
-        }
+        this.setState({ friendIDs: myFriends, idToNames: idToNamesTemp });
       })
       .catch(err => {
         console.log("Error getting document", err);
@@ -192,8 +130,6 @@ export default class Main extends React.Component {
 
   addPin = newPin => {
     var addedPin = pins.add(newPin);
-    // var newPin = pins.doc("YEET").set(newData);
-    // console.log(newPin);
   };
 
   deletePin = () => {
@@ -205,7 +141,7 @@ export default class Main extends React.Component {
     // console.log(pid + ": the pid you're looking for");
     var favorites = [];
     users
-      .doc(this.state.UID)
+      .doc(this.props.user)
       .get()
       .then(doc => {
         favorites = doc.data().favorites;
@@ -233,9 +169,6 @@ export default class Main extends React.Component {
     return;
   };
 
-  setfriendmapping = friendmapping => {
-    this.setState({ mapping: friendmapping });
-  };
   editPin = editedPin => {
     var editedPin = {
       description: "Desc",
@@ -255,7 +188,7 @@ export default class Main extends React.Component {
       addr: details.formatted_address,
       note: "",
       description: details.name,
-      owner: this.state.UID,
+      owner: this.props.user,
       timestamp: Date.now()
     };
 
@@ -271,61 +204,12 @@ export default class Main extends React.Component {
   };
 
   render() {
-    var mapMarkers = this.state.markers.filter(marker => {
-      return this.state.selectedIDs.includes(marker.owner);
-    });
+    var mapMarkers = this.state.markers;
+
     //needs a  label:value, label is name, value is id
-    var dic = {};
-    for (var i = 0; i < this.state.mapping.length; i++) {
-      dic[this.state.mapping[i].uid] = this.state.mapping[i].name;
-    }
+
     return (
       <View style={styles.container}>
-        <View
-          style={{
-            position: "absolute", //use absolute position to show button on top of the map
-            top: "50%", //for center align
-            alignSelf: "flex-end" //for align to right
-          }}
-        >
-          <Button
-            title="Show friends"
-            onPress={this.toggleModal}
-            color="#841584"
-          />
-        </View>
-        <Modal style={{ zIndex: 1 }} isVisible={this.state.isModalVisible}>
-          <View style={{ flex: 0.5 }}>
-            <CustomMultiPicker
-              options={dic}
-              search={true} // should show search bar?
-              multiple={true} //
-              placeholder={"Search"}
-              placeholderTextColor={"#757575"}
-              returnValue={"value"} // label or value
-              callback={res => {
-                var filtered = res.filter(function(el) {
-                  return el != null;
-                });
-
-                filtered.push(this.props.user);
-                this.setState({ selectedIDs: filtered });
-              }} // callback, array of selected items
-              rowBackgroundColor={"#eee"}
-              rowHeight={40}
-              rowRadius={5}
-              iconColor={"#00a2dd"}
-              iconSize={30}
-              selectedIconName={"ios-checkmark-circle"}
-              unselectedIconName={"ios-radio-button-off"}
-              scrollViewHeight={130}
-              selected={this.state.selectedIDs}
-              // list of options which are selected by default
-            />
-            <Button title="Hide friends" onPress={this.toggleModal} />
-          </View>
-        </Modal>
-
         <MarkerEdit
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
@@ -339,23 +223,12 @@ export default class Main extends React.Component {
           setphoto={this.setphoto}
         />
 
-        {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
-        <TouchableOpacity
-          title="my pins"
-          onPress={() => this.queryPins(this.state.UID)}
-        />
-        <TouchableOpacity title="Edit pin" onPress={() => this.editPin({ hey: "lol" })} />
-        <TouchableOpacity
-          title="Add to favorites"
-          onPress={() => this.addToFavorites()}
-        />
-        <TouchableOpacity title="show modal" onPress={() => this.showMarkerView()} /> */}
-
         <Map
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}
           alreadFavored={this.alreadFavored}
+          idnames={this.state.idToNames}
         />
 
         <MarkerView

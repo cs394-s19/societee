@@ -5,45 +5,31 @@ import { Marker, AnimatedRegion } from "react-native-maps";
 import { Button } from "react-native-elements";
 import firebase from "../../config/Firebase";
 
-const db = firebase.firestore();
-// const functions = require("firebase-functions");
-
-var users = db.collection("users");
-var pins = db.collection("pins");
-
-function Map(props) {
-  return (
-    <MapView showsUserLocation style={styles.map}>
-      {props.markers.map((marker, index) => {
-        return (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude
-            }}
-            onPress={() => {
-              props.alreadFavored(marker.id);
-                let pinDetail;
-                pins.doc(marker.id).get()
-                .then(response => pinDetail = response.data())
-                .then(() => {
-                  props.setMarkerPressedDetail({
-                    pid: marker.id,
-                    addr: pinDetail.addr,
-                    description: pinDetail.description,
-                    note: pinDetail.note,
-                    owner: pinDetail.owner,
-                  })
-                })
-                .then(props.showMarkerView())
-              }
-            }
-          />
-        );
-      })}
-    </MapView>
-  );
+export default class Map extends React.Component {
+  render() {
+    return (
+      <MapView showsUserLocation style={styles.map}>
+        {this.props.markers.map((marker, index) => {
+          var ownerName = this.props.idnames[marker.owner];
+          marker.ownerName = ownerName;
+          return (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude
+              }}
+              onPress={() => {
+                this.props.alreadFavored(marker.id);
+                this.props.setMarkerPressedDetail(marker);
+                this.props.showMarkerView();
+              }}
+            />
+          );
+        })}
+      </MapView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -57,5 +43,3 @@ const styles = StyleSheet.create({
     right: 0
   }
 });
-
-export default Map;

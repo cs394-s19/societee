@@ -41,7 +41,7 @@ export default class FriendDisplay extends Component {
       .then(() => {
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            console.log(idname);
+            // console.log(idname);
             friendNames.push(idname);
             this.setState({ friends: friendNames });
           });
@@ -70,7 +70,7 @@ export default class FriendDisplay extends Component {
   };
 
   render() {
-    console.log(this.state.friends);
+    // console.log(this.state.friends);
     return (
       <View style={styles.container}>
         <Text style={{ fontWeight: "bold", textAlign: "center" }}>
