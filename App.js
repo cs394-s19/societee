@@ -22,8 +22,8 @@ class App extends React.Component {
     return (
       <View style={styles.container}>
         { this.state.user === null ?
-          <Login updateUser={this.updateUser}/>
-          // <MarkerEdit currEditedPin={{addr: "2233 Tech Drive, Evanston IL 60201", note: "Write a note about your pinned location here", owner: "me", timestamp:"1/2/3"}}/>
+          // <Login updateUser={this.updateUser}/>
+          <MarkerEdit currEditedPin={{addr: "2233 Tech Drive, Evanston IL 60201", note: "Write a note about your pinned location here", owner: "me", timestamp:"1/2/3"}}/>
           :
           <NavBar user={this.state.user}/> }
       </View>

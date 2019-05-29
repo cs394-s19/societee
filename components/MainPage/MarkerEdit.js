@@ -139,9 +139,6 @@ const styles = {
     marginRight: 5,
     fontWeight: "bold"
   },
-  infoContainer: {
-    padding: 20
-  },
   textInputGrey: {
     color: "lightgrey"
   },
@@ -151,7 +148,9 @@ const styles = {
   profile: {
     marginRight: 20
   },
-  infoContainer: {},
+  infoContainer: {
+    padding: 20
+  },
   close: {
     position: "absolute",
     top: 20,
