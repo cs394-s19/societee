@@ -1,9 +1,16 @@
-import React, { Component } from 'react';
-import {Modal, Text, TextInput, TouchableOpacity, View, Alert, Image} from 'react-native';
-import {Button, Icon, Row} from 'native-base';
+import React, { Component } from "react";
+import {
+  Modal,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+  Image
+} from "react-native";
+import { Button, Icon } from "native-base";
 
 export default class MarkerEdit extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -19,14 +26,14 @@ export default class MarkerEdit extends Component {
 
   updateNote = (text) => {
     var currPin = this.props.currEditedPin;
-    currPin.note = text
-    this.setState({pin: currPin})
-  }
+    currPin.note = text;
+    this.setState({ pin: currPin });
+  };
 
-  onSubmitNote = (pin) => {
+  onSubmitNote = pin => {
     this.props.addPin(pin);
     this.props.closeMarkerEdit();
-  }
+  };
 
   render() {
     return (
@@ -40,7 +47,12 @@ export default class MarkerEdit extends Component {
           > 
           <View>
             <View style={styles.imageContainer}>
-              <Image style={styles.locationImage} source={require('../../assets/images/mudd_temporary.jpg')} />
+              <Image
+                style={{ width: 200, height: 200 }}
+                source={{
+                  uri: this.props.photo
+                }}
+              />
               <Button large transparent primary style={styles.close} onPress={() => {this.props.closeMarkerEdit()}}>
                   <Icon name="close" style={{fontSize: 60}}/>
               </Button>
@@ -70,7 +82,6 @@ export default class MarkerEdit extends Component {
         </Modal>
     );
   }
-
 }
 
 const styles = {
@@ -124,8 +135,9 @@ const styles = {
   profile: {
     marginRight: 20,
   },
+  infoContainer: {},
   close: {
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     left: 10,
   },

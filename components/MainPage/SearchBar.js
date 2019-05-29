@@ -10,10 +10,12 @@ import {
   AlertIOS
 } from "react-native";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+import { Image } from "react-native-elements";
 
 export default class SearchBar extends Component {
   constructor(props) {
     super(props);
+    this.state = { photo: "" };
   }
 
   render() {
@@ -27,6 +29,32 @@ export default class SearchBar extends Component {
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
           this.props.handlePress(details);
+          console.log(data);
+          console.log(details);
+          let photorefer = "";
+          let placeid = data.place_id;
+
+          let placeDetails = fetch(
+            `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeid}&key=${GoogleAPI}`
+          )
+            .then(response => {
+              return response.json();
+            })
+            .then(myJson => {
+              console.log(myJson.result.photos);
+              photorefer = myJson.result.photos[0].photo_reference;
+              console.log(photorefer);
+              return photorefer;
+            })
+            .then(photorefer => {
+              fetch(
+                `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photorefer}&key=${GoogleAPI}`
+              ).then(response => {
+                console.log(response.url);
+                this.setState({ photorefer: response.url });
+                this.props.setphoto(response.url);
+              });
+            });
         }}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete

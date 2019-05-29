@@ -1,14 +1,15 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, View, StyleSheet, TouchableOpacity } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 import CustomMultiPicker from "react-native-multiple-select-list";
-
+import Drawer from "react-native-drawer";
 import MarkerView from "./MarkerView";
 import MarkerEdit from "./MarkerEdit";
 
+import Modal from "react-native-modal";
 const db = firebase.firestore();
 
 var users = db.collection("users");
@@ -19,22 +20,30 @@ export default class Main extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      UID: props.user,
+      UID: this.props.user,
       markerPressed: false,
       markerPressedDetail: {},
       markerEdit: false,
       currEditedPin: {},
       friendIDs: [],
-      selectedIDs: [props.user],
+      selectedIDs: [this.props.user],
       mapping: [],
-      favored: false
+      favored: false,
+      isModalVisible: false,
+      photo: ""
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.idToName = this.idToName.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
+    this.setphoto = this.setphoto.bind(this);
   }
+  
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+    console.log("close", this.state.selectedIDs);
+  };
 
   componentWillMount() {
     this.fetchFriendIDS();
@@ -62,7 +71,9 @@ export default class Main extends React.Component {
       }
     );
   }
-
+  setphoto(photo) {
+    this.setState({ photo: photo });
+  }
   setMarkerPressedDetail(marker) {
     this.setState({
       markerPressedDetail: {
@@ -212,7 +223,7 @@ export default class Main extends React.Component {
       .catch(err => {
         console.log("Error getting favored info", err);
       });
-  }
+  };
 
   addToFavorites = pid => {
     return;
@@ -220,7 +231,7 @@ export default class Main extends React.Component {
 
   removeFromFavorites = pid => {
     return;
-  }
+  };
 
   setfriendmapping = friendmapping => {
     this.setState({ mapping: friendmapping });
@@ -250,7 +261,7 @@ export default class Main extends React.Component {
 
     this.setState({
       currEditedPin: newPin,
-      markerEdit: true,
+      markerEdit: true
       // markers: [...this.state.markers, { latitude: newLat, longitude: newLong }] // bug here?
     });
   }
@@ -270,41 +281,63 @@ export default class Main extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <CustomMultiPicker
-          options={dic}
-          search={false} // should show search bar?
-          multiple={true} //
-          placeholder={"Search"}
-          placeholderTextColor={"#757575"}
-          returnValue={"value"} // label or value
-          callback={res => {
-            console.log(res);
+        <View
+          style={{
+            position: "absolute", //use absolute position to show button on top of the map
+            top: "50%", //for center align
+            alignSelf: "flex-end" //for align to right
+          }}
+        >
+          <Button
+            title="Show friends"
+            onPress={this.toggleModal}
+            color="#841584"
+          />
+        </View>
+        <Modal style={{ zIndex: 1 }} isVisible={this.state.isModalVisible}>
+          <View style={{ flex: 0.5 }}>
+            <CustomMultiPicker
+              options={dic}
+              search={true} // should show search bar?
+              multiple={true} //
+              placeholder={"Search"}
+              placeholderTextColor={"#757575"}
+              returnValue={"value"} // label or value
+              callback={res => {
+                var filtered = res.filter(function(el) {
+                  return el != null;
+                });
 
-            var filtered = res.filter(function(el) {
-              return el != null;
-            });
-
-            filtered.push(this.props.user);
-            this.setState({ selectedIDs: filtered });
-          }} // callback, array of selected items
-          rowBackgroundColor={"#eee"}
-          rowHeight={40}
-          rowRadius={5}
-          iconColor={"#00a2dd"}
-          iconSize={30}
-          selectedIconName={"ios-checkmark-circle"}
-          unselectedIconName={"ios-radio-button-off"}
-          scrollViewHeight={130}
-          // list of options which are selected by default
-        />
+                filtered.push(this.props.user);
+                this.setState({ selectedIDs: filtered });
+              }} // callback, array of selected items
+              rowBackgroundColor={"#eee"}
+              rowHeight={40}
+              rowRadius={5}
+              iconColor={"#00a2dd"}
+              iconSize={30}
+              selectedIconName={"ios-checkmark-circle"}
+              unselectedIconName={"ios-radio-button-off"}
+              scrollViewHeight={130}
+              selected={this.state.selectedIDs}
+              // list of options which are selected by default
+            />
+            <Button title="Hide friends" onPress={this.toggleModal} />
+          </View>
+        </Modal>
 
         <MarkerEdit
           visible={this.state.markerEdit}
           closeMarkerEdit={() => this.toggleMarkerEdit()}
           currEditedPin={this.state.currEditedPin}
           addPin={pin => this.addPin(pin)}
+          photo={this.state.photo}
         />
-        <SearchBar handlePress={this.handlePress} style={styles.bar} />
+        <SearchBar
+          handlePress={this.handlePress}
+          style={styles.bar}
+          setphoto={this.setphoto}
+        />
 
         {/* <TouchableOpacity style={styles.adminButtons} title="friends pins" onPress={() => this.fetchFriendsPins()} />
         <TouchableOpacity
@@ -324,6 +357,7 @@ export default class Main extends React.Component {
           showMarkerView={this.showMarkerView}
           alreadFavored={this.alreadFavored}
         />
+
         <MarkerView
           markerPressed={this.state.markerPressed}
           markerPressedDetail={this.state.markerPressedDetail}
@@ -331,6 +365,7 @@ export default class Main extends React.Component {
           addToFavorites={this.addToFavorites}
           removeFromFavorites={this.removeFromFavorites}
           favored={this.state.favored}
+          photo={this.state.photo}
         />
       </View>
     );
@@ -348,12 +383,5 @@ const styles = StyleSheet.create({
   bar: {
     marginTop: 250
   },
-  button: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    marginBottom: 50,
-    marginRight: 20,
-    borderRadius: 30
-  }
+  button: { marginTop: 400 }
 });
