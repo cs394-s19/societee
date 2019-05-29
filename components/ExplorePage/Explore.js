@@ -47,9 +47,9 @@ export default class Main extends React.Component {
             var newMarker = change.doc.data();
             newMarker.id = change.doc.id;
             newMarkers.push(newMarker);
-            this.setState({ markers: newMarkers });
           }
         });
+        this.setState({ markers: newMarkers });
       },
       err => {
         console.log(`Encountered error: ${err}`);
@@ -59,7 +59,6 @@ export default class Main extends React.Component {
 
   fetchFriendIDS = () => {
     var myFriends = [];
-    var friendNames = [];
     var idToNames = {};
     users
       .doc(this.props.user)
@@ -73,14 +72,13 @@ export default class Main extends React.Component {
         }
       })
       .then(() => {
-        this.setState({ friendIDs: myFriends });
+        var idToNamesTemp = {};
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
-            friendNames.push(idname);
-            idToNames[idname.uid] = idname.name;
-            this.setState({ idToNames: idToNames });
+            idToNamesTemp[idname.uid] = idname.name;
           });
         });
+        this.setState({ friendIDs: myFriends, idToNames: idToNamesTemp });
       })
       .catch(err => {
         console.log("Error getting document", err);
@@ -106,14 +104,7 @@ export default class Main extends React.Component {
 
   setMarkerPressedDetail(marker) {
     this.setState({
-      markerPressedDetail: {
-        pid: marker.pid,
-        addr: marker.addr,
-        description: marker.description,
-        note: marker.note,
-        owner: marker.owner,
-        ownerName: marker.ownerName
-      }
+      markerPressedDetail: marker
     });
   }
 
@@ -146,6 +137,8 @@ export default class Main extends React.Component {
   };
 
   addToFavorites = pid => {
+    console.log("Pid is ", pid);
+
     users.doc(this.props.user).update({
       favorites: firebase.firestore.FieldValue.arrayUnion(pid)
     });

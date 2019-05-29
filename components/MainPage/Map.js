@@ -5,30 +5,31 @@ import { Marker, AnimatedRegion } from "react-native-maps";
 import { Button } from "react-native-elements";
 import firebase from "../../config/Firebase";
 
-function Map(props) {
-  // console.log(props.colorID);
-  return (
-    <MapView showsUserLocation style={styles.map}>
-      {props.markers.map((marker, index) => {
-        var ownerName = props.idnames[marker.owner];
-        marker.ownerName = ownerName;
-        return (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude
-            }}
-            onPress={() => {
-              props.alreadFavored(marker.id);
-              props.setMarkerPressedDetail(marker);
-              props.showMarkerView();
-            }}
-          />
-        );
-      })}
-    </MapView>
-  );
+export default class Map extends React.Component {
+  render() {
+    return (
+      <MapView showsUserLocation style={styles.map}>
+        {this.props.markers.map((marker, index) => {
+          var ownerName = this.props.idnames[marker.owner];
+          marker.ownerName = ownerName;
+          return (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude
+              }}
+              onPress={() => {
+                this.props.alreadFavored(marker.id);
+                this.props.setMarkerPressedDetail(marker);
+                this.props.showMarkerView();
+              }}
+            />
+          );
+        })}
+      </MapView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -42,5 +43,3 @@ const styles = StyleSheet.create({
     right: 0
   }
 });
-
-export default Map;

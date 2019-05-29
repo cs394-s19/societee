@@ -46,9 +46,9 @@ export default class Main extends React.Component {
             var newMarker = change.doc.data();
             newMarker.id = change.doc.id;
             newMarkers.push(newMarker);
-            this.setState({ markers: newMarkers });
           }
         });
+        this.setState({ markers: newMarkers });
       },
       err => {
         console.log(`Encountered error: ${err}`);
@@ -58,13 +58,7 @@ export default class Main extends React.Component {
 
   setMarkerPressedDetail(marker) {
     this.setState({
-      markerPressedDetail: {
-        addr: marker.addr,
-        description: marker.description,
-        note: marker.note,
-        owner: marker.owner,
-        ownerName: marker.ownerName
-      }
+      markerPressedDetail: marker
     });
   }
 
@@ -93,7 +87,6 @@ export default class Main extends React.Component {
     // Creates ID to Name mappings
     var myFriends = [];
     var friendNames = [];
-    var idToNames = {};
     users
       .doc(this.props.user)
       .get()
@@ -106,14 +99,14 @@ export default class Main extends React.Component {
         }
       })
       .then(() => {
-        this.setState({ friendIDs: myFriends });
+        var idToNamesTemp = {};
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
             friendNames.push(idname);
-            idToNames[idname.uid] = idname.name;
-            this.setState({ idToNames: idToNames });
+            idToNamesTemp[idname.uid] = idname.name;
           });
         });
+        this.setState({ friendIDs: myFriends, idToNames: idToNamesTemp });
       })
       .catch(err => {
         console.log("Error getting document", err);
@@ -197,7 +190,6 @@ export default class Main extends React.Component {
 
   render() {
     var mapMarkers = this.state.markers;
-    console.log(this.state.idToNames);
 
     //needs a  label:value, label is name, value is id
 

@@ -88,7 +88,7 @@ export default class MarkerView extends Component {
                   danger
                   onPress={() =>
                     this.props.removeFromFavorites(
-                      this.props.markerPressedDetail.pid
+                      this.props.markerPressedDetail.id
                     )
                   }
                 >
@@ -99,9 +99,7 @@ export default class MarkerView extends Component {
                   large
                   primary
                   onPress={() =>
-                    this.props.addToFavorites(
-                      this.props.markerPressedDetail.pid
-                    )
+                    this.props.addToFavorites(this.props.markerPressedDetail.id)
                   }
                 >
                   <Icon name="ios-heart-empty" />
