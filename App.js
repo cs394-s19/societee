@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
+import Loading from './components/LoginPage/Loading';
 import Login from './components/LoginPage/Login';
 import NavBar from './components/NavBar';
-import MarkerEdit from './components/MainPage/MarkerEdit'
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,42 +20,56 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        { this.state.user === null ?
-          // <Login updateUser={this.updateUser}/>
-          <MarkerEdit currEditedPin={{addr: "2233 Tech Drive, Evanston IL 60201", note: "Write a note about your pinned location here", owner: "me", timestamp:"1/2/3"}}/>
-          :
-          <NavBar user={this.state.user}/> }
-      </View>
-    );
+    return <AppContainer />
+    
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch'
-  }
-});
+const AppNavigator = createAppContainer(createSwitchNavigator({
+  AuthLoading: Loading,
+  NavBar: NavBar,
+  Login: Login
+}, {
+  initialRouteName: 'AuthLoading',
+}));
 
-export default App;
+const AppContainer = createAppContainer(AppNavigator);
 
 
-// import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+// class App extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       user: null
+//     }
 
-// import Loading from './components/Loading';
-// import Login from './components/LoginPage/Login';
-// import Main from './components/MainPage/Main';
+//     this.updateUser = this.updateUser.bind(this)
+//   }
 
-// const App = createAppContainer(createSwitchNavigator({
-//   AuthLoading: Loading,
-//   Login: Login,
-//   Main: Main
-// }, {
-//   initialRouteName: 'AuthLoading',
-// }));
+//   updateUser(uid){
+//     this.setState({user:uid});
+//   }
 
-// export default App;
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         { this.state.user === null ?
+//           <Login updateUser={this.updateUser}/>
+//           :
+//           <NavBar user={this.state.user}/> }
+//       </View>
+//     );
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     flexDirection: 'column',
+//     justifyContent: 'center',
+//     alignItems: 'stretch'
+//   }
+// });
+
+// 
+
