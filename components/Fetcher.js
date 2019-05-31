@@ -16,6 +16,7 @@ export default class Fetcher extends React.Component {
       friend_markers: [], // detailed pins + pid
       favored_markers: [], // array of pids
       idToNames: {}, // uid => name
+      idToColors: {},
       friendIDs: [] // pids
     };
 
@@ -23,7 +24,6 @@ export default class Fetcher extends React.Component {
   }
 
   componentWillMount() {
-    console.log("YET");
     this.fetchFriendIDS();
     var your_markers = this.state.your_markers;
     var friend_markers = this.state.friend_markers;
@@ -61,7 +61,8 @@ export default class Fetcher extends React.Component {
 
   fetchFriendIDS = () => {
     var myFriends = [];
-    var idToNames = {};
+    var colors = require("./Color");
+
     users
       .doc(this.props.user)
       .get()
@@ -75,12 +76,18 @@ export default class Fetcher extends React.Component {
       })
       .then(() => {
         var idToNamesTemp = {};
+        var idToColorsTemp = {};
         myFriends.forEach(friend => {
           this.idToName2(friend).then(idname => {
             idToNamesTemp[idname.uid] = idname.name;
+            idToColorsTemp[idname.uid] = colors.shift();
           });
         });
-        this.setState({ friendIDs: myFriends, idToNames: idToNamesTemp });
+        this.setState({
+          friendIDs: myFriends,
+          idToNames: idToNamesTemp,
+          idToColors: idToColorsTemp
+        });
       })
       .catch(err => {
         console.log("Error getting document", err);

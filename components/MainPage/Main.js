@@ -117,8 +117,13 @@ export default class Main extends React.Component {
 
   render() {
     var fetchStates = this.props.FetchState;
+    var favPinSet = new Set(fetchStates.favored_markers);
 
-    var mapMarkers = fetchStates.your_markers;
+    var friendsMarkers = fetchStates.friend_markers.filter(marker => {
+      return favPinSet.has(marker.id);
+    });
+
+    var mapMarkers = friendsMarkers.concat(fetchStates.your_markers);
 
     //needs a  label:value, label is name, value is id
 
@@ -145,6 +150,7 @@ export default class Main extends React.Component {
           showMarkerView={this.showMarkerView}
           alreadFavored={this.alreadFavored}
           idnames={fetchStates.idToNames}
+          idcolors={fetchStates.idToColors}
         />
 
         <MarkerView

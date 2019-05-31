@@ -6,6 +6,9 @@ import { Button } from "react-native-elements";
 import firebase from "../../config/Firebase";
 
 export default class Map extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <MapView showsUserLocation style={styles.map}>
@@ -14,6 +17,7 @@ export default class Map extends React.Component {
           marker.ownerName = ownerName;
           return (
             <Marker
+              pinColor={this.props.idcolors[marker.owner]}
               key={index}
               coordinate={{
                 latitude: marker.latitude,

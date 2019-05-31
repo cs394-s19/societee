@@ -80,7 +80,7 @@ export default class MarkerEdit extends Component {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.locationName}>
-            {this.props.markerPressedDetail.description}
+            {this.props.currEditedPin.description}
           </Text>
           <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
           <TextInput

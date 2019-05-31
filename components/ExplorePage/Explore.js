@@ -123,8 +123,7 @@ export default class Main extends React.Component {
         </Modal>
         <Map
           idnames={fetchStates.idToNames}
-          explore={true}
-          colorID={true}
+          idcolors={fetchStates.idToColors}
           markers={mapMarkers}
           setMarkerPressedDetail={this.setMarkerPressedDetail}
           showMarkerView={this.showMarkerView}
