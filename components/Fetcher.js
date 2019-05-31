@@ -17,7 +17,8 @@ export default class Fetcher extends React.Component {
       favored_markers: [], // array of pids
       idToNames: {}, // uid => name
       idToColors: {},
-      friendIDs: [] // pids
+      friendIDs: [], // pids
+      allUsers: {}
     };
 
     this.idToName2 = this.idToName2.bind(this);
@@ -49,6 +50,15 @@ export default class Fetcher extends React.Component {
         console.log(`Encountered error: ${err}`);
       }
     );
+
+    var allUsers = {};
+    users.onSnapshot(docSnapshot => {
+      let changes = docSnapshot.docChanges();
+      changes.forEach(change => {
+        allUsers[change.doc.id] = change.doc.data().name;
+      });
+      this.setState({ allUsers: allUsers });
+    });
 
     var new_favorites;
     users.doc(this.props.user).onSnapshot(docSnapshot => {

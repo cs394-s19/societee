@@ -83,7 +83,11 @@ export default class NavBar extends React.Component {
           }
         >
           <View style={styles.container}>
-            <FriendDisplay user={this.props.user} />
+            <FriendDisplay
+              user={this.props.user}
+              allUsers={this.props.FetchState.allUsers}
+              friendIDs={this.props.FetchState.friendIDs}
+            />
           </View>
         </Tab>
       </Tabs>
