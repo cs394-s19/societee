@@ -40,6 +40,7 @@ export default class MarkerView extends Component {
   }
 
   render() {
+    console.log(this.props.markerPressedDetail.photoURL);
     return (
       <View style={{ marginTop: 15, marginRight: 15 }}>
         <Modal
@@ -58,7 +59,7 @@ export default class MarkerView extends Component {
               <View style={styles.imageContainer}>
                 <Image
                   style={styles.image}
-                  source={require("../../assets/images/millenium-park.jpg")}
+                  source={{ uri: this.props.markerPressedDetail.photoURL }}
                 />
               </View>
               <View style={styles.avatar}>
