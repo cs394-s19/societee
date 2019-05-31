@@ -58,22 +58,6 @@ export default class NavBar extends React.Component {
         <Tab
           heading={
             <TabHeading style={styles.container}>
-              <Octicon
-                style={{ textAlign: "center" }}
-                name="diff-added"
-                size={30}
-              />
-            </TabHeading>
-          }
-        >
-          <View style={styles.container}>
-            <Text style={{ textAlign: "center" }}>Add pins tab</Text>
-          </View>
-        </Tab>
-
-        <Tab
-          heading={
-            <TabHeading style={styles.container}>
               <FontAwesome
                 style={{ textAlign: "center" }}
                 name="users"
