@@ -31,7 +31,7 @@ export default class MarkerEdit extends Component {
   };
 
   onSubmitNote = pin => {
-    if (!pin.note) pin.photoURL = this.props.photo;
+    if (pin.note) pin.photoURL = this.props.photo;
     this.props.addPin(pin);
     this.props.closeMarkerEdit();
   };
