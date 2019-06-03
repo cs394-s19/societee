@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 import firebase from "../../config/Firebase";
 
@@ -7,7 +7,8 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggingin: false
+      loggingin: false,
+      name: null
     };
   }
 
@@ -22,6 +23,18 @@ export default class Login extends Component {
           disabled={this.state.loggingin}
           onPress={this.loginWithFacebook}
           title="Log in with Facebook"
+        />
+        
+        <TextInput
+          style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={(name) => this.setState({name})}
+          value={this.state.text}
+        />
+        <Button title="Sign up"
+                onPress={() => this.props.signUpUser(this.state.name)}
+        />
+        <Button title="Log in"
+                onPress={() => this.props.loginInUser(this.state.name)}
         />
       </View>
     );
