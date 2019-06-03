@@ -38,19 +38,18 @@ export default class MarkerEdit extends Component {
 
   render() {
 
-    let Image;
+    // let Image;
 
-    if (this.props.photo=="") {
-      Image = <View></View>
-    }
-    else {
-      Image = <Image
-                style={styles.locationImage}
-                source={{
-                  uri: this.props.photo
-                }}/>
-    }
-
+    // if (this.props.photo=="") {
+    //   Image = <View></View>
+    // }
+    // else {
+    //   Image = <Image
+    //             style={styles.locationImage}
+    //             source={{
+    //               uri: this.props.photo
+    //             }}/>
+    // }
 
     return (
       <Modal
@@ -63,7 +62,11 @@ export default class MarkerEdit extends Component {
       >
         <View>
           <View style={styles.imageContainer}>
-            {Image}
+            <Image
+                style={styles.locationImage}
+                source={{
+                  uri: this.props.photo
+                }}/>
             <Button
               large
               transparent
