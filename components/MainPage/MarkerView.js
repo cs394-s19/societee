@@ -161,5 +161,69 @@ const styles = {
     position: "absolute",
     top: -20,
     right: 10
-  }
+  },
+  imageContainer: {
+    width: "100%",
+    height: 300,
+    overflow: "hidden",
+    backgroundColor: "white"
+  },
+  locationImage: {
+    width: "100%",
+    height: "100%"
+  },
+  addPhotoButton: {
+    width: 80,
+    height: 55,
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "lightgrey",
+    backgroundColor: "white",
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "black",
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  addPhotoIcon: {
+    fontSize: 30,
+    color: "grey"
+  },
+  addPhotoPlus: {
+    fontSize: 20,
+    color: "grey",
+    marginRight: 5,
+    fontWeight: "bold"
+  },
+  textInputGrey: {
+    color: "lightgrey"
+  },
+  textInputBlack: {
+    color: "black"
+  },
+  profile: {
+    marginRight: 20
+  },
+  infoContainer: {
+    padding: 20
+  },
+  close: {
+    position: "absolute",
+    top: 20,
+    left: 10
+  },
+  locationName: {
+    fontSize: 24,
+    fontWeight: "bold"
+  },
+  address: {
+    fontSize: 18,
+    color: "grey",
+    marginBottom: 20
+    }
 };

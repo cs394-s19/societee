@@ -37,6 +37,21 @@ export default class MarkerEdit extends Component {
   };
 
   render() {
+
+    let Image;
+
+    if (this.props.photo=="") {
+      Image = <View></View>
+    }
+    else {
+      Image = <Image
+                style={styles.locationImage}
+                source={{
+                  uri: this.props.photo
+                }}/>
+    }
+
+
     return (
       <Modal
         animationType="slide"
@@ -48,12 +63,7 @@ export default class MarkerEdit extends Component {
       >
         <View>
           <View style={styles.imageContainer}>
-            <Image
-              style={styles.locationImage}
-              source={{
-                uri: this.props.photo
-              }}
-            />
+            {Image}
             <Button
               large
               transparent
@@ -66,7 +76,7 @@ export default class MarkerEdit extends Component {
               <Icon name="close" style={{ fontSize: 60 }} />
             </Button>
             <Text style={{ marginTop: 150, marginLeft: 150 }}>
-              No Photo Selected
+              No photo available - add one!
             </Text>
             <TouchableOpacity style={styles.addPhotoButton}>
               <Text style={styles.addPhotoPlus}>+</Text>
