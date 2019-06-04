@@ -26,20 +26,37 @@ export default class Main extends React.Component {
       favored: false,
       isModalVisible: false,
       photo: "",
-      owner: this.props.user
+      owner: this.props.user,
+            initialRegion: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0722,
+        longitudeDelta: 0.0321
+      }
+      
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
     this.setphoto = this.setphoto.bind(this);
+     this.setInitialRegion = this.setInitialRegion.bind(this);
   }
 
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
     // console.log("close", this.state.selectedIDs);
   };
-
+  setInitialRegion = (lat, long) => {
+    this.setState({
+      initialRegion: {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.0722,
+        longitudeDelta: 0.0321
+      }
+    });
+  };
   setphoto(photo) {
     this.setState({ photo: photo });
   }
@@ -143,6 +160,7 @@ export default class Main extends React.Component {
           handlePress={this.handlePress}
           style={styles.bar}
           setphoto={this.setphoto}
+setInitialRegion={this.setInitialRegion}
         />
 
         <Map
@@ -152,6 +170,7 @@ export default class Main extends React.Component {
           alreadFavored={this.alreadFavored}
           idnames={fetchStates.idToNames}
           idcolors={fetchStates.idToColors}
+ initialRegion={this.state.initialRegion}
         />
 
         <MarkerView
