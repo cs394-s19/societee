@@ -27,20 +27,19 @@ export default class Main extends React.Component {
       isModalVisible: false,
       photo: "",
       owner: this.props.user,
-            initialRegion: {
+      initialRegion: {
         latitude: 37.78825,
         longitude: -122.4324,
         latitudeDelta: 0.0722,
         longitudeDelta: 0.0321
       }
-      
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
     this.setMarkerPressedDetail = this.setMarkerPressedDetail.bind(this);
     this.alreadFavored = this.alreadFavored.bind(this);
     this.setphoto = this.setphoto.bind(this);
-     this.setInitialRegion = this.setInitialRegion.bind(this);
+    this.setInitialRegion = this.setInitialRegion.bind(this);
   }
 
   toggleModal = () => {
@@ -99,16 +98,8 @@ export default class Main extends React.Component {
     this.setState({ favored: false });
   };
 
-  editPin = editedPin => {
-    var editedPin = {
-      description: "Desc",
-      note: "WOW",
-      timestamp: Date.now()
-    };
-
-    const pinID = "JBRCwAavBvVYUYnKAbnh";
-
-    pins.doc(pinID).update(editedPin);
+  editPin = (id, newNote) => {
+    pins.doc(id).update(newNote);
   };
 
   handlePress(details) {
@@ -153,6 +144,7 @@ export default class Main extends React.Component {
           markerPressedDetail={this.state.markerPressedDetail}
           currEditedPin={this.state.currEditedPin}
           addPin={pin => this.addPin(pin)}
+          editPin={this.editPin}
           photo={this.state.photo}
           markerPressedDetail={this.state.markerPressedDetail}
         />
@@ -170,7 +162,7 @@ export default class Main extends React.Component {
           alreadFavored={this.alreadFavored}
           idnames={fetchStates.idToNames}
           idcolors={fetchStates.idToColors}
- initialRegion={this.state.initialRegion}
+          initialRegion={this.state.initialRegion}
         />
 
         <MarkerView
@@ -182,7 +174,7 @@ export default class Main extends React.Component {
           favored={this.state.favored}
           photo={this.state.photo}
           owner={this.state.owner}
-          setEdit = {(pin) => this.setState({currEditedPin: pin})}
+          setEdit={pin => this.setState({ currEditedPin: pin })}
           markerEdit={() => this.toggleMarkerEdit()}
         />
       </View>

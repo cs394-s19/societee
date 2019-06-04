@@ -33,13 +33,18 @@ export default class MarkerEdit extends Component {
   };
 
   onSubmitNote = pin => {
-    if (pin.note) pin.photoURL = this.props.photo;
-    this.props.addPin(pin);
+    // MESSY way to check if we are editing pin or creating new pin
+    if (this.props.markerPressedDetail.description == pin.description) {
+      this.props.editPin(this.props.markerPressedDetail.id, { note: pin.note });
+    } else {
+      // Create new pin
+      if (pin.note) pin.photoURL = this.props.photo;
+      this.props.addPin(pin);
+    }
     this.props.closeMarkerEdit();
   };
 
   render() {
-
     // let Image;
 
     // if (this.props.photo=="") {
@@ -65,10 +70,11 @@ export default class MarkerEdit extends Component {
         <View>
           <View style={styles.imageContainer}>
             <Image
-                style={styles.locationImage}
-                source={{
-                  uri: this.props.photo
-                }}/>
+              style={styles.locationImage}
+              source={{
+                uri: this.props.photo
+              }}
+            />
             <Button
               large
               transparent
@@ -106,9 +112,9 @@ export default class MarkerEdit extends Component {
               this.setState({ focused: true });
               this.updateNote("");
             }}
-            multiline = {true}
-            placeholder = {this.props.currEditedPin.note}
-            placeholderTextColor = {"lightGrey"}
+            multiline={true}
+            placeholder={this.props.currEditedPin.note}
+            placeholderTextColor={"lightGrey"}
             onChangeText={text => this.updateNote(text)}
             onSubmitEditing={() => this.onSubmitNote(this.state.pin)}
           />
@@ -118,13 +124,12 @@ export default class MarkerEdit extends Component {
             primary
             style={styles.submitButton}
             onPress={() => {
-              this.onSubmitNote(this.state.pin)}
-            }
+              this.onSubmitNote(this.state.pin);
+            }}
           >
             <Text style={styles.submitButtonText}>Submit</Text>
           </Button>
         </View>
-        
       </Modal>
     );
   }
@@ -135,12 +140,11 @@ const styles = {
     width: "100%",
     height: 300,
     overflow: "hidden",
-    backgroundColor: "white",
-
+    backgroundColor: "white"
   },
   locationImage: {
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   addPhotoButton: {
     width: 80,
@@ -171,17 +175,17 @@ const styles = {
     fontWeight: "bold"
   },
   textInputGrey: {
-    color: "lightgrey",
+    color: "lightgrey"
   },
   textInputBlack: {
-    color: "black",
+    color: "black"
   },
   profile: {
     marginRight: 20
   },
   infoContainer: {
     padding: 20,
-    height: Dimensions.get('window').height-300,    
+    height: Dimensions.get("window").height - 300
   },
   close: {
     position: "absolute",
@@ -206,7 +210,7 @@ const styles = {
     height: 35,
     borderRadius: 10,
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   submitButtonText: {
     color: "#FDEBE1",
