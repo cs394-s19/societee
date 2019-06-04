@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import Map from "../MainPage/Map";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
@@ -82,24 +82,32 @@ export default class Main extends React.Component {
         <View
           style={{
             position: "absolute", //use absolute position to show button on top of the map
-            top: "50%", //for center align
+            bottom: "5%", //for center align
+            left: "5%",
             alignSelf: "flex-end" //for align to right
           }}
         >
-          <Button
-            title="Show friends"
-            onPress={this.toggleModal}
-            color="#841584"
-          />
+              <TouchableOpacity 
+          style={styles.showButton}
+          activeOpacity = { .7 }
+          onPress = {this.toggleModal}>
+          <Text style = {styles.cancelText}>Show Friends</Text>
+        </TouchableOpacity>
         </View>
-        <Modal style={{ zIndex: 1 }} isVisible={this.state.isModalVisible}>
-          <View style={{ flex: 0.5 }}>
+
+        <View style={styles.modal}>
+        <Modal 
+        animationType = "slide"
+        transparent = {true}
+        style={{ zIndex: 1 }} 
+        isVisible={this.state.isModalVisible}>
+          <View style={{ flex: 1, marginTop: 110 }}>
             <CustomMultiPicker
               options={dic}
               search={true} // should show search bar?
               multiple={true} //
               placeholder={"Search"}
-              placeholderTextColor={"#757575"}
+              placeholderTextColor={"white"}
               returnValue={"value"} // label or value
               callback={res => {
                 var filtered = res.filter(function(el) {
@@ -107,20 +115,26 @@ export default class Main extends React.Component {
                 });
                 this.setState({ selectedIDs: filtered });
               }} // callback, array of selected items
-              rowBackgroundColor={"#eee"}
-              rowHeight={40}
-              rowRadius={5}
-              iconColor={"#00a2dd"}
+              rowBackgroundColor={"white"}
+              rowHeight={42}
+              rowRadius={3}
+              iconColor={"#E64A4B"}
               iconSize={30}
               selectedIconName={"ios-checkmark-circle"}
               unselectedIconName={"ios-radio-button-off"}
-              scrollViewHeight={130}
               selected={this.state.selectedIDs}
               // list of options which are selected by default
-            />
-            <Button title="Hide friends" onPress={this.toggleModal} />
+            />  
+            <TouchableOpacity 
+          style={styles.cancelButton}
+          activeOpacity = { .7 }
+          onPress = {this.toggleModal}>
+          <Text style = {styles.cancelText}>Hide Friends</Text>
+        </TouchableOpacity>
           </View>
         </Modal>
+        </View>
+
         <Map
           idnames={fetchStates.idToNames}
           idcolors={fetchStates.idToColors}
@@ -145,11 +159,48 @@ export default class Main extends React.Component {
 
 const styles = StyleSheet.create({
   adminButtons: {},
+  modal:{
+    position: 'absolute',
+    bottom: 0,
+    // left: 6,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "stretch"
+  },
+  showButton:{
+    paddingTop:10,
+    paddingBottom:10,
+    width: 120,
+    backgroundColor:'#E64A4B',
+    borderRadius:3,
+    shadowOffset:{  width: 0,  height: 5,  },
+    shadowRadius: 5,
+    shadowColor: 'black',
+    shadowOpacity: .1,
+  },
+  cancelButton: {
+    marginBottom: 60,
+    paddingTop:15,
+    paddingBottom:15,
+    marginLeft:6,
+    marginRight:6,
+    backgroundColor:'#E64A4B',
+    borderRadius:3,
+    shadowOffset:{  width: 0,  height: 5,  },
+    shadowRadius: 5,
+    shadowColor: 'black',
+    shadowOpacity: .1,
+  },
+  cancelText: {
+    color: '#FDEBE1',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   button: {
     position: "absolute",

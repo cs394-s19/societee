@@ -24,8 +24,9 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <Tabs
-        tabBarUnderlineStyle={{ display: "none" }}
+        tlabBarUnderlineStyle={{ display: "none" }}
         tabBarPosition="overlayBottom"
+        color="red"
       >
         <Tab
           heading={
