@@ -33,7 +33,10 @@ export default class SearchBar extends Component {
           // console.log(details);
           let photorefer = "";
           let placeid = data.place_id;
-
+          this.props.setInitialRegion(
+            details.geometry.location.lat,
+            details.geometry.location.lng
+          );
           let placeDetails = fetch(
             `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeid}&key=${GoogleAPI}`
           )
