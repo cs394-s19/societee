@@ -147,12 +147,12 @@ const styles = {
     height: 250
   },
   image: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 300,
     backgroundColor: "gray"
   },
   avatar: {
-    marginTop: 20,
+    marginTop: 65,
     marginLeft: 30
   },
   quote: {
