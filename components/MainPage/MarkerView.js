@@ -47,10 +47,10 @@ export default class MarkerView extends Component {
       photo: this.props.markerPressedDetail.photoURL
     };
 
-    this.props.setEdit(newPin)
-    this.props.markerEdit()
-    this.props.showMarkerView()
-  }
+    this.props.setEdit(newPin);
+    this.props.markerEdit();
+    this.props.showMarkerView();
+  };
 
   render() {
     var d = new Date();
@@ -79,70 +79,88 @@ export default class MarkerView extends Component {
                 style={styles.close}
                 onPress={() => {
                   this.props.showMarkerView();
-                }} >
+                }}
+              >
                 <Icon name="close" style={{ fontSize: 60, color: "#E64A4B" }} />
               </Button>
               <View style={styles.likeButtonContainer}>
                 {this.props.favored ? (
-                <Button
-                  large
-                  danger
-                  onPress={() =>
-                    this.props.removeFromFavorites(
-                      this.props.markerPressedDetail.id
-                    )
-                  }
-                  style={{height: 50, backgroundColor: 'rgba(52, 52, 52, 0.0)'}}
-                >
-                  <Icon name="ios-heart" style={{color: "#E64A4B", fontSize: 40}} />
-                </Button>
-              ) : (
+                  <Button
+                    large
+                    danger
+                    onPress={() =>
+                      this.props.removeFromFavorites(
+                        this.props.markerPressedDetail.id
+                      )
+                    }
+                    style={{
+                      height: 50,
+                      backgroundColor: "rgba(52, 52, 52, 0.0)"
+                    }}
+                  >
+                    <Icon
+                      name="ios-heart"
+                      style={{ color: "#E64A4B", fontSize: 40 }}
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    large
+                    primary
+                    onPress={() =>
+                      this.props.addToFavorites(
+                        this.props.markerPressedDetail.id
+                      )
+                    }
+                    style={{
+                      height: 50,
+                      backgroundColor: "rgba(0, 0, 0, 0.0)"
+                    }}
+                  >
+                    <Icon
+                      name="ios-heart-empty"
+                      style={{ color: "#E64A4B", fontSize: 40 }}
+                    />
+                  </Button>
+                )}
+              </View>
+              {this.props.markerPressedDetail.owner == this.props.owner ? (
                 <Button
                   large
                   primary
-                  onPress={() =>
-                    this.props.addToFavorites(this.props.markerPressedDetail.id)
-                  }
-                  style={{height: 50, backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
+                  onPress={() => {
+                    this.handleEdit();
+                  }}
+                  style={styles.editButton}
                 >
-                  <Icon name="ios-heart-empty" style={{color: "#E64A4B", fontSize: 40}}/>
-                </Button>
-                )}
-              </View>
-              {this.props.markerPressedDetail.owner == this.props.owner ? 
-                (
-                  <Button
-                    large primary
-                    onPress={()=>{this.handleEdit()}}
-                    style={styles.editButton}
-                  >
                   <Text style={styles.editButtonText}>Edit</Text>
                 </Button>
-                ) : (<Text></Text>)}
-              
+              ) : (
+                <Text />
+              )}
             </View>
 
             <View style={styles.infoContainer}>
               <Text style={styles.locationName}>
                 {this.props.markerPressedDetail.description}
               </Text>
-                            
             </View>
 
             <View style={styles.avatar}>
               <ListItem
                 leftAvatar={
-                  this.props.markerPressedDetail.owner ?
-                  {
-                    title: this.props.markerPressedDetail.ownerName.split(" ")[0].charAt(0) + this.props.markerPressedDetail.ownerName.split(" ")[1].charAt(0),
-                    source: {},
-                    showEditButton: false
-                  }
-                  : {
-                  title: "NA",
-                  source: {},
-                  showEditButton: false
-                }}
+                  this.props.markerPressedDetail.owner
+                    ? {
+                        title: this.props.markerPressedDetail.ownerName,
+                        source: {},
+                        showEditButton: false
+                      }
+                    : {
+                        title: "NA",
+                        source: {},
+                        showEditButton: false
+                      }
+                }
                 title={
                   this.props.markerPressedDetail.owner ? (
                     <Text>{this.props.markerPressedDetail.ownerName}</Text>
@@ -150,13 +168,18 @@ export default class MarkerView extends Component {
                     "Unknown User"
                   )
                 }
-                subtitle={Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(this.props.markerPressedDetail.timestamp)}
+                subtitle={Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }).format(this.props.markerPressedDetail.timestamp)}
               />
             </View>
             <View style={styles.note}>
-                <Text>{this.props.markerPressedDetail.note}</Text>
+              <Text>{this.props.markerPressedDetail.note}</Text>
             </View>
-            
           </View>
         </Modal>
 
@@ -174,11 +197,11 @@ export default class MarkerView extends Component {
 const styles = {
   avatar: {
     marginTop: -10,
-    marginLeft: 10,
+    marginLeft: 10
   },
   note: {
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
   },
   close: {
     position: "absolute",
@@ -250,11 +273,11 @@ const styles = {
     fontSize: 18,
     color: "grey",
     marginBottom: 20
-    },
+  },
   likeButtonContainer: {
     position: "absolute",
     top: 230,
-    right: 10,
+    right: 10
   },
   editButton: {
     position: "absolute",

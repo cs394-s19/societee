@@ -21,6 +21,10 @@ class App extends React.Component {
   }
 
   signUpUser = name => {
+    if (!name || name.length < 2 || !/^[a-zA-Z\s]*$/.test(name)) {
+      this.setState({ signUpMessage: "Invalid name" });
+      return;
+    }
     var success = false;
     users
       .where("name", "==", name)
