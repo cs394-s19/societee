@@ -26,7 +26,7 @@ export default class NavBar extends React.Component {
       <Tabs
         tabBarUnderlineStyle={{ display: "none" }}
         tabBarPosition="overlayBottom"
-        tabBarUnderlineStyle={{backgroundColor:"red"}}
+        tabBarUnderlineStyle={{backgroundColor:"#E64A4B"}}
       >
         <Tab
           heading={
