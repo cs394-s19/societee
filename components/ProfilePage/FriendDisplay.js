@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, Footer, Text,  withTheme } from "react-native-elements";
+import { Button, Footer, Text, withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 
@@ -21,12 +21,6 @@ export default class FriendDisplay extends Component {
     });
   }
 
-  // unfollow(friend) {
-  //   users.doc(this.props.user).update({
-  //     following: firebase.firestore.FieldValue.arrayRemove(friend)
-  //   });
-  // }
-
   render() {
     var realFriends = this.props.friendIDs.filter(friend => {
       return friend !== this.props.user;
@@ -39,42 +33,50 @@ export default class FriendDisplay extends Component {
       <ScrollView contentContainerStyle={styles.container}>
         <Text
           key={"FriendLength"}
-          style={{ fontWeight: "bold", textAlign: "center" ,marginBottom:5,fontSize: 20}}
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: 5,
+            fontSize: 20
+          }}
         >
           You are following {realFriends.length} friends:
         </Text>
         {realFriends.map((friend, index) => {
           return (
             <View key={index + "d"}>
-              <Text key={index + "e"} style={{ textAlign: "center", fontSize:16, marginBottom:2 }}>
+              <Text
+                key={index + "e"}
+                style={{ textAlign: "center", fontSize: 16, marginBottom: 2 }}
+              >
                 {this.props.allUsers[friend]}
               </Text>
-              {/* <Button
-                key={index + "f"}
-                title="Unfollow"
-                onPress={() => this.unfollow(friend)}
-              /> */}
             </View>
           );
         })}
         <View style={styles.suggestedFriends}>
-        <Text
-          key={"All USERS"}
-          style={{ fontWeight: "bold", textAlign: "center", marginBottom:5,fontSize: 15, marginTop: 12 }}
-        >
-          Suggested Friends:
-
-        </Text>
-        {unfollowedUsers.map((user, index) => {
-          return (
-            <Button
-              style={{ height: 50 }}
-              key={index + "c"}
-              title={"Follow " + this.props.allUsers[user]}
-              onPress={() => this.follow(user)}
-            />
-          );
-        })}
+          <Text
+            key={"All USERS"}
+            style={{
+              fontWeight: "bold",
+              textAlign: "center",
+              marginBottom: 5,
+              fontSize: 15,
+              marginTop: 12
+            }}
+          >
+            Suggested Friends:
+          </Text>
+          {unfollowedUsers.map((user, index) => {
+            return (
+              <Button
+                style={{ height: 50 }}
+                key={index + "c"}
+                title={"Follow " + this.props.allUsers[user]}
+                onPress={() => this.follow(user)}
+              />
+            );
+          })}
         </View>
       </ScrollView>
     );
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   bar: {
     marginTop: 250
   },
-  suggestedFriends:{
+  suggestedFriends: {
     marginTop: 15
   }
 });

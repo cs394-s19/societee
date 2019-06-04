@@ -12,6 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: null,
+      signUpMessage: ""
     };
 
     this.signUpUser = this.signUpUser.bind(this);
@@ -21,32 +22,44 @@ class App extends React.Component {
 
   signUpUser = name => {
     var success = false;
-    users.where('name', '==', name)
-         .get()
-         .then(function(querySnapshot) {
-           if (querySnapshot.empty) {
-            success = true;
-           } else {
-             console.log("User: " + name + " already exists");
-           }
-         })
-         .then(() => {
-           if (success) {
-            users.add({
-              name: name,
-              favorites: [],
-              following: []
-            })
-            .then(docRef => {
-              this.setState({ user: docRef.id });
-            });
-           }
-         });
-  }
+    users
+      .where("name", "==", name)
+      .get()
+      .then(function(querySnapshot) {
+        if (querySnapshot.empty) {
+          success = true;
+        }
+      })
+      .then(() => {
+        if (success) {
+          users.add({
+            name: name,
+            favorites: [],
+            following: []
+          });
+          this.setState({ signUpMessage: "Account created for " + name });
+        } else {
+          this.setState({ signUpMessage: name + " already exists" });
+        }
+      });
+  };
 
   loginInUser = name => {
-    
-  }
+    var success;
+    users
+      .where("name", "==", name)
+      .get()
+      .then(querySnapshot => {
+        if (querySnapshot.empty) {
+          this.setState({
+            signUpMessage:
+              "Invalid user: " + name + ". Sign up first to continue."
+          });
+        } else {
+          this.setState({ user: querySnapshot.docs[0].id });
+        }
+      });
+  };
 
   updateUser(uid) {
     this.setState({ user: uid });
@@ -70,9 +83,12 @@ class App extends React.Component {
     return (
       <View style={styles.container}>
         {this.state.user === null ? (
-          <Login signUpUser={this.signUpUser}
-                 loginInUser={this.loginInUser}
-                 updateUser={this.updateUser} />
+          <Login
+            signUpUser={this.signUpUser}
+            loginInUser={this.loginInUser}
+            updateUser={this.updateUser}
+            signUpMessage={this.state.signUpMessage}
+          />
         ) : (
           <Fetcher user={this.state.user} />
         )}
