@@ -11,7 +11,7 @@ export default class Map extends React.Component {
   }
   render() {
     return (
-      <MapView showsUserLocation style={styles.map}>
+      <MapView showsUserLocation region={this.props.initialRegion} style={styles.map}>
         {this.props.markers.map((marker, index) => {
           var ownerName = this.props.idnames[marker.owner];
           marker.ownerName = ownerName;
