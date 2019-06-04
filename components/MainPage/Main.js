@@ -163,6 +163,7 @@ export default class Main extends React.Component {
           favored={this.state.favored}
           photo={this.state.photo}
           owner={this.state.owner}
+          markerEdit={() => this.toggleMarkerEdit()}
         />
       </View>
     );

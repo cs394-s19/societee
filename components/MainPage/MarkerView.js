@@ -39,6 +39,16 @@ export default class MarkerView extends Component {
     }
   }
 
+  handleEdit = (markerDetail) => {
+    const newPin = {
+      note: "",
+      description: details.name,
+      owner: this.props.user,
+      timestamp: Date.now()
+    };
+
+  }
+
   render() {
     var d = new Date();
     d.setTime(this.props.markerPressedDetail.timestamp);
@@ -55,10 +65,10 @@ export default class MarkerView extends Component {
         >
           <View>
             <View style={styles.imageContainer}>
-              {/* <Image
+              <Image
                 style={styles.locationImage}
                 source={{ uri: this.props.markerPressedDetail.photoURL }}
-              /> */}
+              />
               <Button
                 large
                 transparent
@@ -67,7 +77,7 @@ export default class MarkerView extends Component {
                 onPress={() => {
                   this.props.showMarkerView();
                 }} >
-                <Icon name="close" style={{ fontSize: 60 }} />
+                <Icon name="close" style={{ fontSize: 60, color: "#E64A4B" }} />
               </Button>
               <View style={styles.likeButtonContainer}>
                 {this.props.favored ? (
@@ -79,9 +89,9 @@ export default class MarkerView extends Component {
                       this.props.markerPressedDetail.id
                     )
                   }
-                  style={{height: 50}}
+                  style={{height: 50, backgroundColor: 'rgba(52, 52, 52, 0.0)'}}
                 >
-                  <Icon name="ios-heart" />
+                  <Icon name="ios-heart" style={{color: "#E64A4B", fontSize: 40}} />
                 </Button>
               ) : (
                 <Button
@@ -90,12 +100,22 @@ export default class MarkerView extends Component {
                   onPress={() =>
                     this.props.addToFavorites(this.props.markerPressedDetail.id)
                   }
-                  style={{height: 50}}
+                  style={{height: 50, backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
                 >
-                  <Icon name="ios-heart-empty" />
+                  <Icon name="ios-heart-empty" style={{color: "#E64A4B", fontSize: 40}}/>
                 </Button>
                 )}
               </View>
+              {this.props.markerPressedDetail.owner == this.props.owner ? 
+                (
+                  <Button
+                    large primary
+                    onPress={()=>{console.log("")}}
+                    style={styles.editButton}
+                  >
+                  <Text style={styles.editButtonText}>Edit</Text>
+                </Button>
+                ) : (<Text></Text>)}
               
             </View>
 
@@ -108,8 +128,15 @@ export default class MarkerView extends Component {
 
             <View style={styles.avatar}>
               <ListItem
-                leftAvatar={{
-                  title: "JD",
+                leftAvatar={
+                  this.props.markerPressedDetail.owner ?
+                  {
+                    title: this.props.markerPressedDetail.ownerName.split(" ")[0].charAt(0) + this.props.markerPressedDetail.ownerName.split(" ")[1].charAt(0),
+                    source: {},
+                    showEditButton: false
+                  }
+                  : {
+                  title: "NA",
                   source: {},
                   showEditButton: false
                 }}
@@ -123,7 +150,9 @@ export default class MarkerView extends Component {
                 subtitle={Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(this.props.markerPressedDetail.timestamp)}
               />
             </View>
-            
+            <View style={styles.note}>
+                <Text>{this.props.markerPressedDetail.note}</Text>
+            </View>
             
           </View>
         </Modal>
@@ -141,8 +170,12 @@ export default class MarkerView extends Component {
 
 const styles = {
   avatar: {
-    marginTop: 20,
-    marginLeft: 30,
+    marginTop: -10,
+    marginLeft: 10,
+  },
+  note: {
+    marginLeft: 20,
+    marginRight: 20,
   },
   close: {
     position: "absolute",
@@ -218,11 +251,19 @@ const styles = {
   likeButtonContainer: {
     position: "absolute",
     top: 230,
-    right: 20,
+    right: 10,
   },
-  editButtonContainer: {
+  editButton: {
     position: "absolute",
-    top: 20,
+    top: 45,
     right: 20,
+    height: 30,
+    width: 50,
+    backgroundColor: "#E64A4B"
+  },
+  editButtonText: {
+    color: "#FDEBE1",
+    textAlign: "center",
+    width: "100%"
   }
 };
