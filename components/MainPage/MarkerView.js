@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   Modal,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Alert,
   Image
@@ -42,7 +42,7 @@ export default class MarkerView extends Component {
   render() {
     console.log(this.props.markerPressedDetail.photoURL);
     return (
-      <View style={{ marginTop: 15, marginRight: 15 }}>
+      <View>
         <Modal
           animationType="slide"
           transparent={false}
@@ -51,39 +51,24 @@ export default class MarkerView extends Component {
             Alert.alert("Modal has been closed.");
           }}
         >
-          <View style={{ marginTop: 22 }}>
-            <View style={{ marginTop: 35, textAlign: "center" }}>
-              <Text style={styles.title}>
-                {this.props.markerPressedDetail.description}
-              </Text>
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: this.props.markerPressedDetail.photoURL }}
-                />
-              </View>
-              <View style={styles.avatar}>
-                <ListItem
-                  leftAvatar={{
-                    title: "JD",
-                    source: {},
-                    showEditButton: true
-                  }}
-                  title={
-                    this.props.markerPressedDetail.owner ? (
-                      <Text>{this.props.markerPressedDetail.ownerName}</Text>
-                    ) : (
-                      "Unknown User"
-                    )
-                  }
-                  subtitle={"April 30, 2019"}
-                  chevron
-                />
-              </View>
-              <Text style={styles.quote}>
-                "{this.props.markerPressedDetail.note}"
-              </Text>
-              {this.props.favored ? (
+          <View>
+            <View style={styles.imageContainer}>
+              {/* <Image
+                style={styles.locationImage}
+                source={{ uri: this.props.markerPressedDetail.photoURL }}
+              /> */}
+              <Button
+                large
+                transparent
+                primary
+                style={styles.close}
+                onPress={() => {
+                  this.props.showMarkerView();
+                }} >
+                <Icon name="close" style={{ fontSize: 60 }} />
+              </Button>
+              <View style={styles.likeButtonContainer}>
+                {this.props.favored ? (
                 <Button
                   large
                   danger
@@ -92,6 +77,7 @@ export default class MarkerView extends Component {
                       this.props.markerPressedDetail.id
                     )
                   }
+                  style={{height: 50}}
                 >
                   <Icon name="ios-heart" />
                 </Button>
@@ -102,22 +88,41 @@ export default class MarkerView extends Component {
                   onPress={() =>
                     this.props.addToFavorites(this.props.markerPressedDetail.id)
                   }
+                  style={{height: 50}}
                 >
                   <Icon name="ios-heart-empty" />
                 </Button>
-              )}
-              <Button
-                large
-                transparent
-                primary
-                style={styles.close}
-                onPress={() => {
-                  this.props.showMarkerView();
-                }}
-              >
-                <Icon name="close" style={{ fontSize: 60 }} />
-              </Button>
+                )}
+              </View>
+              
             </View>
+
+            <View style={styles.infoContainer}>
+              <Text style={styles.locationName}>
+                {this.props.markerPressedDetail.description}
+              </Text>
+                            
+            </View>
+
+            <View style={styles.avatar}>
+              <ListItem
+                leftAvatar={{
+                  title: "JD",
+                  source: {},
+                  showEditButton: false
+                }}
+                title={
+                  this.props.markerPressedDetail.owner ? (
+                    <Text>{this.props.markerPressedDetail.ownerName}</Text>
+                  ) : (
+                    "Unknown User"
+                  )
+                }
+                subtitle={Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(this.props.markerPressedDetail.timestamp)}
+              />
+            </View>
+            
+            
           </View>
         </Modal>
 
@@ -133,33 +138,13 @@ export default class MarkerView extends Component {
 }
 
 const styles = {
-  title: {
-    textAlign: "center",
-    fontSize: 30
-  },
-  imageContainer: {
-    marginTop: 25,
-    width: "100%",
-    alignItems: "center",
-    height: 250
-  },
-  image: {
-    width: 250,
-    height: 250,
-    backgroundColor: "gray"
-  },
   avatar: {
     marginTop: 20,
-    marginLeft: 30
-  },
-  quote: {
-    fontSize: 20,
-    marginTop: 15,
-    textAlign: "center"
+    marginLeft: 30,
   },
   close: {
     position: "absolute",
-    top: -20,
+    top: -10,
     right: 10
   },
   imageContainer: {
@@ -214,6 +199,8 @@ const styles = {
   },
   close: {
     position: "absolute",
+    fontSize: 30,
+    color: "blue",
     top: 20,
     left: 10
   },
@@ -225,5 +212,15 @@ const styles = {
     fontSize: 18,
     color: "grey",
     marginBottom: 20
-    }
+    },
+  likeButtonContainer: {
+    position: "absolute",
+    top: 230,
+    right: 20,
+  },
+  editButtonContainer: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+  }
 };
