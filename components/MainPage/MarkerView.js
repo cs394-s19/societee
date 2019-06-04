@@ -40,7 +40,9 @@ export default class MarkerView extends Component {
   }
 
   render() {
-    console.log(this.props.markerPressedDetail.photoURL);
+    var d = new Date();
+    d.setTime(this.props.markerPressedDetail.timestamp);
+    // console.log(this.props.markerPressedDetail.photoURL);
     return (
       <View style={{ marginTop: 15, marginRight: 15 }}>
         <Modal
@@ -76,7 +78,7 @@ export default class MarkerView extends Component {
                       "Unknown User"
                     )
                   }
-                  subtitle={"April 30, 2019"}
+                  subtitle={d.toDateString()}
                   chevron
                 />
               </View>

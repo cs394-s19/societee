@@ -27,7 +27,7 @@ export default class Friends extends React.Component {
   render() {
     Location.reverseGeocodeAsync(this.props.location)
       .then(arr => {
-        console.log(arr);
+        // console.log(arr);
         this.setState({
           city: `${arr[0].name}, ${arr[0].city}, ${arr[0].region}`
         });

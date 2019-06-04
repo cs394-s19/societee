@@ -87,52 +87,55 @@ export default class Main extends React.Component {
             alignSelf: "flex-end" //for align to right
           }}
         >
-              <TouchableOpacity 
-          style={styles.showButton}
-          activeOpacity = { .7 }
-          onPress = {this.toggleModal}>
-          <Text style = {styles.cancelText}>Show Friends</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.showButton}
+            activeOpacity={0.7}
+            onPress={this.toggleModal}
+          >
+            <Text style={styles.cancelText}>Show Friends</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.modal}>
-        <Modal 
-        animationType = "slide"
-        transparent = {true}
-        style={{ zIndex: 1 }} 
-        isVisible={this.state.isModalVisible}>
-          <View style={{ flex: 1, marginTop: 110 }}>
-            <CustomMultiPicker
-              options={dic}
-              search={true} // should show search bar?
-              multiple={true} //
-              placeholder={"Search"}
-              placeholderTextColor={"white"}
-              returnValue={"value"} // label or value
-              callback={res => {
-                var filtered = res.filter(function(el) {
-                  return el != null;
-                });
-                this.setState({ selectedIDs: filtered });
-              }} // callback, array of selected items
-              rowBackgroundColor={"white"}
-              rowHeight={42}
-              rowRadius={3}
-              iconColor={"#E64A4B"}
-              iconSize={30}
-              selectedIconName={"ios-checkmark-circle"}
-              unselectedIconName={"ios-radio-button-off"}
-              selected={this.state.selectedIDs}
-              // list of options which are selected by default
-            />  
-            <TouchableOpacity 
-          style={styles.cancelButton}
-          activeOpacity = { .7 }
-          onPress = {this.toggleModal}>
-          <Text style = {styles.cancelText}>Hide Friends</Text>
-        </TouchableOpacity>
-          </View>
-        </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            style={{ zIndex: 1 }}
+            isVisible={this.state.isModalVisible}
+          >
+            <View style={{ flex: 1, marginTop: 110 }}>
+              <CustomMultiPicker
+                options={dic}
+                search={true} // should show search bar?
+                multiple={true} //
+                placeholder={"Search"}
+                placeholderTextColor={"white"}
+                returnValue={"value"} // label or value
+                callback={res => {
+                  var filtered = res.filter(function(el) {
+                    return el != null;
+                  });
+                  this.setState({ selectedIDs: filtered });
+                }} // callback, array of selected items
+                rowBackgroundColor={"white"}
+                rowHeight={42}
+                rowRadius={3}
+                iconColor={"#E64A4B"}
+                iconSize={30}
+                selectedIconName={"ios-checkmark-circle"}
+                unselectedIconName={"ios-radio-button-off"}
+                selected={this.state.selectedIDs}
+                // list of options which are selected by default
+              />
+              <TouchableOpacity
+                style={styles.cancelButton}
+                activeOpacity={0.7}
+                onPress={this.toggleModal}
+              >
+                <Text style={styles.cancelText}>Hide Friends</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </View>
 
         <Map
@@ -159,12 +162,12 @@ export default class Main extends React.Component {
 
 const styles = StyleSheet.create({
   adminButtons: {},
-  modal:{
-    position: 'absolute',
+  modal: {
+    position: "absolute",
     bottom: 0,
     // left: 6,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center"
   },
   container: {
     flex: 1,
@@ -172,35 +175,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "stretch"
   },
-  showButton:{
-    paddingTop:10,
-    paddingBottom:10,
+  showButton: {
+    paddingTop: 10,
+    paddingBottom: 10,
     width: 120,
-    backgroundColor:'#E64A4B',
-    borderRadius:3,
-    shadowOffset:{  width: 0,  height: 5,  },
+    backgroundColor: "#E64A4B",
+    borderRadius: 3,
+    shadowOffset: { width: 0, height: 5 },
     shadowRadius: 5,
-    shadowColor: 'black',
-    shadowOpacity: .1,
+    shadowColor: "black",
+    shadowOpacity: 0.1
   },
   cancelButton: {
     marginBottom: 60,
-    paddingTop:15,
-    paddingBottom:15,
-    marginLeft:6,
-    marginRight:6,
-    backgroundColor:'#E64A4B',
-    borderRadius:3,
-    shadowOffset:{  width: 0,  height: 5,  },
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginLeft: 6,
+    marginRight: 6,
+    backgroundColor: "#E64A4B",
+    borderRadius: 3,
+    shadowOffset: { width: 0, height: 5 },
     shadowRadius: 5,
-    shadowColor: 'black',
-    shadowOpacity: .1,
+    shadowColor: "black",
+    shadowOpacity: 0.1
   },
   cancelText: {
-    color: '#FDEBE1',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
+    color: "#FDEBE1",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16
   },
   button: {
     position: "absolute",
