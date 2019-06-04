@@ -25,7 +25,8 @@ export default class Main extends React.Component {
       currEditedPin: {},
       favored: false,
       isModalVisible: false,
-      photo: ""
+      photo: "",
+      owner: this.props.user
     };
     this.handlePress = this.handlePress.bind(this);
     this.showMarkerView = this.showMarkerView.bind(this);
@@ -161,6 +162,7 @@ export default class Main extends React.Component {
           removeFromFavorites={this.removeFromFavorites}
           favored={this.state.favored}
           photo={this.state.photo}
+          owner={this.state.owner}
         />
       </View>
     );

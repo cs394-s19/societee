@@ -4,9 +4,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Dimensions,
   View,
   Alert,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
 import { Button, Icon } from "native-base";
 
@@ -76,7 +78,7 @@ export default class MarkerEdit extends Component {
                 this.props.closeMarkerEdit();
               }}
             >
-              <Icon name="close" style={{ fontSize: 60 }} />
+              <Icon name="close" style={{ fontSize: 60, color: "#E64A4B" }} />
             </Button>
             <Text style={{ marginTop: 150, marginLeft: 150 }}>
               No photo available - add one!
@@ -100,16 +102,29 @@ export default class MarkerEdit extends Component {
             style={
               this.state.focused ? styles.textInputBlack : styles.textInputGrey
             }
-            value={this.state.pin.note}
             onFocus={() => {
               this.setState({ focused: true });
               this.updateNote("");
             }}
-            clearTextOnFocus={true}
+            multiline = {true}
+            placeholder = {"Add a note about this pin"}
+            placeholderTextColor = {"lightGrey"}
             onChangeText={text => this.updateNote(text)}
             onSubmitEditing={() => this.onSubmitNote(this.state.pin)}
           />
+          <Button
+            large
+            transparent
+            primary
+            style={styles.submitButton}
+            onPress={() => {
+              this.onSubmitNote(this.state.pin)}
+            }
+          >
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </Button>
         </View>
+        
       </Modal>
     );
   }
@@ -120,11 +135,12 @@ const styles = {
     width: "100%",
     height: 300,
     overflow: "hidden",
-    backgroundColor: "white"
+    backgroundColor: "white",
+
   },
   locationImage: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   addPhotoButton: {
     width: 80,
@@ -155,16 +171,17 @@ const styles = {
     fontWeight: "bold"
   },
   textInputGrey: {
-    color: "lightgrey"
+    color: "lightgrey",
   },
   textInputBlack: {
-    color: "black"
+    color: "black",
   },
   profile: {
     marginRight: 20
   },
   infoContainer: {
-    padding: 20
+    padding: 20,
+    height: Dimensions.get('window').height-300,    
   },
   close: {
     position: "absolute",
@@ -179,5 +196,23 @@ const styles = {
     fontSize: 18,
     color: "grey",
     marginBottom: 20
+  },
+  submitButton: {
+    position: "absolute",
+    bottom: 40,
+    right: 40,
+    backgroundColor: "#E64A4B",
+    width: 80,
+    height: 35,
+    borderRadius: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    paddingLeft: 11,
+  },
+  submitButtonText: {
+    color: "#FDEBE1",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16
   }
 };
