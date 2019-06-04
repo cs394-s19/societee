@@ -40,7 +40,9 @@ export default class MarkerView extends Component {
   }
 
   render() {
-    console.log(this.props.markerPressedDetail.photoURL);
+    var d = new Date();
+    d.setTime(this.props.markerPressedDetail.timestamp);
+    // console.log(this.props.markerPressedDetail.photoURL);
     return (
       <View>
         <Modal

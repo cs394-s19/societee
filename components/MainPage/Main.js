@@ -37,7 +37,7 @@ export default class Main extends React.Component {
 
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
-    console.log("close", this.state.selectedIDs);
+    // console.log("close", this.state.selectedIDs);
   };
 
   setphoto(photo) {
