@@ -27,6 +27,15 @@ export default class Fetcher extends React.Component {
 
   componentWillMount() {
     // this.fetchFriendIDS();
+    var colors = require("./Color");
+
+    this.fetchUserInfo().then(user => {
+      var idToColorsInit = this.state.idToColors;
+      var idToNamesInit = this.state.idToNames;
+      idToColorsInit[user.id] = colors.shift();
+      idToNamesInit[user.id] = user.name;
+      this.setState({ idToColors: idToColorsInit, idToNames: idToNamesInit });
+    });
 
     var new_favorites;
     var new_following;
@@ -37,7 +46,6 @@ export default class Fetcher extends React.Component {
       if (new_following !== this.state.friendIDs) {
         var idToNamesTemp = this.state.idToNames;
         var idToColorsTemp = this.state.idToColors;
-        var colors = require("./Color");
         new_following.forEach(following => {
           if (!this.state.friendIDs.includes(following)) {
             this.fetchFriendPins(following);
@@ -93,6 +101,16 @@ export default class Fetcher extends React.Component {
       this.setState({ allUsers: allUsers });
     });
   }
+
+  fetchUserInfo = () => {
+    return users
+      .doc(this.props.user)
+      .get()
+      .then(snapshot => {
+        var userID = { id: snapshot.id };
+        return { ...userID, ...snapshot.data() };
+      });
+  };
 
   fetchFriendPins = friend => {
     var oldfriendmarkers = this.state.friend_markers;
