@@ -160,7 +160,7 @@ export default class Main extends React.Component {
           handlePress={this.handlePress}
           style={styles.bar}
           setphoto={this.setphoto}
-setInitialRegion={this.setInitialRegion}
+          setInitialRegion={this.setInitialRegion}
         />
 
         <Map
@@ -182,6 +182,7 @@ setInitialRegion={this.setInitialRegion}
           favored={this.state.favored}
           photo={this.state.photo}
           owner={this.state.owner}
+          setEdit = {(pin) => this.setState({currEditedPin: pin})}
           markerEdit={() => this.toggleMarkerEdit()}
         />
       </View>

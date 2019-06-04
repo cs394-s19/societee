@@ -107,7 +107,7 @@ export default class MarkerEdit extends Component {
               this.updateNote("");
             }}
             multiline = {true}
-            placeholder = {"Add a note about this pin"}
+            placeholder = {this.props.currEditedPin.note}
             placeholderTextColor = {"lightGrey"}
             onChangeText={text => this.updateNote(text)}
             onSubmitEditing={() => this.onSubmitNote(this.state.pin)}

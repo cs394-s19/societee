@@ -39,14 +39,17 @@ export default class MarkerView extends Component {
     }
   }
 
-  handleEdit = (markerDetail) => {
+  handleEdit = () => {
     const newPin = {
-      note: "",
-      description: details.name,
-      owner: this.props.user,
-      timestamp: Date.now()
+      note: this.props.markerPressedDetail.note,
+      description: this.props.markerPressedDetail.description,
+      timestamp: Date.now(),
+      photo: this.props.markerPressedDetail.photoURL
     };
 
+    this.props.setEdit(newPin)
+    this.props.markerEdit()
+    this.props.showMarkerView()
   }
 
   render() {
@@ -110,7 +113,7 @@ export default class MarkerView extends Component {
                 (
                   <Button
                     large primary
-                    onPress={()=>{console.log("")}}
+                    onPress={()=>{this.handleEdit()}}
                     style={styles.editButton}
                   >
                   <Text style={styles.editButtonText}>Edit</Text>
