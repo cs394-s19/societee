@@ -111,13 +111,12 @@ export default class MarkerView extends Component {
               <Button
                 large
                 transparent
-                primary
                 style={styles.close}
                 onPress={() => {
                   this.props.showMarkerView();
                 }}
               >
-                <Icon name="close" style={{ fontSize: 60 }} />
+                <Icon name="close" style={{ fontSize: 60, color:'#E64A4B' }} />
               </Button>
             </View>
           </View>
@@ -137,7 +136,9 @@ export default class MarkerView extends Component {
 const styles = {
   title: {
     textAlign: "center",
-    fontSize: 30
+    fontSize: 30,
+    paddingRight: "13%",
+    paddingLeft: "13%"
   },
   imageContainer: {
     marginTop: 25,
@@ -146,12 +147,12 @@ const styles = {
     height: 250
   },
   image: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 300,
     backgroundColor: "gray"
   },
   avatar: {
-    marginTop: 20,
+    marginTop: 65,
     marginLeft: 30
   },
   quote: {
