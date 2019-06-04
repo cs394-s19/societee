@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, Footer, Text, withTheme } from "react-native-elements";
+import { Button, Footer, Text,  withTheme } from "react-native-elements";
 import firebase from "../../config/Firebase";
 import "firebase/firestore";
 
@@ -38,10 +38,32 @@ export default class FriendDisplay extends Component {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text
-          key={"All USERS"}
-          style={{ fontWeight: "bold", textAlign: "center" }}
+          key={"FriendLength"}
+          style={{ fontWeight: "bold", textAlign: "center" ,marginBottom:5,fontSize: 20}}
         >
-          Unfollowed Users:
+          You are following {realFriends.length} friends:
+        </Text>
+        {realFriends.map((friend, index) => {
+          return (
+            <View key={index + "d"}>
+              <Text key={index + "e"} style={{ textAlign: "center", fontSize:16, marginBottom:2 }}>
+                {this.props.allUsers[friend]}
+              </Text>
+              {/* <Button
+                key={index + "f"}
+                title="Unfollow"
+                onPress={() => this.unfollow(friend)}
+              /> */}
+            </View>
+          );
+        })}
+        <View style={styles.suggestedFriends}>
+        <Text
+          key={"All USERS"}
+          style={{ fontWeight: "bold", textAlign: "center", marginBottom:5,fontSize: 15, marginTop: 12 }}
+        >
+          Suggested Friends:
+
         </Text>
         {unfollowedUsers.map((user, index) => {
           return (
@@ -53,26 +75,7 @@ export default class FriendDisplay extends Component {
             />
           );
         })}
-        <Text
-          key={"FriendLength"}
-          style={{ fontWeight: "bold", textAlign: "center" }}
-        >
-          You are following {realFriends.length} friends:
-        </Text>
-        {realFriends.map((friend, index) => {
-          return (
-            <View key={index + "d"}>
-              <Text key={index + "e"} style={{ textAlign: "center" }}>
-                {this.props.allUsers[friend]}
-              </Text>
-              {/* <Button
-                key={index + "f"}
-                title="Unfollow"
-                onPress={() => this.unfollow(friend)}
-              /> */}
-            </View>
-          );
-        })}
+        </View>
       </ScrollView>
     );
   }
@@ -87,5 +90,8 @@ const styles = StyleSheet.create({
   },
   bar: {
     marginTop: 250
+  },
+  suggestedFriends:{
+    marginTop: 15
   }
 });
