@@ -132,7 +132,7 @@ export default class Main extends React.Component {
                 activeOpacity={0.7}
                 onPress={this.toggleModal}
               >
-                <Text style={styles.cancelText}>Hide Friends</Text>
+                <Text style={styles.cancelText}>Close</Text>
               </TouchableOpacity>
             </View>
           </Modal>
