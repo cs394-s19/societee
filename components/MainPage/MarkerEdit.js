@@ -97,7 +97,7 @@ export default class MarkerEdit extends Component {
           <Text style={styles.locationName}>
             {this.props.currEditedPin.description}
           </Text>
-          <Text style={styles.address}>{this.props.currEditedPin.addr}</Text>
+          {/* <Text style={styles.address}>{this.props.markerPressedDetail.addr}</Text> */}
           <TextInput
             style={
               this.state.focused ? styles.textInputBlack : styles.textInputGrey
@@ -207,12 +207,12 @@ const styles = {
     borderRadius: 10,
     alignItems: "center",
     flexDirection: "row",
-    paddingLeft: 11,
   },
   submitButtonText: {
     color: "#FDEBE1",
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 16
+    fontSize: 16,
+    width: "100%"
   }
 };

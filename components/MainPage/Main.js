@@ -182,6 +182,7 @@ setInitialRegion={this.setInitialRegion}
           favored={this.state.favored}
           photo={this.state.photo}
           owner={this.state.owner}
+          markerEdit={() => this.toggleMarkerEdit()}
         />
       </View>
     );
