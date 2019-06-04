@@ -24,9 +24,9 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <Tabs
-        tlabBarUnderlineStyle={{ display: "none" }}
+        tabBarUnderlineStyle={{ display: "none" }}
         tabBarPosition="overlayBottom"
-        color="red"
+        tabBarUnderlineStyle={{backgroundColor:"red"}}
       >
         <Tab
           heading={
@@ -35,6 +35,7 @@ export default class NavBar extends React.Component {
                 style={{ textAlign: "center" }}
                 name="globe"
                 size={30}
+                color="#282828"
               />
             </TabHeading>
           }
@@ -49,6 +50,7 @@ export default class NavBar extends React.Component {
                 style={{ textAlign: "center" }}
                 name="location"
                 size={30}
+                color="#282828"
               />
             </TabHeading>
           }
@@ -63,6 +65,7 @@ export default class NavBar extends React.Component {
                 style={{ textAlign: "center" }}
                 name="users"
                 size={30}
+                color="#282828"
               />
             </TabHeading>
           }
