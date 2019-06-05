@@ -19,13 +19,26 @@ export default class Fetcher extends React.Component {
       idToColors: {},
       friendIDs: [], // pids
       allUsers: {},
-      colors: require("./Color")
+      colors: require("./Color"),
+      initialRegion: {}
     };
 
     this.idToName2 = this.idToName2.bind(this);
   }
 
   componentWillMount() {
+    navigator.geolocation.getCurrentPosition(position => {
+      // console.log(Number(position.coords.latitude) + "  " + Number(position.coords.longitude));
+      this.setState({
+        initialRegion: {
+          latitude: Number(position.coords.latitude),
+          longitude: Number(position.coords.longitude),
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        }
+      })
+    }, function (error) { alert(error) });
+
     // this.fetchFriendIDS();
     var colors = require("./Color");
 

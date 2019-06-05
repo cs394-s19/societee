@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, Button, View, StyleSheet, TouchableOpacity } from "react-native";
 import SearchBar from "./SearchBar";
 import Map from "./Map";
 import firebase from "../../config/Firebase";
@@ -8,6 +8,7 @@ import CustomMultiPicker from "react-native-multiple-select-list";
 import Drawer from "react-native-drawer";
 import MarkerView from "./MarkerView";
 import MarkerEdit from "./MarkerEdit";
+import EntypoIcon from "react-native-vector-icons/Entypo";
 
 import Modal from "react-native-modal";
 const db = firebase.firestore();
@@ -28,10 +29,10 @@ export default class Main extends React.Component {
       photo: "",
       owner: this.props.user,
       initialRegion: {
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0722,
-        longitudeDelta: 0.0321
+        latitude: this.props.FetchState.initialRegion.latitude,
+        longitude: this.props.FetchState.initialRegion.longitude,
+        latitudeDelta: this.props.FetchState.initialRegion.latitudeDelta,
+        longitudeDelta: this.props.FetchState.initialRegion.longitudeDelta
       }
     };
     this.handlePress = this.handlePress.bind(this);
@@ -40,6 +41,7 @@ export default class Main extends React.Component {
     this.alreadFavored = this.alreadFavored.bind(this);
     this.setphoto = this.setphoto.bind(this);
     this.setInitialRegion = this.setInitialRegion.bind(this);
+    this.currentLocation = this.currentLocation.bind(this);
   }
 
   toggleModal = () => {
@@ -124,6 +126,21 @@ export default class Main extends React.Component {
     this.setState({ markerEdit: !this.state.markerEdit });
   };
 
+  currentLocation = () => {
+    console.log("inside current location");
+    navigator.geolocation.getCurrentPosition(position => {
+      // console.log(Number(position.coords.latitude) + "  " + Number(position.coords.longitude));
+      this.setState({
+        initialRegion: {
+          latitude: Number(position.coords.latitude),
+          longitude: Number(position.coords.longitude),
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        }
+      })
+    }, function (error) { alert(error) });
+  }
+
   render() {
     var fetchStates = this.props.FetchState;
     var favPinSet = new Set(fetchStates.favored_markers);
@@ -165,6 +182,29 @@ export default class Main extends React.Component {
           initialRegion={this.state.initialRegion}
         />
 
+        <View
+          style={{
+            position: "absolute", //use absolute position to show button on top of the map
+            top: "15%", //for center align
+            right: "5%",
+            alignSelf: "flex-end" //for align to right
+          }}
+        >
+          <TouchableOpacity
+            style={styles.showButton}
+            activeOpacity={0.7}
+            onPress={() => {
+              this.currentLocation();
+            }}
+          >
+          <EntypoIcon
+            name="direction"
+            style={{ textAlign: "center" }}
+            size={20}
+          />
+          </TouchableOpacity>
+        </View>
+
         <MarkerView
           markerPressed={this.state.markerPressed}
           markerPressedDetail={this.state.markerPressedDetail}
@@ -193,5 +233,23 @@ const styles = StyleSheet.create({
   bar: {
     marginTop: 300
   },
-  button: { marginTop: 400 }
+  button: { marginTop: 400 },
+  showButton: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    height: 40,
+    width: 40,
+    backgroundColor: "#00a7be",
+    borderRadius: 3,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.1
+  },
+  cancelText: {
+    color: "#FDEBE1",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16
+  },
 });
