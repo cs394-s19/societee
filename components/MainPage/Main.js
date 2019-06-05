@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   bar: {
-    marginTop: 250
+    marginTop: 300
   },
   button: { marginTop: 400 }
 });

@@ -36,7 +36,7 @@ export default class Login extends Component {
                 />
               </View>
               <TextInput
-                placeholder="Display Name"
+                placeholder="Full Name"
                 placeholderColor="#c4c3cb"
                 style={styles.loginFormTextInput}
                 onChangeText={name => this.setState({ name })}
