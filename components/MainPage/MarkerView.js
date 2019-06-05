@@ -151,7 +151,7 @@ export default class MarkerView extends Component {
                 leftAvatar={
                   this.props.markerPressedDetail.owner
                     ? {
-                        title: this.props.markerPressedDetail.ownerName,
+                        title: this.props.markerPressedDetail.ownerName.split(" ").map((n)=>n[0]).join(""),
                         source: {},
                         showEditButton: false
                       }
