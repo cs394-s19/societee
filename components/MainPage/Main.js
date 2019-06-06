@@ -63,7 +63,13 @@ export default class Main extends React.Component {
   }
   setMarkerPressedDetail(marker) {
     this.setState({
-      markerPressedDetail: marker
+      markerPressedDetail: marker,
+      initialRegion: {
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        latitudeDelta: 0.001,
+        longitudeDelta: 0.001
+      }
     });
   }
 
