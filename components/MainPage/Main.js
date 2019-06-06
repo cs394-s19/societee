@@ -185,8 +185,8 @@ export default class Main extends React.Component {
         <View
           style={{
             position: "absolute", //use absolute position to show button on top of the map
-            top: "15%", //for center align
-            right: "5%",
+            bottom: "8%", 
+            left: "6%",
             alignSelf: "flex-end" //for align to right
           }}
         >
@@ -200,7 +200,8 @@ export default class Main extends React.Component {
           <EntypoIcon
             name="direction"
             style={{ textAlign: "center" }}
-            size={20}
+            size={30}
+            color='#FDEBE1'
           />
           </TouchableOpacity>
         </View>
@@ -235,12 +236,12 @@ const styles = StyleSheet.create({
   },
   button: { marginTop: 400 },
   showButton: {
-    paddingTop: 10,
+    paddingTop: 14,
     paddingBottom: 10,
-    height: 40,
-    width: 40,
-    backgroundColor: "#00a7be",
-    borderRadius: 3,
+    height: 60,
+    width: 60,
+    backgroundColor: "#E64A4B",
+    borderRadius: 30,
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 5,
     shadowColor: "black",
