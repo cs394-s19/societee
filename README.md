@@ -11,7 +11,7 @@
 
 Donwload the latest current version of node [here.](https://nodejs.org/en/)
 
-### Download and run
+
 Clone this Repository to your local machine. Once you've opened the directory in a command shell, simply run:
 ```sh
 $ npm install
