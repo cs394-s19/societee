@@ -1,11 +1,11 @@
 # societee
 
-# DESCRIPTION
+# Description
 
   Societee is a Minimum-Viable-Product application developed for Northwestern MPD students. It is a mobile social platform that focuses on map-based content sharing. It's developed for cross-platform andriod & IOS, and was developed using React Native and Expo. 
 
 
-# INSTALLATION
+# Installation
 
 ### Install Node.js
 
@@ -18,19 +18,23 @@ $ npm install
 ```
 This will isntall the required dependencies.
 
-Hint: to open the directory in a command shell, open Terminal on your Mac and type:]
+Hint: to open the directory in a command shell, open Terminal on your Mac and type:
 
 ```sh
-cd
+cd [Societee_path_name]
 ```
-followed by the path of your cloned project.
+followed by the path of your cloned project. An example would be:
+```sh
+$ cd Desktop/societee/
+```
+if you clone the repository to your desktop.
 
 
 ### Install Expo on your phone
 
 Install "Expo" on your android or IOS phone in order to continue. 
 
-# RUNNING
+# Running
 
 After installation, run the application by typing:
 
