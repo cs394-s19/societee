@@ -4,6 +4,8 @@ import Login from "./components/LoginPage/Login";
 import Fetcher from "./components/Fetcher";
 import firebase from "./config/Firebase";
 
+console.disableYellowBox = true;
+
 const db = firebase.firestore();
 var users = db.collection("users");
 
