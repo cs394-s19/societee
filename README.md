@@ -33,13 +33,11 @@ $ cd societee
 Now your terminal shell is within the societee directory.
 
 ### Install Required Dependencies
-Once you have a command line 
-
-Next, simply run:
+Once you have a command line open inside the societee direcotry, run:
 ```sh
 $ npm install
 ```
-This will isntall the required dependencies.
+This will isntall the required app dependencies.
 
 
 ### Install Expo on your phone
@@ -54,4 +52,4 @@ After installation, run the application by typing:
 expo start
 ```
 
-and scanning the QR code on your regular phone camera. This will open the Expo app on your phone with Societee.
+inside the societee directory in a terminal shell. Simply scan the QR code on your regular phone camera. This will open the Expo app on your phone with Societee.
