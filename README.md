@@ -11,9 +11,17 @@
 
 Donwload the latest current version of node [here.](https://nodejs.org/en/)
 
+### Install Expo CLI
+
+Open Terminal or an alternate command line and type the following command.
+
+```sh
+$ npm install -g expo-cli
+```
+
 
 ### Clone this Repository to your local machine.
-Steps to clone:
+Steps to clone (Below are steps for a MacOS operating system):
 Open terminal on your mac. Copy the clone link on this page on github. Once open, type:
 
 ```sh
@@ -25,6 +33,7 @@ $ cd societee
 Now your terminal shell is within the societee directory.
 
 ### Install Required Dependencies
+Once you have a command line 
 
 Next, simply run:
 ```sh
