@@ -12,22 +12,25 @@
 Donwload the latest current version of node [here.](https://nodejs.org/en/)
 
 
-Clone this Repository to your local machine. Once you've opened the directory in a command shell, simply run:
+### Clone this Repository to your local machine.
+Steps to clone:
+Open terminal on your mac. Copy the clone link on this page on github. Once open, type:
+
+```sh
+$ cd Desktop
+$ git clone [copied_github_url]
+$ cd societee
+```
+
+Now your terminal shell is within the societee directory.
+
+### Install Required Dependencies
+
+Next, simply run:
 ```sh
 $ npm install
 ```
 This will isntall the required dependencies.
-
-Hint: to open the directory in a command shell, open Terminal on your Mac and type:
-
-```sh
-cd [Societee_path_name]
-```
-followed by the path of your cloned project. An example would be:
-```sh
-$ cd Desktop/societee/
-```
-if you clone the repository to your desktop.
 
 
 ### Install Expo on your phone
@@ -42,4 +45,4 @@ After installation, run the application by typing:
 expo start
 ```
 
-and scanning the qr code on your regular phone camera. This will open the Expo app on your phone with Societee.
+and scanning the QR code on your regular phone camera. This will open the Expo app on your phone with Societee.
